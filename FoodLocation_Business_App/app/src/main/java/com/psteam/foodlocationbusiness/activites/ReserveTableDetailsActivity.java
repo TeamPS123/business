@@ -1,22 +1,43 @@
 package com.psteam.foodlocationbusiness.activites;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocationbusiness.R;
+import com.psteam.foodlocationbusiness.adapters.ManagerFoodAdapter;
 import com.psteam.foodlocationbusiness.databinding.ActivityBusinessBinding;
 import com.psteam.foodlocationbusiness.databinding.ActivityReserveTableDetailsBinding;
 import com.psteam.foodlocationbusiness.socket.models.BodySenderFromRes;
 import com.psteam.foodlocationbusiness.socket.models.BodySenderFromUser;
 import com.psteam.foodlocationbusiness.socket.models.MessageSenderFromRes;
 import com.psteam.foodlocationbusiness.socket.setupSocket;
+import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
+import com.psteam.foodlocationbusiness.ultilities.DividerItemDecorator;
+import com.psteam.lib.Models.Get.getFood;
+import com.psteam.lib.Models.Get.messageAllFood;
+import com.psteam.lib.Models.Insert.reserveTable;
+import com.psteam.lib.Models.message;
+import com.psteam.lib.Service.ServiceAPI_lib;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 
 public class ReserveTableDetailsActivity extends AppCompatActivity {
 
     private ActivityReserveTableDetailsBinding binding;
     private BodySenderFromUser response;
-    private String userId = "restaurant";
+
+    private ManagerFoodAdapter managerFoodAdapter;
+    private ArrayList<getFood> foods;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +54,38 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
             getDataFromNoti();
             setBinding();
             setListeners();
+            setAdapter(response.getReserveTableId());
         }
+    }
+
+    private void setAdapter(String reserveTableId){
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<messageAllFood> call = serviceAPI_lib.getAllFoodByReserveTableId(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), reserveTableId);
+        call.enqueue(new Callback<messageAllFood>() {
+            @Override
+            public void onResponse(Call<messageAllFood> call, Response<messageAllFood> response) {
+                if(response.body().getStatus() == 1){
+                    foods = response.body().getFoodList();
+
+                    initFoodManagerAdapter();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<messageAllFood> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void initFoodManagerAdapter() {
+        managerFoodAdapter = new ManagerFoodAdapter(foods, getApplication());
+        binding.recycleViewFoodReserve.setAdapter(managerFoodAdapter);
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getApplication(), R.drawable.divider));
+        binding.recycleViewFoodReserve.addItemDecoration(itemDecoration);
     }
 
     private void getDataFromNoti(){
@@ -62,12 +114,39 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
 
     private void setListeners(){
         binding.buttonConfirmed.setOnClickListener((v) -> {
-            MessageSenderFromRes message = new MessageSenderFromRes(userId, response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", response.getReserveTableId()));
-            setupSocket.reserveTable(message);
+            updateReserveTable(1, response.getUserId());
         });
         binding.buttonDeny.setOnClickListener((v) -> {
-            MessageSenderFromRes message = new MessageSenderFromRes(userId, response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", response.getReserveTableId()));
-            setupSocket.reserveTable(message);
+            updateReserveTable(2, response.getUserId());
+        });
+    }
+
+    private void updateReserveTable(int code, String receiver){
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.updateReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), receiver, code);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response1) {
+                if(response1.body().getStatus() == 1){
+                    //xác nhận phiếu
+                    if(code == 1){
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), receiver, "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", response.getReserveTableId()));
+                        setupSocket.reserveTable(message);
+                    }else if(code == 2){
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), receiver, "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", response.getReserveTableId()));
+                        setupSocket.reserveTable(message);
+                    }
+                }
+
+                Toast.makeText(getApplication(), response1.body().getNotification(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Toast.makeText(getApplication(), "Câp nhật phiếu đặt bàn thất bại", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

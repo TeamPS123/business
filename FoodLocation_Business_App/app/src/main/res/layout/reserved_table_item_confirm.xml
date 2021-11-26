@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_8sdp"
+    android:elevation="@dimen/_4sdp">
+
+    <TextView
+        android:id="@+id/tagReserveFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đặt món trước"
+        android:textSize="@dimen/_9sdp"
+        android:paddingHorizontal="@dimen/_4sdp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:background="@color/ColorButtonReserve"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"/>
+
+
+    <TextView
+        android:id="@+id/textViewFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:text="Lê Tiểu Phàm"
+        android:textColor="@color/TextPrimary"
+        android:drawableTint="@color/TextPrimary"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:drawablePadding="@dimen/_4sdp"
+        android:drawableLeft="@drawable/ic_round_person_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:text="0587875442"
+        android:drawableTint="@color/TextPrimary"
+        android:gravity="center_vertical"
+        android:drawablePadding="@dimen/_4sdp"
+        android:drawableLeft="@drawable/ic_round_phone_24"
+        android:textColor="@color/TextPrimary"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintStart_toEndOf="@id/textViewFullName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewNumberPeople"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:text=" Đặt bàn cho 01 người"
+        android:textColor="#FF5722"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintTop_toBottomOf="@id/textViewFullName"
+        app:layout_constraintStart_toEndOf="@id/textViewDateReserve"/>
+
+    <TextView
+        android:id="@+id/textViewDateReserve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10:00 SA, 17/11/2021"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:textColor="#FF5722"
+        android:drawableTint="#FF5722"
+        android:textSize="@dimen/_12ssp"
+        android:drawablePadding="@dimen/_4sdp"
+        android:drawableLeft="@drawable/ic_baseline_date_range"
+        app:layout_constraintTop_toTopOf="@id/textViewNumberPeople"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintTop_toBottomOf="@id/textViewNumberPeople"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonConfirmed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            app:backgroundTint="#B3A443"
+            app:cornerRadius="@dimen/_4sdp"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold"
+            android:paddingHorizontal="@dimen/_2sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:textAllCaps="false"
+            android:text="Xác nhận"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

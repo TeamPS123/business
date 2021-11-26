@@ -61,7 +61,7 @@ public class ManagerFoodAdapter extends RecyclerView.Adapter<ManagerFoodAdapter.
 
         public void setData(getFood food) {
             if(food.getPic().size() > 0){
-                Glide.with(context).load("https://ps.covid21tsp.space/Picture/received_226730348817597_FD0006.jpeg").into(binding.imageViewFood);
+                Glide.with(context).load(food.getPic().get(0)).into(binding.imageViewFood);
             }
             //binding.imageViewFood.setImageURI(food.getImage().get(0));
             binding.textViewFoodName.setText(food.getName());

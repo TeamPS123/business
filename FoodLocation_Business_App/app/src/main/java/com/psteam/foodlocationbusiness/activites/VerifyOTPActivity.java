@@ -176,11 +176,13 @@ public class VerifyOTPActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(VerifyOTPActivity.this, response.body().getNotification(), Toast.LENGTH_SHORT).show();
                 }
+                loading(false);
             }
 
             @Override
             public void onFailure(Call<message> call, Throwable t) {
                 Toast.makeText(VerifyOTPActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                loading(false);
             }
         });
     }

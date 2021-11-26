@@ -28,6 +28,8 @@ import com.psteam.foodlocationbusiness.models.ProvinceModel;
 import com.psteam.foodlocationbusiness.models.WardModel;
 import com.psteam.foodlocationbusiness.services.ServiceAPI;
 import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
+import com.psteam.lib.Models.Get.getCategoryRes;
+import com.psteam.lib.Models.Get.messageCategoryRes;
 import com.psteam.lib.Models.Insert.insertRestaurant;
 import com.psteam.lib.Models.message;
 import com.psteam.lib.Service.ServiceAPI_lib;
@@ -47,14 +49,18 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
     final Calendar myCalendar = Calendar.getInstance();
     private ArrayList<ProvinceModel> provinceModels;
     private ArrayList<DistrictModel> districtModels;
+    private ArrayList<getCategoryRes> getCategoryResArrayList;
     private ArrayAdapter<DistrictModel> districtAdapter;
     private ArrayAdapter<ProvinceModel> provinceAdapter;
+    private ArrayAdapter<getCategoryRes> categoryResArrayAdapter;
     private ArrayAdapter<WardModel> wardAdapter;
     private ArrayList<WardModel> wardModels;
     private ProvinceModel provinceModel;
     private DistrictModel districtModel;
     private WardModel wardModel;
+    private getCategoryRes getCategoryRes;
     private String LatLng;
+    private int categoryResId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         getProvinces();
         getProvince("0");
         getDistrict("0");
+        GetCategoryRes();
     }
 
     private void setFullScreen(){
@@ -284,7 +291,8 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         restaurant.setPhone(binding.inputPhoneNumber.getText()+"");
         restaurant.setCity(binding.spinnerCity.getText() +"");
         restaurant.setDistrict(binding.spinnerDistrict.getText()+"");
-        restaurant.setLine(binding.spinnerWard.getText()+"");
+        restaurant.setCategoryResId(categoryResId);
+        restaurant.setLine(binding.inputLine.getText()+", "+ binding.spinnerWard.getText());
         restaurant.setOpenTime(binding.inputTimeOpen.getText()+"");
         restaurant.setCloseTime(binding.inputTimeClose.getText()+"");
         restaurant.setUserId(dataTokenAndUserId.getUserId());
@@ -323,5 +331,40 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
             binding.progressBar.setVisibility(View.GONE);
             binding.buttonNextStep.setVisibility(View.VISIBLE);
         }
+    }
+
+    private  void GetCategoryRes(){
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<messageCategoryRes> call = serviceAPI_lib.getCategoryRes();
+        call.enqueue(new Callback<messageCategoryRes>() {
+            @Override
+            public void onResponse(Call<messageCategoryRes> call, Response<messageCategoryRes> response) {
+                if(response.body().getStatus() == 1){
+                    if(response.body().getCategoryResList().size() > 0){
+                        getCategoryResArrayList = response.body().getCategoryResList();
+                    }
+
+                    ArrayAdapter<getCategoryRes> getCategoryResArrayAdapter = new ArrayAdapter<getCategoryRes>(getApplicationContext(), android.R.layout.simple_list_item_1, getCategoryResArrayList);
+                    getCategoryResArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    binding.spinnerCategoryRes.setAdapter(getCategoryResArrayAdapter);
+                    binding.spinnerCategoryRes.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                            getCategoryRes wardModelItem = (getCategoryRes) item;
+                            if (position >= 0) {
+                                binding.spinnerCategoryRes.setError(null);
+                                getCategoryRes = wardModelItem;
+                                categoryResId = wardModelItem.getId();
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<messageCategoryRes> call, Throwable t) {
+
+            }
+        });
     }
 }

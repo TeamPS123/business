@@ -2,8 +2,11 @@ package com.psteam.lib.Service;
 
 import com.psteam.lib.Models.Get.messResDetail;
 import com.psteam.lib.Models.Get.messageAllCategory;
+import com.psteam.lib.Models.Get.messageAllFood;
 import com.psteam.lib.Models.Get.messageAllMenu;
 import com.psteam.lib.Models.Get.messageAllReserveTable;
+import com.psteam.lib.Models.Get.messageCategoryRes;
+import com.psteam.lib.Models.Get.messageInfoRes;
 import com.psteam.lib.Models.Get.messagePromotion;
 import com.psteam.lib.Models.Get.messageRestaurant;
 import com.psteam.lib.Models.Input.confirmTable;
@@ -50,6 +53,18 @@ public interface ServiceAPI_lib {
 
     @GET("getAllCategory")
     Call<messageAllCategory> getAllCategory(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
+
+    @GET("getCategoryRes")
+    Call<messageCategoryRes> getCategoryRes();
+
+    @GET("getAllFoodByReserveTableId")
+    Call<messageAllFood> getAllFoodByReserveTableId(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId);
+
+    @GET("getInfoRestaurant")
+    Call<messageInfoRes> getInfoRestaurant(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
+
+    @GET("getQuantityReserveTable")
+    Call<message> getQuantityReserveTable(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("code") int code);
 
     @GET("getAllRestaurant")
     Call<messageRestaurant> getAllRestaurant();

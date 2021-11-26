@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,14 +26,19 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.databinding.ActivityBusinessBinding;
 import com.psteam.foodlocationbusiness.socket.setupSocket;
 import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
+import com.psteam.lib.Models.Get.messageInfoRes;
+import com.psteam.lib.Models.message;
+import com.psteam.lib.Service.ServiceAPI_lib;
 
 import org.json.JSONObject;
 
@@ -41,9 +47,16 @@ import java.net.URISyntaxException;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 
 public class BusinessActivity extends AppCompatActivity {
     private ActivityBusinessBinding binding;
+    private TextView resName;
+    RoundedImageView resImg;
 
     public Socket mSocket;
     {
@@ -65,6 +78,11 @@ public class BusinessActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+
+        resName = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewResName);
+        resImg = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewImageLogoRestaurant);
+
+        getInfoRes();
 
         binding.imageMenu.setOnClickListener(v -> {
             binding.drawerLayout.openDrawer(GravityCompat.START);
@@ -112,6 +130,27 @@ public class BusinessActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void getInfoRes(){
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<messageInfoRes> call = serviceAPI_lib.getInfoRestaurant(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId());
+        call.enqueue(new Callback<messageInfoRes>() {
+            @Override
+            public void onResponse(Call<messageInfoRes> call, Response<messageInfoRes> response) {
+                if(response.body().getStatus() == 1){
+                    resName.setText(response.body().getRes().getName());
+                    Glide.with(getApplication()).load(response.body().getRes().getPic()).into(resImg);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<messageInfoRes> call, Throwable t) {
+
+            }
+        });
     }
 
     private void init() {
