@@ -1,0 +1,995 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:src="@drawable/ic_round_arrow_back_ios_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/TextPrimary" />
+
+        <TextView
+            android:id="@+id/text11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thông tin nhà hàng"
+            android:textAllCaps="true"
+            android:textColor="@color/TextPrimary"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textRestaurantName" />
+
+        <TextView
+            android:id="@+id/textRestaurantName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aka House"
+            android:textSize="@dimen/_9ssp"
+            app:layout_constraintBottom_toTopOf="@id/text11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="13"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F5F5F5"
+            android:paddingBottom="@dimen/_8sdp">
+
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPagerSlideImageRestaurant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/_100sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <me.relex.circleindicator.CircleIndicator3
+                android:id="@+id/circleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_2sdp"
+
+                app:layout_constraintBottom_toBottomOf="@id/viewPagerSlideImageRestaurant"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewPromotion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:drawableLeft="@drawable/ic_loyalty"
+                android:drawablePadding="@dimen/_4sdp"
+                android:gravity="center"
+                android:text="-15%"
+                android:textColor="#CA1D1D"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewPagerSlideImageRestaurant" />
+
+            <TextView
+                android:id="@+id/textViewRestaurantName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:text="TAKA BBQ: GIẢM 15% TẤT CẢ GÓI BUFFET"
+                android:textColor="#464646"
+                android:textSize="@dimen/_15ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewPromotion" />
+
+            <TextView
+                android:id="@+id/textViewCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="Đồ ăn, Lẩu"
+                android:textSize="@dimen/_11ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewRestaurantName" />
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/ratingBar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:numStars="5"
+                android:rating="4.5"
+                android:stepSize="0.5"
+
+                android:theme="@style/RatingBar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewCategory" />
+
+            <TextView
+                android:id="@+id/textViewRatingValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:text="4.7"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/ratingBar"
+                app:layout_constraintStart_toEndOf="@id/ratingBar"
+                app:layout_constraintTop_toTopOf="@id/ratingBar" />
+
+            <TextView
+                android:id="@+id/textViewReviewCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="(Xem 23 đánh giá)"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewRatingValue" />
+
+            <TextView
+                android:id="@+id/textViewCountBookTableTextBefore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:drawableLeft="@drawable/ic_outline_date_range"
+                android:drawablePadding="@dimen/_4sdp"
+                android:text="Đã có "
+                android:textColor="#FF6801"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewReviewCount" />
+
+            <TextView
+                android:id="@+id/textViewCountBookTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textColor="#FF6801"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/textViewCountBookTableTextBefore"
+                app:layout_constraintStart_toEndOf="@id/textViewCountBookTableTextBefore"
+                app:layout_constraintTop_toTopOf="@id/textViewCountBookTableTextBefore" />
+
+            <TextView
+                android:id="@+id/textViewCountBookTableTextAfter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" người đặt chỗ hôm nay"
+                android:textColor="#FF6801"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="@id/textViewCountBookTableTextBefore"
+                app:layout_constraintStart_toEndOf="@id/textViewCountBookTable"
+                app:layout_constraintTop_toTopOf="@id/textViewCountBookTableTextBefore" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/white"
+                android:paddingBottom="@dimen/_8sdp"
+                app:layout_constraintTop_toBottomOf="@id/textViewCountBookTableTextAfter">
+
+                <TextView
+                    android:id="@+id/text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="Chọn cửa hàng áp dụng (1)"
+                    android:textColor="#949494"
+                    android:textSize="@dimen/_9ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <LinearLayout
+                    android:id="@+id/layoutAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:layout_weight="5.1"
+                    android:background="@drawable/background_choose_address"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewChoosePersonNumber"
+                    app:layout_constraintHorizontal_weight="5.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text1">
+
+                    <TextView
+                        android:id="@+id/textViewChooseAddress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.5"
+                        android:drawableLeft="@drawable/ic_outline_location"
+                        android:drawableTint="#000000"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:text="327 Nguyễn Tri Phương, Quận 1"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/_9ssp" />
+
+                    <TextView
+                        android:id="@+id/textViewChooseDistance"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableRight="@drawable/ic_round_keyboard_arrow_down_24"
+                        android:drawableTint="#000000"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="(156.6km)"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/_9ssp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textViewChoosePersonNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:background="@drawable/background_choose_address"
+                    android:drawableLeft="@drawable/ic_round_person_outline_24"
+                    android:drawableRight="@drawable/ic_round_keyboard_arrow_down_24"
+                    android:drawableTint="#000000"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    android:text="2 Khách"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/_9ssp"
+                    app:layout_constraintBottom_toBottomOf="@id/layoutAddress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="2"
+                    app:layout_constraintStart_toEndOf="@id/layoutAddress"
+                    app:layout_constraintTop_toTopOf="@id/layoutAddress" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:text="Số lượng (SL≥1)"
+                    android:textColor="#979797"
+                    android:textSize="@dimen/_9ssp"
+                    app:layout_constraintBottom_toTopOf="@id/textViewChoosePersonNumber"
+                    app:layout_constraintStart_toStartOf="@id/textViewChoosePersonNumber" />
+
+                <TextView
+                    android:id="@+id/textViewChooseDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/background_choose_address"
+                    android:drawableLeft="@drawable/ic_outline_date_range"
+                    android:drawableRight="@drawable/ic_round_keyboard_arrow_down_24"
+                    android:drawablePadding="@dimen/_4sdp"
+                    android:drawableTint="#404040"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="@dimen/_4sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:text="Hôm nay"
+                    android:textColor="#404040"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
+
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleViewTimeBookTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewChooseDate"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout1">
+
+
+                <LinearLayout
+                    android:id="@+id/layout2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Điều kiện áp dụng"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:background="#E63141" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/textTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:text="thông báo mã đặt chỗ qua ứng dụng ngay khi đến cửa hàng"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/_11ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout2" />
+
+                <TextView
+                    android:id="@+id/textViewPromotionForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:text="I/ Chương trình: 15% cho tất cả các gói buffet\n
+- Buffet nướng áp dụng cho khung giờ: 10h - 15h\n
+- Buffet lẩu áp dụng cho khung giờ: 10h - 15h và 17h - 22h\n
+I/ Chương trình: 15% cho tất cả các gói buffet\n
+- Buffet nướng áp dụng cho khung giờ: 10h - 15h\n
+- Buffet lẩu áp dụng cho khung giờ: 10h - 15h và 17h - 22h\n
+I/ Chương trình: 15% cho tất cả các gói buffet\n
+- Buffet nướng áp dụng cho khung giờ: 10h - 15h\n
+- Buffet lẩu áp dụng cho khung giờ: 10h - 15h và 17h - 22h"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textTitle" />
+
+
+                <TextView
+                    android:id="@+id/textViewReadMore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/background_text_load_more"
+                    android:drawableRight="@drawable/ic_round_keyboard_arrow_down_24"
+                    android:drawablePadding="0dp"
+                    android:drawableTint="#E63342"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/_6sdp"
+                    android:paddingRight="@dimen/_4sdp"
+                    android:paddingVertical="@dimen/_2sdp"
+                    android:text="@string/read_more"
+                    android:textColor="#E63342"
+                    android:textSize="@dimen/_9ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewPromotionForm" />
+
+                <TextView
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="#EDEDED"
+                    app:layout_constraintTop_toBottomOf="@id/textViewReadMore" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:drawableLeft="@drawable/ic_round_warning_amber_24"
+                    android:drawableRight="@drawable/ic_round_arrow_forward_ios_24"
+                    android:drawablePadding="@dimen/_4sdp"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/_8sdp"
+                    android:text="Báo sai thông tin"
+                    android:textColor="#EF863B"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line1" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:id="@+id/layout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="@color/white"
+                android:paddingVertical="@dimen/_8sdp"
+                app:layout_constraintTop_toBottomOf="@id/layout3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/_8sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chia sẻ"
+                        android:textSize="@dimen/_10ssp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#0083FF"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_6sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:src="@drawable/ic_messager"
+                        app:tint="#FFFFFF" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Messenger"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_9ssp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#3A5998"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_6sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:src="@drawable/ic_fb"
+                        app:tint="#FFFFFF" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Facebook"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_9ssp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#E73948"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_6sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:src="@drawable/ic_copy"
+                        app:tint="#FFFFFF" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Copy"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_9ssp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#999999"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_6sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:src="@drawable/ic_other"
+                        app:tint="#FFFFFF" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Khác..."
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_9ssp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/layout4">
+
+
+                <LinearLayout
+                    android:id="@+id/layout6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Địa chỉ cửa hàng"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:background="#E63141" />
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/layoutMap"
+                    layout="@layout/restaurant_map_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout6" />
+
+                <TextView
+                    android:id="@+id/textViewAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:lineSpacingExtra="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_4sdp"
+                    android:text="875/22 Nguyễn Vằn Cừ, phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng"
+                    android:textColor="#444444"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toStartOf="@id/textViewDistance"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintHorizontal_weight="4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layoutMap" />
+
+                <TextView
+                    android:id="@+id/textViewDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:drawableLeft="@drawable/ic_round_location_on_24"
+                    android:drawablePadding="@dimen/_8sdp"
+                    android:gravity="center"
+                    android:text="200.5km"
+                    android:textColor="#444444"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@id/textViewAddress"
+                    app:layout_constraintTop_toTopOf="@id/textViewAddress" />
+
+
+                <LinearLayout
+                    android:id="@+id/layoutCall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:layout_marginBottom="@dimen/_16sdp"
+                    android:background="@drawable/background_directions"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/_8sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/layoutDirection"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewAddress">
+
+
+                    <TextView
+                        android:id="@+id/textViewCall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_call"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:gravity="center"
+                        android:text="Gọi cửa hàng"
+                        android:textColor="#E73948"
+                        android:textSize="@dimen/_11ssp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutDirection"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:background="@drawable/background_directions"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/_8sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/layoutCall"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/layoutCall"
+                    app:layout_constraintTop_toTopOf="@id/layoutCall">
+
+                    <TextView
+                        android:id="@+id/textViewDirections"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_directions_24"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:gravity="center"
+                        android:text="Chỉ đường"
+                        android:textColor="#E73948"
+                        android:textSize="@dimen/_11ssp" />
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="@color/white"
+                android:paddingBottom="@dimen/_16sdp"
+                app:layout_constraintTop_toBottomOf="@id/layout5">
+
+
+                <LinearLayout
+                    android:id="@+id/layout8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Khám phá thương hiệu"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:background="#E63141" />
+                </LinearLayout>
+
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/imageViewRestaurant"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:src="@drawable/panner"
+                    app:layout_constraintTop_toBottomOf="@id/layout8"
+                    app:riv_corner_radius="@dimen/_8sdp" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/textViewImageLogoRestaurant"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="-15dp"
+                    android:src="@drawable/sawade"
+                    app:layout_constraintStart_toStartOf="@id/imageViewRestaurant"
+                    app:layout_constraintTop_toBottomOf="@id/imageViewRestaurant"
+                    app:riv_corner_radius="@dimen/_8sdp" />
+
+                <TextView
+                    android:id="@+id/textViewCategoryRestaurant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:text="Đồ uống, Trà sữa"
+                    android:textColor="#A0A0A0"
+                    android:textSize="@dimen/_9sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/textViewImageLogoRestaurant"
+                    app:layout_constraintStart_toEndOf="@id/textViewImageLogoRestaurant" />
+
+                <TextView
+                    android:id="@+id/textViewRestaurantNameDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginBottom="@dimen/_1sdp"
+                    android:text="Sawadee Milk Tea"
+                    android:textColor="#454545"
+                    android:textSize="@dimen/_13ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/textViewCategoryRestaurant"
+                    app:layout_constraintStart_toStartOf="@id/textViewCategoryRestaurant"
+                    app:layout_constraintTop_toBottomOf="@id/imageViewRestaurant" />
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/layoutFollow"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    app:layout_constraintEnd_toStartOf="@id/layoutRestaurantDetail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewCategoryRestaurant">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingVertical="@dimen/_8sdp">
+
+                        <TextView
+                            android:id="@+id/textViewFollow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_round_add"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:gravity="center"
+                            android:text="Theo dõi (477)" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/layoutRestaurantDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/layoutFollow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/layoutFollow"
+                    app:layout_constraintTop_toTopOf="@id/layoutFollow">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingVertical="@dimen/_8sdp">
+
+                        <TextView
+                            android:id="@+id/textViewRestaurantDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:drawableRight="@drawable/ic_round_arrow_forward_ios_24"
+                            android:drawablePadding="@dimen/_4sdp"
+                            android:drawableTint="#404040"
+                            android:gravity="center_vertical"
+                            android:text="Về thương hiệu" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/textViewRestaurantDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:ellipsize="end"
+                    android:maxLines="5"
+                    android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layoutFollow" />
+
+                <TextView
+                    android:id="@+id/textViewReadMoreRestaurantsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/background_text_load_more"
+                    android:drawableRight="@drawable/ic_round_keyboard_arrow_down_24"
+                    android:drawablePadding="0dp"
+                    android:drawableTint="#E63342"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/_6sdp"
+                    android:paddingRight="@dimen/_4sdp"
+                    android:paddingVertical="@dimen/_2sdp"
+                    android:text="@string/read_more"
+                    android:textColor="#E63342"
+                    android:textSize="@dimen/_9ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewRestaurantDetails" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:paddingBottom="@dimen/_16sdp"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/layout7"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/layout10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Có thể bạn quan tâm"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:background="#E63141" />
+                </LinearLayout>
+
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleViewPostFoodRestaurant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:clipToPadding="false"
+                    android:scrollbars="none"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:layout_constraintTop_toBottomOf="@id/layout10"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="vertical"/>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonReserve"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:maxHeight="@dimen/_40sdp"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:layout_weight="1"
+        android:text="đặt chỗ ngay"
+        app:backgroundTint="#E73948"
+        app:cornerRadius="@dimen/_6sdp"
+        android:visibility="visible"
+        android:textStyle="bold"/>
+
+</LinearLayout>

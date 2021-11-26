@@ -1,0 +1,174 @@
+{
+  "project_info": {
+    "project_number": "614458729715",
+    "project_id": "nodejs-afb95",
+    "storage_bucket": "nodejs-afb95.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614458729715:android:26fff890be8a886f9dc386",
+        "android_client_info": {
+          "package_name": "com.example.demo_realtime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "614458729715-nnssddskaq78p8dr4vaf9kqdd7skkha8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.demo_realtime",
+            "certificate_hash": "37b3557d9f15da01e5420e3f3c48b8b7e2186835"
+          }
+        },
+        {
+          "client_id": "614458729715-6725tkcngamb4k2rru22vdtou9mmld3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE_GFHyh0RsJZ1QbJIO2Qvv1NS5o3DcdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614458729715-6725tkcngamb4k2rru22vdtou9mmld3l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614458729715:android:111ab89797a3e82e9dc386",
+        "android_client_info": {
+          "package_name": "com.example.nodejs_gcm_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "614458729715-7vato2ltrlihb2944n2s85uadvmmr34j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nodejs_gcm_android",
+            "certificate_hash": "37b3557d9f15da01e5420e3f3c48b8b7e2186835"
+          }
+        },
+        {
+          "client_id": "614458729715-6725tkcngamb4k2rru22vdtou9mmld3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE_GFHyh0RsJZ1QbJIO2Qvv1NS5o3DcdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614458729715-6725tkcngamb4k2rru22vdtou9mmld3l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614458729715:android:38e01554acbdd0509dc386",
+        "android_client_info": {
+          "package_name": "com.psteam.foodlocation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "614458729715-k22e0g476ltq3mv77hplrcqeec476829.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.psteam.foodlocation",
+            "certificate_hash": "355ff948de4c5a288a1b8a90a967a0cdf57feee1"
+          }
+        },
+        {
+          "client_id": "614458729715-lbubvul7avahtd6h18kulfq07oo4olj9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.psteam.foodlocation",
+            "certificate_hash": "37b3557d9f15da01e5420e3f3c48b8b7e2186835"
+          }
+        },
+        {
+          "client_id": "614458729715-6725tkcngamb4k2rru22vdtou9mmld3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE_GFHyh0RsJZ1QbJIO2Qvv1NS5o3DcdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614458729715-6725tkcngamb4k2rru22vdtou9mmld3l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614458729715:android:1f85d2ccc569f3da9dc386",
+        "android_client_info": {
+          "package_name": "com.psteam.foodlocationbusiness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "614458729715-iapsee5lnt15qcdf21cpir97ld0i4u3p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.psteam.foodlocationbusiness",
+            "certificate_hash": "37b3557d9f15da01e5420e3f3c48b8b7e2186835"
+          }
+        },
+        {
+          "client_id": "614458729715-j2vkuuvicngfvgs8kandhhqec0o53q51.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.psteam.foodlocationbusiness",
+            "certificate_hash": "355ff948de4c5a288a1b8a90a967a0cdf57feee1"
+          }
+        },
+        {
+          "client_id": "614458729715-6725tkcngamb4k2rru22vdtou9mmld3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE_GFHyh0RsJZ1QbJIO2Qvv1NS5o3DcdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614458729715-6725tkcngamb4k2rru22vdtou9mmld3l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

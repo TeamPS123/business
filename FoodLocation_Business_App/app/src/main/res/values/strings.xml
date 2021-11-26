@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Food Location</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="google_map_api_key">AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4</string>
+    <string name="text_my_book_table">Đặt chỗ của tôi</string>
+    <string name="text_logout">Đăng xuất</string>
+    <string name="read_more">Xem thêm</string>
+    <string name="read_less">Thu gọn</string>
+    <string name="text_manager">Quản lý</string>
+    <string-array name="city">
+        <item>Thành phố</item>
+        <item>Hồ Chí Minh</item>
+        <item>Đồng Nai</item>
+        <item>Bình Dương</item>
+    </string-array>
+
+    <string-array name="district">
+        <item>Quận / Huyện</item>
+        <item>Quận 2</item>
+        <item>Quận 9</item>
+        <item>Quận 10</item>
+    </string-array>
+
+    <string name="choose_file">Choose File</string>
+</resources>

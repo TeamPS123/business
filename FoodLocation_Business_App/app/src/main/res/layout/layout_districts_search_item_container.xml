@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/layoutDistrict"
+    android:padding="@dimen/_4sdp"
+    android:layout_margin="@dimen/_5sdp"
+    android:background="@drawable/background_districts_search"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textViewNameDistrict"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Quận 9"
+        android:textSize="@dimen/_12ssp"
+        android:tag="UnSelected"
+        android:textColor="@color/ColorTextUnSelected"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

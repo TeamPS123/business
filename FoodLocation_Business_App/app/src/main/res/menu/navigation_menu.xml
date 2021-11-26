@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuBookTable"
+        android:icon="@drawable/ic_outline_receipt_24"
+        android:title="@string/text_my_book_table" />
+    <item
+        android:id="@+id/menuUserInfo"
+        android:icon="@drawable/ic_outline_perm_identity_24"
+        android:title="Thông tin tài khoản" />
+    <item
+        android:id="@+id/menuChangeRegionSearch"
+        android:icon="@drawable/ic_outline_fmd_good_24"
+        android:title="Thay đổi khu vực" />
+
+    <item
+        android:id="@+id/menuManager"
+        android:icon="@drawable/ic_outline_lock"
+        android:title="@string/text_manager"
+        android:visible="false" />
+    <item
+        android:id="@+id/menuLogOut"
+        android:icon="@drawable/ic_baseline_call_missed_outgoing_24"
+        android:title="@string/text_logout" />
+
+    <item android:title="Khác">
+        <menu>
+            <item
+                android:id="@+id/menuAppInfo"
+                android:icon="@drawable/ic_outline_info_24"
+                android:title="Thông tin về chúng tôi" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    tools:context=".activites.MapRegistrationActivity">
+
+    <include layout="@layout/content_map" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_alignParentTop="true">
+
+        <EditText
+            android:id="@+id/inputSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/input_radius"
+            android:backgroundTint="@color/white"
+            android:paddingHorizontal="@dimen/_12sdp"
+            android:textSize="@dimen/_12ssp"
+            android:textColorHint="@color/TextColorSub"
+            android:drawablePadding="@dimen/_8sdp"
+            android:paddingVertical="@dimen/_8sdp"
+            android:drawableLeft="@drawable/ic_outline_fmd_good_24"
+            android:hint="Tìm kiểm ờ đây"/>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:padding="@dimen/_12sdp"
+        android:background="@drawable/layout_radius"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/textViewAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="địa chỉ"
+            android:textColor="@color/TextPrimary"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/textLatitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="Kinh độ:"
+            android:textSize="@dimen/_13ssp"
+            android:textColor="@color/TextPrimary"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAddress"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/textLongitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="Vĩ độ:"
+            android:textSize="@dimen/_13ssp"
+            android:textColor="@color/TextPrimary"
+            app:layout_constraintTop_toBottomOf="@id/textLatitude"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewLatitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:text="123"
+            android:textSize="@dimen/_13ssp"
+            android:textColor="@color/TextPrimary"
+            app:layout_constraintTop_toTopOf="@id/textLatitude"
+            app:layout_constraintBottom_toBottomOf="@id/textLatitude"
+            app:layout_constraintStart_toEndOf="@id/textLatitude"/>
+
+        <TextView
+            android:id="@+id/textViewLongitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:text="123"
+            android:textSize="@dimen/_13ssp"
+            android:textColor="@color/TextPrimary"
+            app:layout_constraintTop_toTopOf="@id/textLongitude"
+            app:layout_constraintBottom_toBottomOf="@id/textLongitude"
+            app:layout_constraintStart_toEndOf="@id/textLongitude"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonOK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:textStyle="bold"
+            android:backgroundTint="@color/TextPrimary"
+            app:layout_constraintTop_toBottomOf="@id/textLongitude"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

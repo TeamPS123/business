@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.SearchActivity">
+
+    <LinearLayout
+        android:id="@+id/layoutSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iconClose"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:src="@drawable/ic_close"
+            android:tint="@color/TextPrimary"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_weight="1"
+            android:background="@drawable/layout_radius"
+            android:drawableLeft="@drawable/ic_search"
+            android:drawablePadding="@dimen/_4sdp"
+            android:ellipsize="end"
+            android:inputType="text"
+            android:focusableInTouchMode="true"
+            android:hint="Tìm món ăn loại món ăn"
+            android:textColorHint="@color/TextColorSub"
+            android:textColor="@color/TextPrimary"
+            android:imeOptions="actionSearch"
+            android:importantForAutofill="no"
+            android:maxLines="2"
+            android:paddingHorizontal="@dimen/_8sdp"
+            android:paddingVertical="@dimen/_6sdp"
+            android:textSize="@dimen/_13ssp" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/buttonMap"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:src="@drawable/ic_map"
+            android:tint="@color/TextPrimary"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleViewSearch"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/_50sdp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="#F4F4F4"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutSearch" />
+
+
+    <LinearLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/background_search"
+            app:cardCornerRadius="@dimen/_8sdp">
+
+            <TextView
+                android:id="@+id/textviewSort"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="@dimen/_4sdp"
+                android:drawableTop="@drawable/ic_repeat"
+                android:gravity="center"
+                android:textColor="@color/TextPrimary"
+                android:drawableTint="@color/TextPrimary"
+                android:text="Gần nhất" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:background="@drawable/background_search">
+
+            <TextView
+                android:id="@+id/textviewCategory"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_category"
+                android:drawableTint="@color/TextPrimary"
+                android:gravity="center"
+                android:paddingVertical="@dimen/_4sdp"
+                android:text="Danh mục"
+                android:textColor="@color/TextPrimary" />
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="@dimen/_2sdp"
+                android:background="@color/ColorLine"/>
+
+            <TextView
+                android:id="@+id/textviewDistrict"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingVertical="@dimen/_4sdp"
+                android:drawableTop="@drawable/ic_sharp_location"
+                android:gravity="center"
+                android:textColor="@color/TextPrimary"
+                android:drawableTint="@color/TextPrimary"
+                android:text="Quận" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

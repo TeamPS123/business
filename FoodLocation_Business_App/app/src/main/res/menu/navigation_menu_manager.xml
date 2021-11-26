@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuManagerActivity"
+        android:icon="@drawable/ic_baseline_storefront_24"
+        android:title="Quản lý hoạt động" />
+    <item
+        android:id="@+id/menuManagerReserve"
+        android:icon="@drawable/ic_baseline_table_chart_24"
+        android:title="Quản lý đặt bàn" />
+    <item
+        android:id="@+id/menuManagerMenu"
+        android:icon="@drawable/ic_baseline_restaurant_menu_24"
+        android:title="Quản lý thực đơn" />
+    <item
+        android:id="@+id/menuManagerPromotion"
+        android:icon="@drawable/ic_baseline_loyalty_24"
+        android:title="Quản lý khuyến mãi" />
+    <item
+        android:id="@+id/menuStatistic"
+        android:icon="@drawable/ic_baseline_assessment"
+        android:title="Thống kê đặt bàn" />
+    <item
+        android:id="@+id/menuLogOut"
+        android:icon="@drawable/ic_round_logout_24"
+        android:title="Đăng xuất" />
+
+</menu>

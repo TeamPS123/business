@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/manager"
+    app:startDestination="@id/menuManagerReserve">
+
+    <fragment
+        android:id="@+id/menuManagerActivity"
+        android:name="com.psteam.foodlocationbusiness.fragments.ManagerRestaurantFragment"
+        android:label="Quản lý hoạt động"
+        tools:layout="@layout/fragment_manager_restaurant" />
+    <fragment
+        android:id="@+id/menuManagerMenu"
+        android:name="com.psteam.foodlocationbusiness.fragments.ManagerMenuFragment"
+        android:label="Quản lý thực đơn"
+        tools:layout="@layout/fragment_manager_menu" />
+    <fragment
+        android:id="@+id/menuManagerPromotion"
+        android:name="com.psteam.foodlocationbusiness.fragments.ManagerPromotionFragment"
+        android:label="Quản lý khuyến mãi"
+        tools:layout="@layout/fragment_manager_promotion" />
+    <fragment
+        android:id="@+id/menuStatistic"
+        android:name="com.psteam.foodlocationbusiness.fragments.ManagerStatisticFragment"
+        android:label="Thống kê đặt bàn"
+        tools:layout="@layout/fragment_manager_statistic" />
+    <fragment
+        android:id="@+id/menuManagerReserve"
+        android:name="com.psteam.foodlocationbusiness.fragments.ManagerReserveTableFragment"
+        android:label="Quản lý đặt bàn"
+        tools:layout="@layout/fragment_manager_reserve_table" />
+</navigation>
