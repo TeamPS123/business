@@ -76,7 +76,7 @@ dependencies {
     implementation "com.airbnb.android:lottie:4.2.1"
 
     // FCM
-    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
     implementation 'com.google.firebase:firebase-analytics'
 

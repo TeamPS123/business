@@ -14,7 +14,7 @@ import com.psteam.foodlocationbusiness.databinding.FragmentManagerRestaurantBind
 
 public class ManagerRestaurantFragment extends Fragment {
 
-    private boolean isSelected;
+    private boolean isSelected = true;
     private int status;
 
     @Override

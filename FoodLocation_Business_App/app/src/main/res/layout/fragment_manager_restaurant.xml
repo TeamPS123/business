@@ -57,7 +57,7 @@
                     android:layout_marginTop="@dimen/_2sdp"
                     android:gravity="center"
                     android:scrollbarSize="@dimen/_13ssp"
-                    android:text="0"
+                    android:text="5"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold" />
@@ -90,7 +90,7 @@
                     android:layout_marginTop="@dimen/_2sdp"
                     android:gravity="center"
                     android:scrollbarSize="@dimen/_13ssp"
-                    android:text="0"
+                    android:text="20"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold" />
