@@ -82,8 +82,6 @@ public class BusinessActivity extends AppCompatActivity {
         resName = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewResName);
         resImg = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewImageLogoRestaurant);
 
-        getInfoRes();
-
         binding.imageMenu.setOnClickListener(v -> {
             binding.drawerLayout.openDrawer(GravityCompat.START);
         });
@@ -155,7 +153,7 @@ public class BusinessActivity extends AppCompatActivity {
 
     private void init() {
         setFullScreen();
-
+        getInfoRes();
         setFCM();
     }
 
