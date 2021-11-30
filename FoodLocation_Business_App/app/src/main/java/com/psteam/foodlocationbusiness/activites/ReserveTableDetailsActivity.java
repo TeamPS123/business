@@ -119,6 +119,10 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
         binding.buttonDeny.setOnClickListener((v) -> {
             updateReserveTable(2, response.getUserId());
         });
+
+        binding.imageViewClose.setOnClickListener(v->{
+            finish();
+        });
     }
 
     private void updateReserveTable(int code, String receiver){

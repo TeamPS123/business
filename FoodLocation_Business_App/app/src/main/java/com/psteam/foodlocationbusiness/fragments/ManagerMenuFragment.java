@@ -164,15 +164,13 @@ public class ManagerMenuFragment extends Fragment {
                         getMenu menu = response.body().getMenuList().get(i);
                         menuIdList.add(menu.getMenuId());
                         menus.add(menu);
-
                         binding.tabs.addTab(binding.tabs.newTab().setText(menu.getName()));
                         Para.numberTabs = binding.tabs.getTabCount();
                         menuFragmentAdapter = new MenuFragmentAdapter(getActivity().getSupportFragmentManager(), binding.tabs.getTabCount(), menuIdList, menus);
                         binding.viewPager.setAdapter(menuFragmentAdapter);
-
-                        if (menus.size() <= 0) {
-                            openDialogAddMenu();
-                        }
+                    }
+                    if (menus.size() <= 0) {
+                        openDialogAddMenu();
                     }
                 }
             }

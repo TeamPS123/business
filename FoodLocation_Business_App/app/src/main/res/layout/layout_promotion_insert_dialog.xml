@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:text="Thêm khuyến mãi"
+        android:textAllCaps="true"
+        android:textColor="@color/TextPrimary"
+        android:textSize="@dimen/_13ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/inputName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:background="@drawable/input_radius"
+        android:hint="Tên khuyến mãi"
+        android:inputType="text"
+        android:imeOptions="actionNext"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textColor="@color/TextPrimary"
+        android:textColorHint="@color/TextColorSub"
+        android:textSize="@dimen/_13ssp"
+        app:layout_constraintTop_toBottomOf="@id/text1" />
+
+    <EditText
+        android:id="@+id/inputInfo"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/input_radius"
+        android:maxLines="3"
+        android:gravity="top"
+        android:hint="Thông tin khuyến mãi"
+        android:inputType="text"
+        android:imeOptions="actionNext"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textColor="@color/TextPrimary"
+        android:textColorHint="@color/TextColorSub"
+        android:textSize="@dimen/_13ssp"
+        app:layout_constraintTop_toBottomOf="@id/inputName" />
+
+    <EditText
+        android:id="@+id/inputValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/input_radius"
+        android:hint="Mức giảm giá"
+        android:inputType="number"
+        android:maxLength="100"
+        android:imeOptions="actionDone"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textColor="@color/TextPrimary"
+        android:textColorHint="@color/TextColorSub"
+        android:textSize="@dimen/_13ssp"
+        app:layout_constraintTop_toBottomOf="@id/inputInfo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputValue">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonBack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:text="Quay lại"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_11ssp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/ColorButtonReserve" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonAddCategory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:text="Thêm mới"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_11ssp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/duskYellow" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

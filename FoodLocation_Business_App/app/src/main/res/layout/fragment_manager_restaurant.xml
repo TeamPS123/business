@@ -47,9 +47,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Hôm nay"
-                    android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -80,9 +80,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Tuần này"
-                    android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -94,9 +94,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold" />
-
             </LinearLayout>
-
 
         </LinearLayout>
 
@@ -107,19 +105,19 @@
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:background="@drawable/layout_radius"
             android:backgroundTint="@color/TextPrimary"
-            android:paddingVertical="@dimen/_10sdp"
             android:gravity="center_vertical"
+            android:paddingVertical="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/layout1">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
-                android:text="Trạng thái"
-                android:textStyle="bold"
                 android:layout_weight="1"
+                android:text="Trạng thái"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_11ssp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textStatus"
@@ -127,9 +125,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4sdp"
                 android:text="Mở cửa"
-                android:textStyle="bold"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_11ssp"
+                android:textStyle="bold" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/buttonSwitch"
@@ -137,21 +135,19 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_2sdp"
-                app:lottie_rawRes="@raw/button_switch"/>
-
+                app:lottie_rawRes="@raw/button_switch" />
         </LinearLayout>
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/layout2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout2"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/chart"/>
-
+            app:lottie_rawRes="@raw/chart" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

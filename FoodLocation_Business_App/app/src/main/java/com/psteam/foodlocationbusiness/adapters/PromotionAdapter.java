@@ -15,9 +15,11 @@ import java.util.List;
 public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.PromotionViewHolder> {
 
     private final List<PromotionModel> promotionModels;
+    private final PromotionListeners promotionListeners;
 
-    public PromotionAdapter(List<PromotionModel> promotionModels) {
+    public PromotionAdapter(List<PromotionModel> promotionModels, PromotionListeners promotionListeners) {
         this.promotionModels = promotionModels;
+        this.promotionListeners = promotionListeners;
     }
 
     @NonNull
@@ -40,7 +42,6 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.Prom
         return promotionModels != null ? promotionModels.size() : 0;
     }
 
-
     class PromotionViewHolder extends RecyclerView.ViewHolder {
 
         final PromotionItemContainerBinding binding;
@@ -51,9 +52,31 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.Prom
         }
 
         public void setData(PromotionModel promotionModel) {
-            binding.imageViewFood.setBackgroundResource(promotionModel.getImage());
-            binding.textViewContentPromotion.setText(promotionModel.getContentPromotion());
-            binding.textviewFoodName.setText(promotionModel.getFoodName());
+            binding.textViewPromotion.setText(promotionModel.getName());
+            binding.buttonEdit.setOnClickListener(v -> {
+                promotionListeners.onEditClick(promotionModel,1);
+            });
+
+            binding.buttonDelete.setOnClickListener(v -> {
+                promotionListeners.onDeleteClick(promotionModel, getAdapterPosition());
+            });
+
+            binding.buttonStatus.setOnClickListener(v -> {
+                promotionListeners.onChangeStatus(promotionModel);
+            });
+
+            binding.getRoot().setOnClickListener(v -> {
+                promotionListeners.onEditClick(promotionModel,0);
+            });
         }
+    }
+
+    public interface PromotionListeners {
+        // 1 edit 0 details
+        void onEditClick(PromotionModel promotionModel,int mode);
+
+        void onDeleteClick(PromotionModel promotionModel, int position);
+
+        void onChangeStatus(PromotionModel promotionModel);
     }
 }

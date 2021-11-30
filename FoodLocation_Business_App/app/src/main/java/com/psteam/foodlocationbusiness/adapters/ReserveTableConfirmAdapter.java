@@ -1,6 +1,7 @@
 package com.psteam.foodlocationbusiness.adapters;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -55,6 +56,8 @@ public class ReserveTableConfirmAdapter extends RecyclerView.Adapter<ReserveTabl
             binding.textViewNumberPeople.setText(reserveTable.getPhone());
             binding.textViewDateReserve.setText(reserveTable.getTime());
             binding.textViewNumberPeople.setText(String.format("Đặt chỗ cho %d người", reserveTable.getQuantity()));
+
+            binding.buttonConfirmed.setVisibility(View.GONE);
 
             binding.buttonConfirmed.setOnClickListener(v -> {
                 reserveTableListeners.onConfirmClicked(reserveTable, getAdapterPosition());
