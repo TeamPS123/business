@@ -140,7 +140,7 @@ public class BusinessActivity extends AppCompatActivity {
         call.enqueue(new Callback<messageInfoRes>() {
             @Override
             public void onResponse(Call<messageInfoRes> call, Response<messageInfoRes> response) {
-                if(response.body()!=null && response.body().getStatus() == 1){
+                if(response.body().getStatus() == 1){
                     resName.setText(response.body().getRes().getName());
                     Glide.with(getApplication()).load(response.body().getRes().getPic()).into(resImg);
                 }

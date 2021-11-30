@@ -28,7 +28,9 @@ public class ServiceFCM extends FirebaseMessagingService {
         response.setPhone(remoteMessage.getData().get("phone"));
         response.setNote(remoteMessage.getData().get("note"));
         response.setReserveTableId(remoteMessage.getData().get("reserveTableId"));
-        response.setQuantity(Integer.parseInt(remoteMessage.getData().get("quantity")));
+        if(remoteMessage.getData().get("quantity") != null) {
+            response.setQuantity(Integer.parseInt(remoteMessage.getData().get("quantity")));
+        }
         response.setName(remoteMessage.getData().get("name"));
 
         //notification of foreground
