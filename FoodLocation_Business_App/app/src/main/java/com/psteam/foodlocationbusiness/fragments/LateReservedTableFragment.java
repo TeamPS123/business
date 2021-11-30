@@ -64,11 +64,11 @@ public class LateReservedTableFragment extends Fragment {
     }
 
     private void initReserveTable() {
-        reserveTables=new ArrayList<>();
+        reserveTables = new ArrayList<>();
 
         getAllReserveTable();
 
-        reserveTableAdapter=new ReserveTableCompletedAdapter(reserveTables, new ReserveTableCompletedAdapter.ReserveTableListeners() {
+        reserveTableAdapter = new ReserveTableCompletedAdapter(reserveTables, new ReserveTableCompletedAdapter.ReserveTableListeners() {
 
             @Override
             public void onClicked(BodySenderFromUser reserveTable, int position) {
@@ -86,7 +86,7 @@ public class LateReservedTableFragment extends Fragment {
         binding.recycleView.addItemDecoration(dividerItemDecoration);
     }
 
-    private void getAllReserveTable(){
+    private void getAllReserveTable() {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
 
         ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
@@ -94,8 +94,8 @@ public class LateReservedTableFragment extends Fragment {
         call.enqueue(new Callback<messageAllReserveTable>() {
             @Override
             public void onResponse(Call<messageAllReserveTable> call, Response<messageAllReserveTable> response) {
-                if(response.body().getStatus() == 1){
-                    if(response.body().getReserveTables().size() > 0) {
+                if (response.body() != null && response.body().getStatus() == 1) {
+                    if (response.body().getReserveTables().size() > 0) {
                         for (int i = 0; i < response.body().getReserveTables().size(); i++) {
                             BodySenderFromUser bodySenderFromUser = new BodySenderFromUser();
                             bodySenderFromUser.setUserId(response.body().getReserveTables().get(i).getUserId());
@@ -122,7 +122,7 @@ public class LateReservedTableFragment extends Fragment {
         });
     }
 
-    private void updateReserveTable(int code, BodySenderFromUser reserveTable, int position){
+    private void updateReserveTable(int code, BodySenderFromUser reserveTable, int position) {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
 
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
@@ -130,12 +130,12 @@ public class LateReservedTableFragment extends Fragment {
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
+                if (response.body().getStatus() == 1) {
                     //xác nhận phiếu
-                    if(code == 1){
+                    if (code == 1) {
                         MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                         setupSocket.reserveTable(message);
-                    }else if(code == 2){
+                    } else if (code == 2) {
                         MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                         setupSocket.reserveTable(message);
                     }
