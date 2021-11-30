@@ -3,14 +3,9 @@ package com.psteam.foodlocationbusiness.ultilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 public class DataTokenAndUserId {
     private Context context ;
     private SharedPreferences settings;
-
-    public static FirebaseAuth mAuth;
-    public static String mVerificationId;
 
     public DataTokenAndUserId(Context context) {
         this.context = context;
