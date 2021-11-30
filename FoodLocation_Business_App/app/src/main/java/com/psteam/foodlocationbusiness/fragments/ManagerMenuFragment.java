@@ -94,14 +94,6 @@ public class ManagerMenuFragment extends Fragment {
         });
     }
 
-    private void setDynamicFragmentToTabLayout() {
-
-        menuFragmentAdapter = new MenuFragmentAdapter(getActivity().getSupportFragmentManager(), binding.tabs.getTabCount(), menuIdList, menus);
-        binding.viewPager.setAdapter(menuFragmentAdapter);
-        binding.viewPager.setCurrentItem(0);
-
-    }
-
     private AlertDialog dialog;
 
     private void openDialogAddMenu() {
