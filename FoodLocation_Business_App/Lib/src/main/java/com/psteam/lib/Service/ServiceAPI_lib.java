@@ -116,6 +116,9 @@ public interface ServiceAPI_lib {
     @GET("updateReserveTable")
     Call<message> updateReserveTable(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId, @Query("code") int code);
 
+    @GET("delFood")
+    Call<message> delFood(@Header("Authorization") String token, @Query("userId") String userId, @Query("foodId") String foodId);
+
 //    private void get(){
 //        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
 //        Call<String> call = serviceAPI.GetProvinces();

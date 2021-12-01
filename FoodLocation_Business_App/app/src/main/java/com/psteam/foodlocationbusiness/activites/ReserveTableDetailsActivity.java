@@ -114,28 +114,28 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
 
     private void setListeners(){
         binding.buttonConfirmed.setOnClickListener((v) -> {
-            updateReserveTable(1, response.getUserId());
+            updateReserveTable(1, response.getReserveTableId());
         });
         binding.buttonDeny.setOnClickListener((v) -> {
-            updateReserveTable(2, response.getUserId());
+            updateReserveTable(2, response.getReserveTableId());
         });
     }
 
-    private void updateReserveTable(int code, String receiver){
+    private void updateReserveTable(int code, String reserveTableId){
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
 
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<message> call = serviceAPI_lib.updateReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), receiver, code);
+        Call<message> call = serviceAPI_lib.updateReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), reserveTableId, code);
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response1) {
                 if(response1.body().getStatus() == 1){
                     //xác nhận phiếu
                     if(code == 1){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), receiver, "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", response.getReserveTableId()));
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", reserveTableId));
                         setupSocket.reserveTable(message);
                     }else if(code == 2){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), receiver, "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", response.getReserveTableId()));
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", reserveTableId));
                         setupSocket.reserveTable(message);
                     }
                 }
