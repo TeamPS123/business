@@ -1,6 +1,10 @@
 package com.psteam.lib.Models.Insert;
 
 public class insertPromotion {
+    public insertPromotion(){
+
+    }
+
     public insertPromotion(String restaurantId, String name, String info, String value, String userId) {
         this.restaurantId = restaurantId;
         this.name = name;
@@ -27,6 +31,26 @@ public class insertPromotion {
 
     public String getUserId() {
         return userId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     private String restaurantId ;

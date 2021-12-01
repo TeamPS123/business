@@ -1,101 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="@dimen/_140sdp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/_2sdp"
-    android:layout_marginTop="@dimen/_8sdp"
-    android:layout_marginEnd="@dimen/_8sdp"
-    android:layout_marginBottom="@dimen/_8sdp"
-    app:cardCornerRadius="@dimen/_4sdp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textViewPromotion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_4sdp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Tên khuyến mãi"
+        android:textColor="@color/TextPrimary"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        android:paddingEnd="@dimen/_4sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/layout1"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imageViewFood"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_90sdp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/suatuoi"
-            app:layout_constraintTop_toTopOf="parent"/>
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_4sdp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/textViewPromotion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textViewPromotion">
 
-        <TextView
-            android:id="@+id/textviewFoodName"
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonEdit"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:text="ToCoToCo"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintTop_toBottomOf="@id/imageViewFood"/>
-
-        <TextView
-            android:id="@+id/textViewContentPromotion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:text="Đồng giá 32k Toàn menu Size M"
-            android:paddingEnd="@dimen/_4sdp"
-            android:textColor="#000000"
-            android:textSize="@dimen/_12ssp"
+            android:drawableLeft="@drawable/ic_round_edit_24"
+            android:drawableTint="@color/white"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingVertical="4dp"
+            android:paddingRight="@dimen/_6sdp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/textviewFoodName"/>
+            app:backgroundTint="@color/duskYellow" />
 
-        <TextView
-            android:id="@+id/textViewRestaurantAddress"
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonDelete"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginBottom="@dimen/_4sdp"
-            android:layout_marginEnd="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_4sdp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:text="59 chi nhánh áp dụng "
-            app:layout_constraintTop_toBottomOf="@id/textViewContentPromotion"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_marginStart="@dimen/_4sdp"
+            android:drawableLeft="@drawable/ic_round_delete_24"
+            android:drawableTint="@color/white"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingVertical="4dp"
+            android:paddingRight="@dimen/_4sdp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/ColorButtonReserve" />
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonStatus"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/imageViewFood">
+            android:layout_marginStart="@dimen/_4sdp"
+            android:drawableLeft="@drawable/ic_baseline_toggle_off_24"
+            android:drawableTint="@color/white"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingVertical="4dp"
+            android:paddingRight="@dimen/_4sdp"
+            android:tag="off"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/TextPrimary" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#DE4849"
-                android:paddingHorizontal="@dimen/_4sdp"
-                android:text="-25%"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_9ssp" />
+    </LinearLayout>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#9F2E2E2E"
-                android:paddingHorizontal="@dimen/_6sdp"
-                android:text="32 phút"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_10ssp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

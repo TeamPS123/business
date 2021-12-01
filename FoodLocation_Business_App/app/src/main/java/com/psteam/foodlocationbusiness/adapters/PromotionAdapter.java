@@ -9,15 +9,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocationbusiness.databinding.PromotionItemContainerBinding;
 import com.psteam.foodlocationbusiness.models.PromotionModel;
+import com.psteam.lib.Models.Get.getPromotion;
 
 import java.util.List;
 
 public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.PromotionViewHolder> {
 
-    private final List<PromotionModel> promotionModels;
+    private final List<getPromotion> promotions;
+    private final PromotionListeners promotionListeners;
 
-    public PromotionAdapter(List<PromotionModel> promotionModels) {
-        this.promotionModels = promotionModels;
+    public PromotionAdapter(List<getPromotion> promotions, PromotionListeners promotionListeners) {
+        this.promotions = promotions;
+        this.promotionListeners = promotionListeners;
     }
 
     @NonNull
@@ -32,14 +35,13 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.Prom
 
     @Override
     public void onBindViewHolder(@NonNull PromotionViewHolder holder, int position) {
-        holder.setData(promotionModels.get(position));
+        holder.setData(promotions.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return promotionModels != null ? promotionModels.size() : 0;
+        return promotions != null ? promotions.size() : 0;
     }
-
 
     class PromotionViewHolder extends RecyclerView.ViewHolder {
 
@@ -50,10 +52,32 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.Prom
             binding = itemView;
         }
 
-        public void setData(PromotionModel promotionModel) {
-            binding.imageViewFood.setBackgroundResource(promotionModel.getImage());
-            binding.textViewContentPromotion.setText(promotionModel.getContentPromotion());
-            binding.textviewFoodName.setText(promotionModel.getFoodName());
+        public void setData(getPromotion promotions) {
+            binding.textViewPromotion.setText(promotions.getName());
+            binding.buttonEdit.setOnClickListener(v -> {
+                promotionListeners.onEditClick(promotions,1);
+            });
+
+            binding.buttonDelete.setOnClickListener(v -> {
+                promotionListeners.onDeleteClick(promotions, getAdapterPosition());
+            });
+
+            binding.buttonStatus.setOnClickListener(v -> {
+                promotionListeners.onChangeStatus(promotions);
+            });
+
+            binding.getRoot().setOnClickListener(v -> {
+                promotionListeners.onEditClick(promotions,0);
+            });
         }
+    }
+
+    public interface PromotionListeners {
+        // 1 edit 0 details
+        void onEditClick(getPromotion promotions,int mode);
+
+        void onDeleteClick(getPromotion promotions, int position);
+
+        void onChangeStatus(getPromotion promotions);
     }
 }

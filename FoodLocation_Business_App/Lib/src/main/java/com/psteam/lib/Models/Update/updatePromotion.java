@@ -1,15 +1,14 @@
-package com.psteam.lib.Models.Get;
+package com.psteam.lib.Models.Update;
 
-public class getPromotion {
-    public getPromotion(){
+public class updatePromotion {
 
-    }
 
-    public getPromotion(String promotionId, String name, String info, String value) {
+    public updatePromotion(String promotionId, String name, String info, String value, String userId) {
         this.promotionId = promotionId;
         this.name = name;
         this.info = info;
         this.value = value;
+        this.userId = userId;
     }
 
     public String getPromotionId() {
@@ -44,8 +43,17 @@ public class getPromotion {
         this.value = value;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     private String promotionId ;
     private String name ;
     private String info ;
     private String value ;
+    private String userId ;
 }

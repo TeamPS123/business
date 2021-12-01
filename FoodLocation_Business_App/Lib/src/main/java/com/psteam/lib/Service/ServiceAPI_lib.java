@@ -20,6 +20,7 @@ import com.psteam.lib.Models.Insert.insertRestaurant;
 import com.psteam.lib.Models.Insert.reserveFood;
 import com.psteam.lib.Models.Insert.reserveTable;
 import com.psteam.lib.Models.Insert.signUp;
+import com.psteam.lib.Models.Update.updatePromotion;
 import com.psteam.lib.Models.message;
 
 import java.util.List;
@@ -41,9 +42,6 @@ public interface ServiceAPI_lib {
 
     @POST("signin")
     Call<message> signin(@Body signIn user);
-
-    @GET("getAllPromotion")
-    Call<messagePromotion> getAllPromotion();
 
     @GET("getRestaurantId")
     Call<message> getRestaurantId(@Header("Authorization") String token, @Query("userId") String userId);
@@ -87,9 +85,6 @@ public interface ServiceAPI_lib {
     @POST("addFood")
     Call<message> addFood(@Header("Authorization") String token,@Body insertFood foodList);
 
-    @POST("addPromotion")
-    Call<message> addPromotion(@Header("Authorization") String token,@Body insertPromotion promotion);
-
     @POST("addCategory")
     Call<message> addCategory(@Header("Authorization") String token,@Body insertCategory category);
 
@@ -118,6 +113,22 @@ public interface ServiceAPI_lib {
 
     @GET("delFood")
     Call<message> delFood(@Header("Authorization") String token, @Query("userId") String userId, @Query("foodId") String foodId);
+
+//  ------------------------------------------------------Promotion----------------------------------------------------------------
+//    @GET("getAllPromotion")
+//    Call<messagePromotion> getAllPromotion();
+
+    @GET("getPromotionList")
+    Call<messagePromotion> getPromotionList(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
+
+    @POST("addPromotion")
+    Call<message> addPromotion(@Header("Authorization") String token,@Body insertPromotion promotion);
+
+    @POST("updatePromotion")
+    Call<message> updatePromotion(@Header("Authorization") String token,@Body updatePromotion promotion);
+
+    @GET("delPromotion")
+    Call<message> delPromotion(@Header("Authorization") String token, @Query("userId") String userId, @Query("promotionId") String promotionId);
 
 //    private void get(){
 //        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);

@@ -1,38 +1,37 @@
 package com.psteam.foodlocationbusiness.models;
 
 public class PromotionModel {
-    private int image;
-    private String foodName;
-    private String contentPromotion;
+    private String name;
+    private String info;
+    private String value;
 
-
-    public PromotionModel(int image, String foodName, String contentPromotion) {
-        this.image = image;
-        this.foodName = foodName;
-        this.contentPromotion = contentPromotion;
+    public PromotionModel(String name, String info, String value) {
+        this.name = name;
+        this.info = info;
+        this.value = value;
     }
 
-    public int getImage() {
-        return image;
+    public String getName() {
+        return name;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getFoodName() {
-        return foodName;
+    public String getInfo() {
+        return info;
     }
 
-    public void setFoodName(String foodName) {
-        this.foodName = foodName;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
-    public String getContentPromotion() {
-        return contentPromotion;
+    public String getValue() {
+        return value;
     }
 
-    public void setContentPromotion(String contentPromotion) {
-        this.contentPromotion = contentPromotion;
+    public void setValue(String value) {
+        this.value = value;
     }
 }
