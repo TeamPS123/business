@@ -108,7 +108,7 @@ public interface ServiceAPI_lib {
     Call<message> changeStatus(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String reserveTableId, @Query("status") boolean status);
 
 //  ------------------------------------------------------Food----------------------------------------------------------------
-    @GET("getAllFoodByReserveTableId")
+    @GET("getFoodsByResId")
     Call<messageAllFood> getAllFoodByReserveTableId(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId);
 
     @POST("addFoods")

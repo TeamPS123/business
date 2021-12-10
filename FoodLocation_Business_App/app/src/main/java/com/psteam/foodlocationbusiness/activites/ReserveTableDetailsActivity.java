@@ -104,8 +104,8 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
     }
 
     private void getDataFromNoti(){
+        response = new BodySenderFromUser();
         if(getIntent().getExtras().getString("reserveTableId") != null){
-            response = new BodySenderFromUser();
             response.setReserveTableId(getIntent().getExtras().getString("reserveTableId"));
             response.setName(getIntent().getExtras().getString("name"));
             response.setQuantity(Integer.parseInt(getIntent().getExtras().getString("quantity")));
