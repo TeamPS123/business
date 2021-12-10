@@ -4,15 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 public class getFood implements Serializable {
-    public getFood(String menuId, String foodId, String name, double price, String unit, String categoryName, List<String> pic) {
-        this.menuId = menuId;
-        this.foodId = foodId;
-        this.name = name;
-        this.price = price;
-        this.unit = unit;
-        this.categoryName = categoryName;
-        this.pic = pic;
-    }
 
     public getFood() {
     }
@@ -73,11 +64,43 @@ public class getFood implements Serializable {
         this.pic = pic;
     }
 
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
     private String menuId ;
     private String foodId ;
     private String name ;
     private double price ;
     private String unit ;
     private String categoryName ;
+    private String categoryId;
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
     private List<String> pic ;
+    private Boolean status;
+
+    public getFood(String menuId, String foodId, String name, double price, String unit, String categoryName, String categoryId, List<String> pic, Boolean status) {
+        this.menuId = menuId;
+        this.foodId = foodId;
+        this.name = name;
+        this.price = price;
+        this.unit = unit;
+        this.categoryName = categoryName;
+        this.categoryId = categoryId;
+        this.pic = pic;
+        this.status = status;
+    }
 }

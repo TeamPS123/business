@@ -16,7 +16,7 @@ public class ReserveTableCompletedAdapter extends RecyclerView.Adapter<ReserveTa
     private final List<BodySenderFromUser> reserveTableList;
     private final ReserveTableListeners reserveTableListeners;
 
-    public ReserveTableCompletedAdapter(List<BodySenderFromUser> reserveTableList, ReserveTableListeners reserveTableListeners) {
+    public ReserveTableCompletedAdapter(List<BodySenderFromUser> reserveTableList, ReserveTableCompletedAdapter.ReserveTableListeners reserveTableListeners) {
         this.reserveTableList = reserveTableList;
         this.reserveTableListeners = reserveTableListeners;
     }

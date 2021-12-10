@@ -19,10 +19,21 @@
         <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_Business_App/app/src/main/res/layout/layout_navigation_manager_header.xml" value="0.1" />
         <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_Business_App/app/src/main/res/layout/reserved_table_item_container.xml" value="0.32222222222222224" />
         <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_Business_App/app/src/main/res/menu/navigation_menu.xml" value="0.3625" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/drawable-v24/ic_baseline_toggle_off_24.xml" value="0.16979166666666667" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/drawable-v24/ic_baseline_toggle_on_24.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/drawable/ic_baseline_toggle_on_24.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/activity_sign_up.xml" value="0.2033514492753623" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/food_item_container.xml" value="0.24818840579710144" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/fragment_manager_restaurant.xml" value="0.2536231884057971" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/layout_promotion_insert_dialog.xml" value="0.22282608695652173" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/manager_food_item_container.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/promotion_item_container.xml" value="0.264" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/reserved_table_item_completed.xml" value="0.18333333333333332" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/reserved_table_item_confirm.xml" value="0.18333333333333332" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

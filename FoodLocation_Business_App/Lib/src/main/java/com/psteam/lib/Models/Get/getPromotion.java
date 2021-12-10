@@ -5,13 +5,6 @@ public class getPromotion {
 
     }
 
-    public getPromotion(String promotionId, String name, String info, String value) {
-        this.promotionId = promotionId;
-        this.name = name;
-        this.info = info;
-        this.value = value;
-    }
-
     public String getPromotionId() {
         return promotionId;
     }
@@ -44,8 +37,25 @@ public class getPromotion {
         this.value = value;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public getPromotion(String promotionId, String name, String info, String value, boolean status) {
+        this.promotionId = promotionId;
+        this.name = name;
+        this.info = info;
+        this.value = value;
+        this.status = status;
+    }
+
     private String promotionId ;
     private String name ;
     private String info ;
     private String value ;
+    private boolean status;
 }

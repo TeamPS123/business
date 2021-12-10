@@ -21,6 +21,7 @@ import com.psteam.foodlocationbusiness.ultilities.DividerItemDecorator;
 import com.psteam.lib.Models.Get.getPromotion;
 import com.psteam.lib.Models.Get.messagePromotion;
 import com.psteam.lib.Models.Insert.insertPromotion;
+import com.psteam.lib.Models.Update.updatePromotion;
 import com.psteam.lib.Models.message;
 import com.psteam.lib.Service.ServiceAPI_lib;
 
@@ -46,10 +47,15 @@ public class ManagerPromotionFragment extends Fragment {
     private ArrayList<getPromotion> promotions;
     private PromotionAdapter promotionAdapter;
 
+    private DataTokenAndUserId dataTokenAndUserId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentManagerPromotionBinding.inflate(inflater, container, false);
+
+        dataTokenAndUserId = new DataTokenAndUserId(getContext());
+
         init();
         setListeners();
         return binding.getRoot();
@@ -60,15 +66,15 @@ public class ManagerPromotionFragment extends Fragment {
     }
 
     private void initPromotionAdapter() {
-        promotionAdapter = new PromotionAdapter(promotions, new PromotionAdapter.PromotionListeners() {
+        promotionAdapter = new PromotionAdapter(getContext(), promotions, new PromotionAdapter.PromotionListeners() {
             @Override
-            public void onEditClick(getPromotion promotions, int mode) {
+            public void onEditClick(getPromotion promotions, int mode, int position) {
                 if (mode == 1) {
-                    openInsertPromotionDialog(promotions);
+                    openInsertPromotionDialog(promotions, 3, position);
                     layoutPromotionInsertDialogBinding.text1.setText("Cập nhật khuyễn mãi");
                 }
                 else {
-                    openInsertPromotionDialog(promotions);
+                    openInsertPromotionDialog(promotions, 2, 0);
                     layoutPromotionInsertDialogBinding.text1.setText("Thông tin khuyến mãi");
                     layoutPromotionInsertDialogBinding.buttonAddCategory.setVisibility(View.GONE);
                 }
@@ -76,12 +82,12 @@ public class ManagerPromotionFragment extends Fragment {
 
             @Override
             public void onDeleteClick(getPromotion promotions, int position) {
-
+                delPromotion(promotions.getPromotionId(), position);
             }
 
             @Override
-            public void onChangeStatus(getPromotion promotions) {
-
+            public void onChangeStatus(getPromotion promotions, int position) {
+                upPromotion(new updatePromotion(promotions.getPromotionId(), promotions.getName(), promotions.getInfo(), promotions.getValue(), dataTokenAndUserId.getUserId(), !promotions.isStatus()), position);
             }
         });
 
@@ -93,7 +99,7 @@ public class ManagerPromotionFragment extends Fragment {
 
     private void setListeners() {
         binding.buttonInsertPromotion.setOnClickListener(v -> {
-            openInsertPromotionDialog(null);
+            openInsertPromotionDialog(null, 1, 0);
         });
     }
 
@@ -101,12 +107,19 @@ public class ManagerPromotionFragment extends Fragment {
 
     private LayoutPromotionInsertDialogBinding layoutPromotionInsertDialogBinding;
 
-    private void openInsertPromotionDialog(getPromotion promotion) {
+    private void openInsertPromotionDialog(getPromotion promotion, int code, int index) {
+
         layoutPromotionInsertDialogBinding =
                 LayoutPromotionInsertDialogBinding.inflate(LayoutInflater.from(getContext()));
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(layoutPromotionInsertDialogBinding.getRoot());
         builder.setCancelable(false);
+
+        if(code == 1){
+            layoutPromotionInsertDialogBinding.buttonAddCategory.setText("Thêm mới");
+        }else if(code == 3){
+            layoutPromotionInsertDialogBinding.buttonAddCategory.setText("Thay đổi");
+        }
 
         if (promotion != null) {
             layoutPromotionInsertDialogBinding.inputName.setText(promotion.getName());
@@ -125,23 +138,57 @@ public class ManagerPromotionFragment extends Fragment {
             promotion1.setUserId(dataTokenAndUserId.getUserId());
 
             ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-            Call<message> call = serviceAPI_lib.addPromotion(dataTokenAndUserId.getToken(), promotion1);
-            call.enqueue(new Callback<message>() {
-                @Override
-                public void onResponse(Call<message> call, Response<message> response) {
-                    if(response.body().getStatus() == 1){
-                        promotions.add(new getPromotion(response.body().getId(), promotion1.getName(), promotion1.getInfo(), promotion1.getValue()));
+            if(code == 1){
+                Call<message> call = serviceAPI_lib.addPromotion(dataTokenAndUserId.getToken(), promotion1);
+                call.enqueue(new Callback<message>() {
+                    @Override
+                    public void onResponse(Call<message> call, Response<message> response) {
+                        if(response.body().getStatus() == 1){
+                            promotions.add(new getPromotion(response.body().getId(), promotion1.getName(), promotion1.getInfo(), promotion1.getValue(), true));
 
-                        promotionAdapter.notifyDataSetChanged();
+                            promotionAdapter.notifyDataSetChanged();
+                        }
+                        Toast.makeText(getContext(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(getContext(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
-                }
 
-                @Override
-                public void onFailure(Call<message> call, Throwable t) {
-                    Toast.makeText(getContext(), "Thêm khuyến mãi thất bại", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<message> call, Throwable t) {
+                        Toast.makeText(getContext(), "Thêm khuyến mãi thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else if(code == 3){
+                updatePromotion updatePromotion = new updatePromotion();
+                updatePromotion.setPromotionId(promotion.getPromotionId());
+                updatePromotion.setInfo(layoutPromotionInsertDialogBinding.inputInfo.getText()+"");
+                updatePromotion.setName(layoutPromotionInsertDialogBinding.inputName.getText()+"");
+                updatePromotion.setValue(layoutPromotionInsertDialogBinding.inputValue.getText()+"");
+                updatePromotion.setUserId(dataTokenAndUserId.getUserId());
+
+                Call<message> call = serviceAPI_lib.updatePromotion(dataTokenAndUserId.getToken(), updatePromotion);
+                call.enqueue(new Callback<message>() {
+                    @Override
+                    public void onResponse(Call<message> call, Response<message> response) {
+                        if(response.body().getStatus() == 1) {
+                            getPromotion newPromotion = new getPromotion();
+                            newPromotion.setPromotionId(promotion.getPromotionId());
+                            newPromotion.setInfo(updatePromotion.getInfo());
+                            newPromotion.setName(updatePromotion.getName());
+                            newPromotion.setValue(updatePromotion.getValue());
+
+                            promotions.set(index, newPromotion);
+                            promotionAdapter.notifyItemChanged(index);
+                        }
+                        Toast.makeText(getContext(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<message> call, Throwable t) {
+                        Toast.makeText(getContext(), "Cập nhật khuyến mãi thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            dialog.dismiss();
         });
         layoutPromotionInsertDialogBinding.buttonBack.setOnClickListener(v -> {
             dialog.dismiss();
@@ -152,8 +199,6 @@ public class ManagerPromotionFragment extends Fragment {
     }
 
     private void getPromotions(){
-        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
-
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
         Call<messagePromotion> call = serviceAPI_lib.getPromotionList(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId());
         call.enqueue(new Callback<messagePromotion>() {
@@ -173,6 +218,44 @@ public class ManagerPromotionFragment extends Fragment {
             @Override
             public void onFailure(Call<messagePromotion> call, Throwable t) {
                 Toast.makeText(getActivity(), "Lấy dữ liệu thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void delPromotion(String promotionId, int index){
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.delPromotion(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), promotionId);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if(response.body().getStatus() == 1){
+                    promotions.remove(index);
+                    promotionAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void upPromotion(updatePromotion updatePromotion, int index){
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.updatePromotion(dataTokenAndUserId.getToken(), updatePromotion);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+//                if(response.body().getStatus() == 1){
+//                    promotions.remove(index);
+//                    promotionAdapter.notifyDataSetChanged();
+//                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+
             }
         });
     }

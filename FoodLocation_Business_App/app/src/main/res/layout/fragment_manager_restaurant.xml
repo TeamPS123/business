@@ -52,6 +52,7 @@
                     android:textSize="@dimen/_10ssp" />
 
                 <TextView
+                    android:id="@+id/amountDay"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/_2sdp"
@@ -85,6 +86,7 @@
                     android:textSize="@dimen/_10ssp" />
 
                 <TextView
+                    android:id="@+id/amountWeek"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/_2sdp"

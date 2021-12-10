@@ -17,4 +17,5 @@
     <color name="ColorButtonReserve">#E73948</color>
     <color name="ColorTextSelected">#C81425</color>
     <color name="ColorTextUnSelected">#00A1CA</color>
+    <color name="yellow">#DDC91B</color>
 </resources>

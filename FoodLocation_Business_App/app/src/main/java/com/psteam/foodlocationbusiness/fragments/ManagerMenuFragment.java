@@ -92,7 +92,7 @@ public class ManagerMenuFragment extends Fragment {
             }
         });
 
-        setDynamicFragmentToTabLayout();
+        //setDynamicFragmentToTabLayout();
     }
 
     private void setDynamicFragmentToTabLayout() {
@@ -171,18 +171,18 @@ public class ManagerMenuFragment extends Fragment {
         call.enqueue(new Callback<messageAllMenu>() {
             @Override
             public void onResponse(Call<messageAllMenu> call, Response<messageAllMenu> response) {
-                if(response.body().getStatus() == 1){
-                    for(int i =0 ; i < response.body().getMenuList().size(); i ++){
+                if (response.body() != null && response.body().getStatus() == 1) {
+                    for (int i = 0; i < response.body().getMenuList().size(); i++) {
                         getMenu menu = response.body().getMenuList().get(i);
-
                         menuIdList.add(menu.getMenuId());
-
                         menus.add(menu);
-
                         binding.tabs.addTab(binding.tabs.newTab().setText(menu.getName()));
                         Para.numberTabs = binding.tabs.getTabCount();
-                        menuFragmentAdapter.notifyDataSetChanged();
-                        binding.viewPager.setCurrentItem(binding.tabs.getTabCount() - 1);
+                        menuFragmentAdapter = new MenuFragmentAdapter(getActivity().getSupportFragmentManager(), binding.tabs.getTabCount(), menuIdList, menus);
+                        binding.viewPager.setAdapter(menuFragmentAdapter);
+                    }
+                    if (menus.size() <= 0) {
+                        openDialogAddMenu();
                     }
                 }
             }

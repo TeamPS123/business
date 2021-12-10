@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.activites.ReserveTableDetailsActivity;
 import com.psteam.foodlocationbusiness.adapters.ReserveTableAdapter;
+import com.psteam.foodlocationbusiness.adapters.ReserveTableCompletedAdapter;
 import com.psteam.foodlocationbusiness.databinding.FragmentConfirmedReservedTableBinding;
 import com.psteam.foodlocationbusiness.databinding.FragmentProcessingReservedTableBinding;
 import com.psteam.foodlocationbusiness.socket.models.BodySenderFromRes;
@@ -39,7 +40,7 @@ public class ConfirmedReservedTableFragment extends Fragment {
 
     private FragmentConfirmedReservedTableBinding binding;
 
-    private ReserveTableAdapter reserveTableAdapter;
+    private ReserveTableCompletedAdapter reserveTableAdapter;
     private ArrayList<BodySenderFromUser> reserveTables;
 
     @Override
@@ -67,25 +68,10 @@ public class ConfirmedReservedTableFragment extends Fragment {
 
         getAllReserveTable();
 
-        reserveTableAdapter=new ReserveTableAdapter(reserveTables, new ReserveTableAdapter.ReserveTableListeners() {
-            @Override
-            public void onConfirmClicked(BodySenderFromUser reserveTable, int position) {
-                updateReserveTable(1, reserveTable, position);
-            }
-
-            @Override
-            public void onDenyClicked(BodySenderFromUser reserveTable, int position) {
-                updateReserveTable(2, reserveTable, position);
-            }
-
+        reserveTableAdapter=new ReserveTableCompletedAdapter(reserveTables, new ReserveTableCompletedAdapter.ReserveTableListeners() {
             @Override
             public void onClicked(BodySenderFromUser reserveTable, int position) {
-                Intent intent = new Intent(getContext(), ReserveTableDetailsActivity.class);
-                intent.putExtra("response", reserveTable);
-                startActivity(intent);
-
-//                reserveTables.remove(position);
-//                reserveTableAdapter.notifyDataSetChanged();
+                updateReserveTable(1, reserveTable, position);
             }
         });
 

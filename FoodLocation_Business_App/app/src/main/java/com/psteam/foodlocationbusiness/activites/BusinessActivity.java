@@ -143,6 +143,8 @@ public class BusinessActivity extends AppCompatActivity {
                 if(response.body().getStatus() == 1){
                     resName.setText(response.body().getRes().getName());
                     Glide.with(getApplication()).load(response.body().getRes().getPic()).into(resImg);
+                }else if(response.body().getStatus() == 3){
+                    startActivity(new Intent(BusinessActivity.this, SignInActivity.class));
                 }
             }
 

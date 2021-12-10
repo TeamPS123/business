@@ -81,7 +81,22 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
     }
 
     private void initFoodManagerAdapter() {
-        managerFoodAdapter = new ManagerFoodAdapter(foods, getApplication());
+        managerFoodAdapter = new ManagerFoodAdapter(foods, getApplication(), new ManagerFoodAdapter.FoodListeners() {
+            @Override
+            public void onEditClick(getFood food, int position) {
+
+            }
+
+            @Override
+            public void onDeleteClick(getFood food, int position) {
+
+            }
+
+            @Override
+            public void onChangeStatus(getFood food, int position) {
+
+            }
+        });
         binding.recycleViewFoodReserve.setAdapter(managerFoodAdapter);
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getApplication(), R.drawable.divider));

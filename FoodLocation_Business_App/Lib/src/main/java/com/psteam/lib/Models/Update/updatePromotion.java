@@ -1,14 +1,8 @@
 package com.psteam.lib.Models.Update;
 
 public class updatePromotion {
+    public updatePromotion(){
 
-
-    public updatePromotion(String promotionId, String name, String info, String value, String userId) {
-        this.promotionId = promotionId;
-        this.name = name;
-        this.info = info;
-        this.value = value;
-        this.userId = userId;
     }
 
     public String getPromotionId() {
@@ -51,9 +45,27 @@ public class updatePromotion {
         this.userId = userId;
     }
 
+    public updatePromotion(String promotionId, String name, String info, String value, String userId, boolean status) {
+        this.promotionId = promotionId;
+        this.name = name;
+        this.info = info;
+        this.value = value;
+        this.userId = userId;
+        this.status = status;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     private String promotionId ;
     private String name ;
     private String info ;
     private String value ;
     private String userId ;
+    private boolean status;
 }
