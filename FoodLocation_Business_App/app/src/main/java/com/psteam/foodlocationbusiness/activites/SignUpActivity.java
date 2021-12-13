@@ -237,7 +237,8 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<message> call, Throwable t) {
-
+                Toast.makeText(getApplication(), "Lỗi", Toast.LENGTH_SHORT).show();
+                loading(false);
             }
         });
     }
