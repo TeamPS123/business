@@ -121,7 +121,7 @@ public class SignUpActivity extends AppCompatActivity {
         binding.buttonSignUp.setOnClickListener(v -> {
             if (isValidSignUp()) {
                 loading(true);
-                sendVerificationCode("+84" + binding.inputPhone.getText().toString());
+                checkPhone();
             }
         });
         binding.buttonSignIn.setOnClickListener(v -> {
@@ -219,5 +219,26 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void checkPhone(){
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.checkPhone(binding.inputPhone.getText()+"");
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if(response.body().getStatus() == 1){
+                    sendVerificationCode("+84" + binding.inputPhone.getText().toString());
+                }else{
+                    Toast.makeText(getApplication(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
+                    loading(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+
+            }
+        });
     }
 }

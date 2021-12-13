@@ -38,6 +38,8 @@ public class ServiceFCM extends FirebaseMessagingService {
     }
 
     public void notify(String title, String message, BodySenderFromUser response) {
+        String GROUP_KEY_WORK_EMAIL = "com.psteam.foodlocationbusiness.NOTIFICATION";
+
         // create the intent and set the action
         Intent intent = new Intent(getApplicationContext(), ReserveTableDetailsActivity.class);
         intent.putExtra("response", response);
@@ -50,8 +52,12 @@ public class ServiceFCM extends FirebaseMessagingService {
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setGroup(GROUP_KEY_WORK_EMAIL);
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(123, builder.build());
+
+        //Notification dismiss after click notification
+        mNotificationManager.cancel(123);
     }
 }

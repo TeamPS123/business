@@ -60,11 +60,13 @@ public class SignInActivity extends AppCompatActivity {
     private void checkSaveUser() {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplicationContext());
         if(!dataTokenAndUserId.getUserId().equals("")){
-            Intent intent = new Intent(SignInActivity.this, BusinessActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            loading(false);
-            finish();
+            if(dataTokenAndUserId.getToken() != "0"){
+                Intent intent = new Intent(SignInActivity.this, BusinessActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                loading(false);
+                finish();
+            }
         }
     }
 
@@ -124,25 +126,23 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-
-    private void signIn(){
-        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<message> call = serviceAPI.signin(new signIn(binding.inputPhone.getText()+"", binding.inputPassword.getText()+""));
+    private void checkRes(String userId, String token){
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.checkRes(userId);
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
-
                 if(response.body().getStatus() == 1){
                     DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
-                    dataTokenAndUserId.saveToken(response.body().getNotification());
-                    dataTokenAndUserId.saveUserId(response.body().getId());
+                    dataTokenAndUserId.saveToken(token);
+                    dataTokenAndUserId.saveUserId(userId);
 
-                    Call<message> call1 = serviceAPI.getRestaurantId(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId());
+                    Call<message> call1 = serviceAPI_lib.getRestaurantId(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId());
                     call1.enqueue(new Callback<message>() {
                         @Override
-                        public void onResponse(Call<message> call, Response<message> response) {
+                        public void onResponse(Call<message> call, Response<message> response1) {
 
-                            dataTokenAndUserId.saveRestaurantId(response.body().getId());
+                            dataTokenAndUserId.saveRestaurantId(response1.body().getId());
 
                             Intent intent = new Intent(SignInActivity.this, BusinessActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -158,6 +158,27 @@ public class SignInActivity extends AppCompatActivity {
                     });
 
                     Toast.makeText(SignInActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(SignInActivity.this, response.body().getNotification(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Toast.makeText(SignInActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void signIn(){
+        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI.signin(new signIn(binding.inputPhone.getText()+"", binding.inputPassword.getText()+""));
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+
+                if(response.body().getStatus() == 1){
+                    checkRes(response.body().getId(), response.body().getNotification());
                 }else{
                     Toast.makeText(SignInActivity.this, response.body().getNotification(), Toast.LENGTH_SHORT).show();
                 }

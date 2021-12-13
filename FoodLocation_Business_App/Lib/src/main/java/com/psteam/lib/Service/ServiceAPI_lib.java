@@ -100,6 +100,13 @@ public interface ServiceAPI_lib {
     @GET("updateReserveTable")
     Call<message> updateReserveTable(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId, @Query("code") int code);
 
+//  ------------------------------------------------------Login----------------------------------------------------------------
+    @GET("checkPhone")
+    Call<message> checkPhone(@Query("phone") String phone);
+
+    @GET("checkRes")
+    Call<message> checkRes(@Query("userId") String userId);
+
 //  ------------------------------------------------------Restaurant----------------------------------------------------------------
     @GET("getResDetail")
     Call<messageResDetail> getResDetail(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String reserveTableId);

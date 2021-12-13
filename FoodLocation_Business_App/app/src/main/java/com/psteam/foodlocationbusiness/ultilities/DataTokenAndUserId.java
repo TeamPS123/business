@@ -33,6 +33,7 @@ public class DataTokenAndUserId {
         if (expires < System.currentTimeMillis()) {
 //            GetNewToken getNewToken = new GetNewToken(context);
 //            getNewToken.CallAPILoginGetToken();
+            return "0";
         }
         String s = settings.getString("token", "");
         return s;
