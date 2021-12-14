@@ -17,6 +17,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.psteam.foodlocationbusiness.R;
+import com.psteam.foodlocationbusiness.databinding.ActivityVerifyOtpBinding;
+import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
+import com.psteam.foodlocationbusiness.ultilities.GenericTextWatcher;
+import com.psteam.lib.Models.Insert.signUp;
+import com.psteam.lib.Models.message;
+import com.psteam.lib.Service.ServiceAPI_lib;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -27,13 +35,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.psteam.foodlocationbusiness.R;
-import com.psteam.foodlocationbusiness.databinding.ActivityVerifyOtpBinding;
-import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
-import com.psteam.foodlocationbusiness.ultilities.GenericTextWatcher;
-import com.psteam.lib.Models.Insert.signUp;
-import com.psteam.lib.Models.message;
-import com.psteam.lib.Service.ServiceAPI_lib;
 
 import java.util.concurrent.TimeUnit;
 
@@ -46,6 +47,7 @@ import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 public class VerifyOTPActivity extends AppCompatActivity {
 
     private ActivityVerifyOtpBinding binding;
+    private String phoneNumber;
     private signUp account;
 
     private long leftTimeInSecond = 60000;

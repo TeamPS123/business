@@ -81,7 +81,22 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
     }
 
     private void initFoodManagerAdapter() {
-        managerFoodAdapter = new ManagerFoodAdapter(foods, getApplication());
+        managerFoodAdapter = new ManagerFoodAdapter(foods, getApplication(), new ManagerFoodAdapter.FoodListeners() {
+            @Override
+            public void onEditClick(getFood food, int position) {
+
+            }
+
+            @Override
+            public void onDeleteClick(getFood food, int position) {
+
+            }
+
+            @Override
+            public void onChangeStatus(getFood food, int position) {
+
+            }
+        });
         binding.recycleViewFoodReserve.setAdapter(managerFoodAdapter);
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getApplication(), R.drawable.divider));
@@ -89,8 +104,8 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
     }
 
     private void getDataFromNoti(){
+        response = new BodySenderFromUser();
         if(getIntent().getExtras().getString("reserveTableId") != null){
-            response = new BodySenderFromUser();
             response.setReserveTableId(getIntent().getExtras().getString("reserveTableId"));
             response.setName(getIntent().getExtras().getString("name"));
             response.setQuantity(Integer.parseInt(getIntent().getExtras().getString("quantity")));
@@ -114,10 +129,10 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
 
     private void setListeners(){
         binding.buttonConfirmed.setOnClickListener((v) -> {
-            updateReserveTable(1, response.getUserId());
+            updateReserveTable(1, response.getReserveTableId());
         });
         binding.buttonDeny.setOnClickListener((v) -> {
-            updateReserveTable(2, response.getUserId());
+            updateReserveTable(2, response.getReserveTableId());
         });
 
         binding.imageViewClose.setOnClickListener(v->{
@@ -125,21 +140,21 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
         });
     }
 
-    private void updateReserveTable(int code, String receiver){
+    private void updateReserveTable(int code, String reserveTableId){
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
 
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<message> call = serviceAPI_lib.updateReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), receiver, code);
+        Call<message> call = serviceAPI_lib.updateReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), reserveTableId, code);
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response1) {
                 if(response1.body().getStatus() == 1){
                     //xác nhận phiếu
                     if(code == 1){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), receiver, "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", response.getReserveTableId()));
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", reserveTableId));
                         setupSocket.reserveTable(message);
                     }else if(code == 2){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), receiver, "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", response.getReserveTableId()));
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", reserveTableId));
                         setupSocket.reserveTable(message);
                     }
                 }

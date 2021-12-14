@@ -36,10 +36,10 @@ public class ManagerReserveTableFragment extends Fragment {
 
     private FragmentManagerReserveTableBinding binding;
 
-    private String quantityNoConfirm = "0";
-    private String quantityConfirm  = "0";
-    private String quantityCompleted  = "0";
-    private String quantityOutDate  = "0";
+//    private String quantityNoConfirm = "0";
+//    private String quantityConfirm  = "0";
+//    private String quantityCompleted  = "0";
+//    private String quantityOutDate  = "0";
 
     public Socket mSocket;
     {
@@ -155,87 +155,87 @@ public class ManagerReserveTableFragment extends Fragment {
         setupSocket.signIn(dataTokenAndUserId.getUserId());
     }
 
-    private void getQuantityNoConfirm(){
-        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
-
-        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 0);
-        call.enqueue(new Callback<message>() {
-            @Override
-            public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
-                    quantityNoConfirm = response.body().getId();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<message> call, Throwable t) {
-
-            }
-        });
-
-    }
-
-    private void getQuantityConfirm(){
-        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
-
-        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 1);
-        call.enqueue(new Callback<message>() {
-            @Override
-            public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
-                    quantityConfirm = response.body().getId();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<message> call, Throwable t) {
-
-            }
-        });
-
-    }
-
-    private void getQuantityCompleted(){
-        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
-
-        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 4);
-        call.enqueue(new Callback<message>() {
-            @Override
-            public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
-                    quantityCompleted = response.body().getId();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<message> call, Throwable t) {
-
-            }
-        });
-
-    }
-
-    private void getQuantityOutDate(){
-        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
-
-        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 3);
-        call.enqueue(new Callback<message>() {
-            @Override
-            public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
-                    quantityOutDate = response.body().getId();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<message> call, Throwable t) {
-
-            }
-        });
-
-    }
+//    private void getQuantityNoConfirm(){
+//        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
+//
+//        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+//        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 0);
+//        call.enqueue(new Callback<message>() {
+//            @Override
+//            public void onResponse(Call<message> call, Response<message> response) {
+//                if(response.body().getStatus() == 1){
+//                    quantityNoConfirm = response.body().getId();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<message> call, Throwable t) {
+//
+//            }
+//        });
+//
+//    }
+//
+//    private void getQuantityConfirm(){
+//        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
+//
+//        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+//        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 1);
+//        call.enqueue(new Callback<message>() {
+//            @Override
+//            public void onResponse(Call<message> call, Response<message> response) {
+//                if(response.body().getStatus() == 1){
+//                    quantityConfirm = response.body().getId();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<message> call, Throwable t) {
+//
+//            }
+//        });
+//
+//    }
+//
+//    private void getQuantityCompleted(){
+//        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
+//
+//        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+//        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 4);
+//        call.enqueue(new Callback<message>() {
+//            @Override
+//            public void onResponse(Call<message> call, Response<message> response) {
+//                if(response.body().getStatus() == 1){
+//                    quantityCompleted = response.body().getId();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<message> call, Throwable t) {
+//
+//            }
+//        });
+//
+//    }
+//
+//    private void getQuantityOutDate(){
+//        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
+//
+//        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+//        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 3);
+//        call.enqueue(new Callback<message>() {
+//            @Override
+//            public void onResponse(Call<message> call, Response<message> response) {
+//                if(response.body().getStatus() == 1){
+//                    quantityOutDate = response.body().getId();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<message> call, Throwable t) {
+//
+//            }
+//        });
+//
+//    }
 }

@@ -47,7 +47,6 @@ public class ManagerMenuFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(getContext(), "onCreate", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -70,8 +69,8 @@ public class ManagerMenuFragment extends Fragment {
     }
 
     private void init() {
-        //setDynamicFragmentToTabLayout();
         getAllMenu();
+
         initMenu();
     }
 
@@ -92,6 +91,19 @@ public class ManagerMenuFragment extends Fragment {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+        //setDynamicFragmentToTabLayout();
+    }
+
+    private void setDynamicFragmentToTabLayout() {
+
+        menuFragmentAdapter = new MenuFragmentAdapter(getActivity().getSupportFragmentManager(), binding.tabs.getTabCount(), menuIdList, menus);
+        binding.viewPager.setAdapter(menuFragmentAdapter);
+        binding.viewPager.setCurrentItem(0);
+
+        if (menuFragmentAdapter.getCount() <= 0) {
+            openDialogAddMenu();
+        }
     }
 
     private AlertDialog dialog;
@@ -118,14 +130,14 @@ public class ManagerMenuFragment extends Fragment {
 
             DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
 
-            insertMenu menu = new insertMenu(dataTokenAndUserId.getRestaurantId(), layoutAddMenuNameDialogBinding.inputMenuName.getText() + "", dataTokenAndUserId.getUserId());
+            insertMenu menu = new insertMenu(dataTokenAndUserId.getRestaurantId(), layoutAddMenuNameDialogBinding.inputMenuName.getText()+"", dataTokenAndUserId.getUserId());
 
             ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
             Call<message> call = serviceAPI.addMenu(dataTokenAndUserId.getToken(), menu);
             call.enqueue(new Callback<message>() {
                 @Override
                 public void onResponse(Call<message> call, Response<message> response) {
-                    if (response.body().getStatus() == 1) {
+                    if(response.body().getStatus() == 1){
                         menuIdList.add(response.body().getId());
 
                         menus.add(null);
@@ -151,7 +163,7 @@ public class ManagerMenuFragment extends Fragment {
 
     }
 
-    private void getAllMenu() {
+    private void getAllMenu(){
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
 
         ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);

@@ -82,6 +82,8 @@ public class BusinessActivity extends AppCompatActivity {
         resName = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewResName);
         resImg = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewImageLogoRestaurant);
 
+        getInfoRes();
+
         binding.imageMenu.setOnClickListener(v -> {
             binding.drawerLayout.openDrawer(GravityCompat.START);
         });
@@ -138,9 +140,11 @@ public class BusinessActivity extends AppCompatActivity {
         call.enqueue(new Callback<messageInfoRes>() {
             @Override
             public void onResponse(Call<messageInfoRes> call, Response<messageInfoRes> response) {
-                if(response.body()!=null && response.body().getStatus() == 1){
+                if(response.body().getStatus() == 1){
                     resName.setText(response.body().getRes().getName());
                     Glide.with(getApplication()).load(response.body().getRes().getPic()).into(resImg);
+                }else if(response.body().getStatus() == 3){
+                    startActivity(new Intent(BusinessActivity.this, SignInActivity.class));
                 }
             }
 
@@ -153,7 +157,7 @@ public class BusinessActivity extends AppCompatActivity {
 
     private void init() {
         setFullScreen();
-        getInfoRes();
+
         setFCM();
     }
 

@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -47,8 +46,7 @@ import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 public class SignUpActivity extends AppCompatActivity {
 
     private ActivitySignUpBinding binding;
-//    private FirebaseAuth mAuth;
-//    private String mVerificationId;
+
     private PhoneAuthProvider.ForceResendingToken mResendToken;
 
     @Override
@@ -67,21 +65,6 @@ public class SignUpActivity extends AppCompatActivity {
         setListeners();
 
         DataTokenAndUserId.mAuth = FirebaseAuth.getInstance();
-    }
-
-    private void setListeners() {
-        binding.buttonSignUp.setOnClickListener(v -> {
-            if (isValidSignUp()) {
-                sendVerificationCode("+84" + binding.inputPhone.getText().toString());
-
-                Intent intent = new Intent(getApplicationContext(), VerifyOTPActivity.class);
-                intent.putExtra("account", new signUp(binding.inputFullName.getText()+"", binding.inputPhone.getText()+"", binding.inputPassword.getText()+"", true, true));
-                startActivity(intent);
-            }
-        });
-        binding.buttonSignIn.setOnClickListener(v -> {
-            startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
-        });
     }
 
     private boolean isValidSignUp() {
@@ -111,6 +94,16 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    private void loading(boolean Loading) {
+        if (Loading) {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.buttonSignUp.setVisibility(View.GONE);
+        } else {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.buttonSignUp.setVisibility(View.VISIBLE);
+        }
+    }
+
     public boolean isValidFormatPassword(final String password) {
         Pattern pattern;
         Matcher matcher;
@@ -124,14 +117,26 @@ public class SignUpActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    private void setListeners() {
+        binding.buttonSignUp.setOnClickListener(v -> {
+            if (isValidSignUp()) {
+                loading(true);
+                checkPhone();
+            }
+        });
+        binding.buttonSignIn.setOnClickListener(v -> {
+            startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
+        });
+    }
+
     //SignIn by Phone
     private void sendVerificationCode(String number){
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(DataTokenAndUserId.mAuth)
-                                    .setPhoneNumber(number)
-                                    .setTimeout(60L, TimeUnit.SECONDS)
-                                    .setActivity(this)
-                                    .setCallbacks(mCallbacks)
-                                    .build();
+                .setPhoneNumber(number)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(mCallbacks)
+                .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
@@ -146,7 +151,7 @@ public class SignUpActivity extends AppCompatActivity {
             //2. Trên một số thiết bị, các dịch vụ của Google Play phát hiện SMS đến và thực hiện quy trình xác minh mà không cần người dùng thực hiện bất kỳ hành động nào.
             Log.d("Send", "onVerificationCompleted:" + credential);
 
-            //tự động điền mã OTP
+                        //tự động điền mã OTP
 //            edtNum1.setText(credential.getSmsCode().substring(0,1));
 //            edtNum2.setText(credential.getSmsCode().substring(1,2));
 //            edtNum3.setText(credential.getSmsCode().substring(2,3));
@@ -155,6 +160,7 @@ public class SignUpActivity extends AppCompatActivity {
 //            edtNum6.setText(credential.getSmsCode().substring(5,6));
 
             verifyCode(credential.getSmsCode());
+            loading(false);
         }
 
         //fail
@@ -168,16 +174,23 @@ public class SignUpActivity extends AppCompatActivity {
 //            } else if (e instanceof FirebaseTooManyRequestsException) {
 //                ShowNotification.showAlertDialog(MainActivity.this, "Quota không đủ");
 //            }
+            loading(false);
         }
 
         @Override
         public void onCodeSent(@NonNull String verificationId,
                                @NonNull PhoneAuthProvider.ForceResendingToken token) {
+            loading(false);
+
             Log.d("Send", "onCodeSent:" + verificationId);
             //ShowNotification.dismissProgressDialog();
             Toast.makeText(getApplicationContext(), "Đã gửi OTP", Toast.LENGTH_SHORT).show();
             DataTokenAndUserId.mVerificationId = verificationId;
             mResendToken = token;
+
+            Intent intent = new Intent(getApplicationContext(), VerifyOTPActivity.class);
+            intent.putExtra("account", new signUp(binding.inputFullName.getText()+"", binding.inputPhone.getText()+"", binding.inputPassword.getText()+"", true, true));
+            startActivity(intent);
         }
     };
 
@@ -208,4 +221,24 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
+    private void checkPhone(){
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.checkPhone(binding.inputPhone.getText()+"");
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if(response.body().getStatus() == 1){
+                    sendVerificationCode("+84" + binding.inputPhone.getText().toString());
+                }else{
+                    Toast.makeText(getApplication(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
+                    loading(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+
+            }
+        });
+    }
 }

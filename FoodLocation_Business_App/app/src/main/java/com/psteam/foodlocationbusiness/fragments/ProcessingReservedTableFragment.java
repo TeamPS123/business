@@ -98,7 +98,7 @@ public class ProcessingReservedTableFragment extends Fragment {
         call.enqueue(new Callback<messageAllReserveTable>() {
             @Override
             public void onResponse(Call<messageAllReserveTable> call, Response<messageAllReserveTable> response) {
-                if(response.body()!=null &&  response.body().getStatus() == 1){
+                if(response.body().getStatus() == 1){
                     if(response.body().getReserveTables().size() > 0) {
                         for (int i = 0; i < response.body().getReserveTables().size(); i++) {
                             BodySenderFromUser bodySenderFromUser = new BodySenderFromUser();

@@ -53,6 +53,7 @@ import com.psteam.lib.Models.Get.getFood;
 import com.psteam.lib.Models.Get.getMenu;
 import com.psteam.lib.Models.Get.messageAllCategory;
 import com.psteam.lib.Models.Insert.insertFood;
+import com.psteam.lib.Models.Update.updateFood;
 import com.psteam.lib.Models.message;
 import com.psteam.lib.Service.ServiceAPI_lib;
 
@@ -93,6 +94,7 @@ public class MenuFragment extends Fragment {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
+    private DataTokenAndUserId dataTokenAndUserId;
 
     public static Fragment newInstance() {
         return new MenuFragment();
@@ -111,6 +113,8 @@ public class MenuFragment extends Fragment {
 
         menuId = getArguments().getString("menuId");
         menu = (getMenu)getArguments().getSerializable("menu");
+
+        dataTokenAndUserId = new DataTokenAndUserId(getContext());
 
         verifyStorePermission(getActivity());
         init();
@@ -195,6 +199,7 @@ public class MenuFragment extends Fragment {
                                 food1.setPrice(Double.parseDouble(layoutInsertFoodDialogBinding.inputPreice.getText()+""));
                                 food1.setUnit(layoutInsertFoodDialogBinding.inputUnit.getText()+"");
                                 food1.setName(layoutInsertFoodDialogBinding.inputFoodName.getText()+"");
+                                food1.setStatus(true);
                                 List<String> pic = new ArrayList<>();
                                 pic.add(response1.body().getId());
                                 food1.setPic(pic);
@@ -303,7 +308,22 @@ public class MenuFragment extends Fragment {
     }
 
     private void initFoodManagerAdapter() {
-        managerFoodAdapter = new ManagerFoodAdapter(foods, getContext());
+        managerFoodAdapter = new ManagerFoodAdapter(foods, getContext(), new ManagerFoodAdapter.FoodListeners() {
+            @Override
+            public void onEditClick(getFood food, int position) {
+
+            }
+
+            @Override
+            public void onDeleteClick(getFood food, int position) {
+                delFood(food, position);
+            }
+
+            @Override
+            public void onChangeStatus(getFood food, int position) {
+                updateFood(food, position);
+            }
+        });
         binding.recycleView.setAdapter(managerFoodAdapter);
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getContext(), R.drawable.divider));
@@ -416,4 +436,50 @@ public class MenuFragment extends Fragment {
         }
     }
 
+    private void delFood(getFood food, int position){
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.delFood(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), food.getFoodId());
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if(response.body().getStatus() == 1){
+                    foods.remove(position);
+                    managerFoodAdapter.notifyItemRemoved(position);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void updateFood(getFood food, int position){
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        updateFood food1 = new updateFood();
+        food1.setFoodId(food.getFoodId());
+        food1.setPrice(food.getPrice());
+        food1.setStatus(!food.getStatus());
+        food1.setUnit(food.getUnit());
+        food1.setCategoryId(food.getCategoryId());
+        food1.setName(food.getName());
+        food1.setUserId(dataTokenAndUserId.getUserId());
+
+        Call<message> call = serviceAPI_lib.updateFood(dataTokenAndUserId.getToken(), food1);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if(response.body().getStatus() == 1){
+                    foods.set(position, new getFood(menuId, food.getFoodId(), food1.getName(), food1.getPrice(), food1.getUnit(), food.getCategoryId(), food.getCategoryId(), food.getPic(), food1.getStatus()));
+                    managerFoodAdapter.notifyItemChanged(position);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+
+            }
+        });
+    }
 }

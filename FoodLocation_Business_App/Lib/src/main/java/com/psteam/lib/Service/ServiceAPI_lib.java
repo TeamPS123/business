@@ -8,6 +8,7 @@ import com.psteam.lib.Models.Get.messageAllReserveTable;
 import com.psteam.lib.Models.Get.messageCategoryRes;
 import com.psteam.lib.Models.Get.messageInfoRes;
 import com.psteam.lib.Models.Get.messagePromotion;
+import com.psteam.lib.Models.Get.messageResDetail;
 import com.psteam.lib.Models.Get.messageRestaurant;
 import com.psteam.lib.Models.Input.confirmTable;
 import com.psteam.lib.Models.Input.signIn;
@@ -20,6 +21,8 @@ import com.psteam.lib.Models.Insert.insertRestaurant;
 import com.psteam.lib.Models.Insert.reserveFood;
 import com.psteam.lib.Models.Insert.reserveTable;
 import com.psteam.lib.Models.Insert.signUp;
+import com.psteam.lib.Models.Update.updateFood;
+import com.psteam.lib.Models.Update.updatePromotion;
 import com.psteam.lib.Models.message;
 
 import java.util.List;
@@ -42,9 +45,6 @@ public interface ServiceAPI_lib {
     @POST("signin")
     Call<message> signin(@Body signIn user);
 
-    @GET("getAllPromotion")
-    Call<messagePromotion> getAllPromotion();
-
     @GET("getRestaurantId")
     Call<message> getRestaurantId(@Header("Authorization") String token, @Query("userId") String userId);
 
@@ -56,9 +56,6 @@ public interface ServiceAPI_lib {
 
     @GET("getCategoryRes")
     Call<messageCategoryRes> getCategoryRes();
-
-    @GET("getAllFoodByReserveTableId")
-    Call<messageAllFood> getAllFoodByReserveTableId(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId);
 
     @GET("getInfoRestaurant")
     Call<messageInfoRes> getInfoRestaurant(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
@@ -81,15 +78,6 @@ public interface ServiceAPI_lib {
     @POST("addMenu")
     Call<message> addMenu(@Header("Authorization") String token,@Body insertMenu menu);
 
-    @POST("addFoods")
-    Call<message> addFood_lib(@Header("Authorization") String token,@Body insertFoods foodList);
-
-    @POST("addFood")
-    Call<message> addFood(@Header("Authorization") String token,@Body insertFood foodList);
-
-    @POST("addPromotion")
-    Call<message> addPromotion(@Header("Authorization") String token,@Body insertPromotion promotion);
-
     @POST("addCategory")
     Call<message> addCategory(@Header("Authorization") String token,@Body insertCategory category);
 
@@ -106,15 +94,61 @@ public interface ServiceAPI_lib {
     @POST("upImageOfRes")
     Call<message> addImgRes(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
 
-    @Multipart
-    @POST("upImageOfFood")
-    Call<message> addImgFood(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("foodId") String foodId);
-
     @GET("getAllReserveTableByRestaurantId")
     Call<messageAllReserveTable> getAllReserveTables(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("code") int code);
 
     @GET("updateReserveTable")
     Call<message> updateReserveTable(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId, @Query("code") int code);
+
+//  ------------------------------------------------------Login----------------------------------------------------------------
+    @GET("checkPhone")
+    Call<message> checkPhone(@Query("phone") String phone);
+
+    @GET("checkRes")
+    Call<message> checkRes(@Query("userId") String userId);
+
+//  ------------------------------------------------------Restaurant----------------------------------------------------------------
+    @GET("getResDetail")
+    Call<messageResDetail> getResDetail(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String reserveTableId);
+
+    @GET("changeStatus")
+    Call<message> changeStatus(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String reserveTableId, @Query("status") boolean status);
+
+//  ------------------------------------------------------Food----------------------------------------------------------------
+    @GET("getFoodsByResId")
+    Call<messageAllFood> getAllFoodByReserveTableId(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId);
+
+    @POST("addFoods")
+    Call<message> addFood_lib(@Header("Authorization") String token,@Body insertFoods foodList);
+
+    @POST("addFood")
+    Call<message> addFood(@Header("Authorization") String token,@Body insertFood food);
+
+    @Multipart
+    @POST("upImageOfFood")
+    Call<message> addImgFood(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("foodId") String foodId);
+
+    @GET("delFood")
+    Call<message> delFood(@Header("Authorization") String token, @Query("userId") String userId, @Query("foodId") String foodId);
+
+    @POST("updateFood")
+    Call<message> updateFood(@Header("Authorization") String token, @Body updateFood food);
+
+//  ------------------------------------------------------Promotion----------------------------------------------------------------
+//    @GET("getAllPromotion")
+//    Call<messagePromotion> getAllPromotion();
+
+    @GET("getPromotionList")
+    Call<messagePromotion> getPromotionList(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
+
+    @POST("addPromotion")
+    Call<message> addPromotion(@Header("Authorization") String token,@Body insertPromotion promotion);
+
+    @POST("updatePromotion")
+    Call<message> updatePromotion(@Header("Authorization") String token,@Body updatePromotion promotion);
+
+    @GET("delPromotion")
+    Call<message> delPromotion(@Header("Authorization") String token, @Query("userId") String userId, @Query("promotionId") String promotionId);
 
 //    private void get(){
 //        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);

@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.databinding.ManagerFoodItemContainerBinding;
 import com.psteam.lib.Models.Get.getFood;
+import com.psteam.lib.Models.Get.getPromotion;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -23,11 +24,13 @@ import java.util.Locale;
 public class ManagerFoodAdapter extends RecyclerView.Adapter<ManagerFoodAdapter.ManagerFoodViewHolder> {
 
     private final List<getFood> foodList;
+    private final FoodListeners foodListeners;
     private final Context context;
 
-    public ManagerFoodAdapter(List<getFood> foodList, Context context) {
+    public ManagerFoodAdapter(List<getFood> foodList, Context context, FoodListeners foodListeners) {
         this.foodList = foodList;
         this.context = context;
+        this.foodListeners = foodListeners;
     }
 
     @NonNull
@@ -67,6 +70,15 @@ public class ManagerFoodAdapter extends RecyclerView.Adapter<ManagerFoodAdapter.
             binding.textViewFoodName.setText(food.getName());
             binding.textViewPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi", "VN")).format(food.getPrice()));
             binding.textViewFoodInfo.setText(food.getCategoryName());
+            if(food.getStatus()){
+                binding.buttonStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_toggle_on_24, 0, 0, 0);
+                binding.buttonStatus.setBackgroundColor(Color.parseColor("#2196F3"));
+                binding.buttonStatus.setTag("on");
+            }else{
+                binding.buttonStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_toggle_off_24, 0, 0, 0);
+                binding.buttonStatus.setBackgroundColor(Color.parseColor("#454545"));
+                binding.buttonStatus.setTag("off");
+            }
 
             binding.buttonStatus.setOnClickListener(v -> {
                 if( binding.buttonStatus.getTag().equals("off")) {
@@ -78,8 +90,26 @@ public class ManagerFoodAdapter extends RecyclerView.Adapter<ManagerFoodAdapter.
                     binding.buttonStatus.setBackgroundColor(Color.parseColor("#454545"));
                     binding.buttonStatus.setTag("off");
                 }
+                foodListeners.onChangeStatus(food, getAdapterPosition());
+            });
+
+            binding.buttonDelete.setOnClickListener(v -> {
+                foodListeners.onDeleteClick(food, getAdapterPosition());
+            });
+
+            binding.buttonEdit.setOnClickListener(v -> {
+                foodListeners.onEditClick(food, getAdapterPosition());
             });
         }
+    }
+
+    public interface FoodListeners {
+        // 1 edit 0 details
+        void onEditClick(getFood food, int position);
+
+        void onDeleteClick(getFood food, int position);
+
+        void onChangeStatus(getFood food, int position);
     }
 
 //    public static class Food {

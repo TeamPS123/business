@@ -104,6 +104,14 @@
           }
         },
         {
+          "client_id": "614458729715-vbjej128aopkmf6fm5rb2876ldlpgnrg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.psteam.foodlocation",
+            "certificate_hash": "30e069e08c34aea589ce000b833e2f7d3da90fb7"
+          }
+        },
+        {
           "client_id": "614458729715-6725tkcngamb4k2rru22vdtou9mmld3l.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -133,19 +141,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "614458729715-iapsee5lnt15qcdf21cpir97ld0i4u3p.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.psteam.foodlocationbusiness",
-            "certificate_hash": "37b3557d9f15da01e5420e3f3c48b8b7e2186835"
-          }
-        },
-        {
           "client_id": "614458729715-j2vkuuvicngfvgs8kandhhqec0o53q51.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.psteam.foodlocationbusiness",
             "certificate_hash": "355ff948de4c5a288a1b8a90a967a0cdf57feee1"
+          }
+        },
+        {
+          "client_id": "614458729715-oja6m8sv8jpivfe68gbl3b1871dvmt4f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.psteam.foodlocationbusiness",
+            "certificate_hash": "30e069e08c34aea589ce000b833e2f7d3da90fb7"
+          }
+        },
+        {
+          "client_id": "614458729715-s7buj54j1fom8tuktsvos49fo7lmsdjj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.psteam.foodlocationbusiness",
+            "certificate_hash": "37b3557d9f15da01e5420e3f3c48b8b7e2186835"
           }
         },
         {
