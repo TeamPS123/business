@@ -10,6 +10,7 @@ import com.psteam.lib.Models.Get.messageInfoRes;
 import com.psteam.lib.Models.Get.messagePromotion;
 import com.psteam.lib.Models.Get.messageResDetail;
 import com.psteam.lib.Models.Get.messageRestaurant;
+import com.psteam.lib.Models.Get.messageStatistic;
 import com.psteam.lib.Models.Input.confirmTable;
 import com.psteam.lib.Models.Input.signIn;
 import com.psteam.lib.Models.Insert.insertCategory;
@@ -108,11 +109,14 @@ public interface ServiceAPI_lib {
     Call<message> checkRes(@Query("userId") String userId);
 
 //  ------------------------------------------------------Restaurant----------------------------------------------------------------
+    @GET("getStaticRes")
+    Call<messageStatistic> getStaticRes(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("day") String day, @Query("month") String month, @Query("year") String year);
+
     @GET("getResDetail")
-    Call<messageResDetail> getResDetail(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String reserveTableId);
+    Call<messageResDetail> getResDetail(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
 
     @GET("changeStatus")
-    Call<message> changeStatus(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String reserveTableId, @Query("status") boolean status);
+    Call<message> changeStatus(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("status") boolean status);
 
 //  ------------------------------------------------------Food----------------------------------------------------------------
     @GET("getFoodsByResId")
