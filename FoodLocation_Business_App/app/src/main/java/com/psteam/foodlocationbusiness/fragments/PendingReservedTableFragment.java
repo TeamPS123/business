@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -92,7 +93,8 @@ public class PendingReservedTableFragment extends Fragment {
             public void onClicked(BodySenderFromUser reserveTable, int position) {
                 Intent intent = new Intent(getContext(), ReserveTableDetailsActivity.class);
                 intent.putExtra("response", reserveTable);
-                startActivity(intent);
+                intent.putExtra("position", position);
+                startActivityForResult(intent, 10);
 
 //                reserveTables.remove(position);
 //                reserveTableAdapter.notifyDataSetChanged();
@@ -103,7 +105,6 @@ public class PendingReservedTableFragment extends Fragment {
         RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getContext(), R.drawable.divider));
         binding.recycleView.addItemDecoration(dividerItemDecoration);
     }
-
 
     private void socket(){
         // receiver notification when used app
@@ -208,5 +209,17 @@ public class PendingReservedTableFragment extends Fragment {
                 Toast.makeText(getContext(), "Câp nhật phiếu đặt bàn thất bại", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 10 && resultCode == 11){
+            int position = data.getIntExtra("positionResult", -1);
+
+            reserveTables.remove(position);
+            reserveTableAdapter.notifyDataSetChanged();
+        }
     }
 }

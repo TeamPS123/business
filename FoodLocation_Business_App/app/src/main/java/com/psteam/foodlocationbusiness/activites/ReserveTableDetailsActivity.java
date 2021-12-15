@@ -1,5 +1,6 @@
 package com.psteam.foodlocationbusiness.activites;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
 
     private ManagerFoodAdapter managerFoodAdapter;
     private ArrayList<getFood> foods;
+    private int postion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +119,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
             response.setUserId(getIntent().getExtras().getString("userId"));
         }else{
             response = (BodySenderFromUser) getIntent().getSerializableExtra("response");
+            postion = getIntent().getIntExtra("position", -1);
         }
     }
 
@@ -153,6 +156,11 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
                         MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", reserveTableId));
                         setupSocket.reserveTable(message);
                     }
+
+                    Intent intent = new Intent();
+                    intent.putExtra("positionResult", postion);
+                    setResult(11, intent);
+                    finish();
                 }
 
                 Toast.makeText(getApplication(), response1.body().getNotification(), Toast.LENGTH_SHORT).show();

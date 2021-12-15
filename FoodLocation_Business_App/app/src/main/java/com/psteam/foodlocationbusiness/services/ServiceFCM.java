@@ -58,6 +58,6 @@ public class ServiceFCM extends FirebaseMessagingService {
         mNotificationManager.notify(123, builder.build());
 
         //Notification dismiss after click notification
-        mNotificationManager.cancel(123);
+        //mNotificationManager.cancel(123);
     }
 }
