@@ -1,36 +1,18 @@
 package com.psteam.lib.Models.Get;
 
 public class getStatistic {
-    public getStatistic(String amountWait, String amountDeny, String amountConfirm, String amountComplete, String amountExpired) {
-        this.amountWait = amountWait;
-        this.amountDeny = amountDeny;
-        this.amountConfirm = amountConfirm;
+    public getStatistic(String time, String amountComplete, String amountExpired) {
+        this.time = time;
         this.amountComplete = amountComplete;
         this.amountExpired = amountExpired;
     }
 
-    public String getAmountWait() {
-        return amountWait;
+    public String getTime() {
+        return time;
     }
 
-    public void setAmountWait(String amountWait) {
-        this.amountWait = amountWait;
-    }
-
-    public String getAmountDeny() {
-        return amountDeny;
-    }
-
-    public void setAmountDeny(String amountDeny) {
-        this.amountDeny = amountDeny;
-    }
-
-    public String getAmountConfirm() {
-        return amountConfirm;
-    }
-
-    public void setAmountConfirm(String amountConfirm) {
-        this.amountConfirm = amountConfirm;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getAmountComplete() {
@@ -49,9 +31,7 @@ public class getStatistic {
         this.amountExpired = amountExpired;
     }
 
-    private String amountWait ;
-    private String amountDeny ;
-    private String amountConfirm ;
+    private String time;
     private String amountComplete ;
     private String amountExpired ;
 }

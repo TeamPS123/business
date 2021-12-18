@@ -12,6 +12,8 @@ import com.psteam.lib.Models.Get.messageResDetail;
 import com.psteam.lib.Models.Get.messageRestaurant;
 import com.psteam.lib.Models.Get.messageStatistic;
 import com.psteam.lib.Models.Input.confirmTable;
+import com.psteam.lib.Models.Input.inputStatisticWithMonthAndYear;
+import com.psteam.lib.Models.Input.inputStatisticWithYear;
 import com.psteam.lib.Models.Input.signIn;
 import com.psteam.lib.Models.Insert.insertCategory;
 import com.psteam.lib.Models.Insert.insertFood;
@@ -109,8 +111,11 @@ public interface ServiceAPI_lib {
     Call<message> checkRes(@Query("userId") String userId);
 
 //  ------------------------------------------------------Restaurant----------------------------------------------------------------
-    @GET("getStaticRes")
-    Call<messageStatistic> getStaticRes(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("day") String day, @Query("month") String month, @Query("year") String year);
+    @POST("getStaticRes")
+    Call<messageStatistic> getStaticResWithMonthAndYear(@Header("Authorization") String token, @Body inputStatisticWithMonthAndYear input);
+
+    @POST("getStaticResWithYear")
+    Call<messageStatistic> getStaticResWithYear(@Header("Authorization") String token, @Body inputStatisticWithYear input);
 
     @GET("getResDetail")
     Call<messageResDetail> getResDetail(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);

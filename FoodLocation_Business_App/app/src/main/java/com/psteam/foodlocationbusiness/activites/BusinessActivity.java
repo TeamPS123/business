@@ -55,7 +55,7 @@ import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 
 public class BusinessActivity extends AppCompatActivity {
     private ActivityBusinessBinding binding;
-    private TextView resName;
+    public static TextView resName;
     RoundedImageView resImg;
 
     public Socket mSocket;

@@ -152,36 +152,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/piechart">
 
-            <Spinner
-                android:id="@+id/spinnerDay"
+            <Button
+                android:id="@+id/btnMonth"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/spinnerMonth"
+                app:layout_constraintEnd_toStartOf="@id/btnYear"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="Tháng"/>
 
-            <Spinner
-                android:id="@+id/spinnerMonth"
-                app:layout_constraintStart_toEndOf="@id/spinnerDay"
-                app:layout_constraintEnd_toStartOf="@id/spinnerYear"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"/>
-
-            <Spinner
-                android:id="@+id/spinnerYear"
-                app:layout_constraintStart_toEndOf="@id/spinnerMonth"
+            <Button
+                android:id="@+id/btnYear"
+                app:layout_constraintStart_toEndOf="@id/btnMonth"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="Năm"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.github.mikephil.charting.charts.PieChart
+        <TextView
+            android:id="@+id/txtStatistic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/piechart"
+            app:layout_constraintTop_toBottomOf="@+id/layout3"/>
+
+        <com.github.mikephil.charting.charts.BarChart
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -190,16 +192,6 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginTop="20dp" />
-<!--        <com.airbnb.lottie.LottieAnimationView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/layout2"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:lottie_autoPlay="true"-->
-<!--            app:lottie_loop="true"-->
-<!--            app:lottie_rawRes="@raw/chart"/>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

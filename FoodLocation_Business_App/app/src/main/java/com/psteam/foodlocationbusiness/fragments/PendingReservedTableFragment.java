@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.psteam.foodlocationbusiness.R;
+import com.psteam.foodlocationbusiness.activites.BusinessActivity;
 import com.psteam.foodlocationbusiness.activites.ReserveTableDetailsActivity;
 import com.psteam.foodlocationbusiness.activites.RestaurantRegistrationActivity;
 import com.psteam.foodlocationbusiness.activites.VerifyOTPActivity;
@@ -107,6 +108,7 @@ public class PendingReservedTableFragment extends Fragment {
     }
 
     private void socket(){
+        setupSocket.mSocket.connect();
         // receiver notification when used app
         setupSocket.mSocket.on("send_notication", onNotification);
     }
@@ -126,7 +128,6 @@ public class PendingReservedTableFragment extends Fragment {
                     BodySenderFromUser reserveTable = new BodySenderFromUser();
                     reserveTable.setName(body.optString("name"));
                     reserveTable.setQuantity(Integer.parseInt(body.optString("quantity")));
-                    reserveTable.setReserveTableId(body.optString("reserveTableId"));
                     reserveTable.setReserveTableId(body.optString("reserveTableId"));
                     reserveTable.setNote(body.optString("note"));
                     reserveTable.setPhone(body.optString("phone"));
@@ -190,10 +191,10 @@ public class PendingReservedTableFragment extends Fragment {
                 if(response.body().getStatus() == 1){
                     //xác nhận phiếu
                     if(code == 1){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng " + BusinessActivity.resName + " đã xác nhận đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                         setupSocket.reserveTable(message);
                     }else if(code == 2){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng "+ BusinessActivity.resName +" đã từ chối đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                         setupSocket.reserveTable(message);
                     }
 

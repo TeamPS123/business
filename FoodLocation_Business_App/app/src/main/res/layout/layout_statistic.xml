@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtDateStart"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:textSize="30sp"
+        android:hint="Chọn ngày"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Đến"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/txtDateEnd"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:textSize="30sp"
+        android:hint="Chọn ngày"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/btnStatistic"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:textSize="30sp"
+        android:text="Thống kê"/>
+
+
+</LinearLayout>

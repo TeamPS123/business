@@ -22,15 +22,30 @@
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/drawable-v24/ic_baseline_toggle_off_24.xml" value="0.16979166666666667" />
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/drawable-v24/ic_baseline_toggle_on_24.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/drawable/ic_baseline_toggle_on_24.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/drawable/styles.xml" value="0.2703125" />
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/activity_sign_up.xml" value="0.2033514492753623" />
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/food_item_container.xml" value="0.24818840579710144" />
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/fragment_manager_restaurant.xml" value="0.2536231884057971" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/layout_add_menu_name_dialog.xml" value="0.2265625" />
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/layout_chart.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/layout_promotion_insert_dialog.xml" value="0.22282608695652173" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/layout_statistic.xml" value="0.22780797101449277" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/layout_update_user_info_dialog.xml" value="0.22780797101449277" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/layout_user_reserve_table_item_container.xml" value="0.22780797101449277" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/manager_category_item_container.xml" value="0.22780797101449277" />
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/manager_food_item_container.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/map_restaurant_item_container.xml" value="0.22780797101449277" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/menu_item_container.xml" value="0.22780797101449277" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/month_year_picker_dialog.xml" value="0.24230072463768115" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/notification_item_container.xml" value="0.22780797101449277" />
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/promotion_item_container.xml" value="0.264" />
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/reserved_table_item_completed.xml" value="0.18333333333333332" />
         <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/reserved_table_item_confirm.xml" value="0.18333333333333332" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/reserved_table_item_container.xml" value="0.22780797101449277" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/restaurant_item_container.xml" value="0.22780797101449277" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/restaurant_map_address.xml" value="0.22780797101449277" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/restaurant_photo_item_container.xml" value="0.22780797101449277" />
+        <entry key="..\:/Users/xyzsy/OneDrive/Desktop/business/FoodLocation_Business_App/app/src/main/res/layout/sheet_content.xml" value="0.22780797101449277" />
       </map>
     </option>
   </component>

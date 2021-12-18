@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitServer {
 
     private static Retrofit retrofit;
-    private static String BASE_URL = "https://ps.covid21tsp.space/api/";
+    private static String BASE_URL = "https://pamle.pro/api/";
     private static String GOOGLE_MAP_URL = "https://maps.googleapis.com";
 
     public static Retrofit getRetrofit_lib() {

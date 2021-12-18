@@ -1,6 +1,14 @@
 package com.psteam.lib.Models.Get;
 
+import java.util.List;
+
 public class messageStatistic {
+    public messageStatistic(int status, String notification, List<getStatistic> getStatis) {
+        this.status = status;
+        this.notification = notification;
+        this.getStatis = getStatis;
+    }
+
     public int getStatus() {
         return status;
     }
@@ -17,21 +25,16 @@ public class messageStatistic {
         this.notification = notification;
     }
 
-    public getStatistic getGetStatic() {
-        return getStatic;
+    public List<getStatistic> getGetStatic() {
+        return getStatis;
     }
 
-    public void setGetStatic(getStatistic getStatic) {
-        this.getStatic = getStatic;
+    public void setGetStatic(List<getStatistic> getStatis) {
+        this.getStatis = getStatis;
     }
 
     private int status;
     private String notification;
-    private getStatistic getStatic;
+    private List<getStatistic> getStatis;
 
-    public messageStatistic(int status, String notification, getStatistic getStatic) {
-        this.status = status;
-        this.notification = notification;
-        this.getStatic = getStatic;
-    }
 }
