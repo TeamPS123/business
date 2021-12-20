@@ -191,10 +191,10 @@ public class PendingReservedTableFragment extends Fragment {
                 if(response.body().getStatus() == 1){
                     //xác nhận phiếu
                     if(code == 1){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng " + BusinessActivity.resName + " đã xác nhận đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng " + BusinessActivity.resName.getText()+"" + " đã xác nhận đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                         setupSocket.reserveTable(message);
                     }else if(code == 2){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng "+ BusinessActivity.resName +" đã từ chối đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng "+ BusinessActivity.resName.getText()+"" +" đã từ chối đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                         setupSocket.reserveTable(message);
                     }
 
