@@ -1,6 +1,7 @@
 package com.psteam.foodlocationbusiness.socket.models;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 public class BodySenderFromUser implements Serializable {
     public BodySenderFromUser() {
@@ -23,7 +24,13 @@ public class BodySenderFromUser implements Serializable {
     }
 
     public String getTime() {
-        return time;
+        if (time.contains("SA")) {
+            return time.replace("SA", "AM");
+        } else if (time.contains("CH")) {
+            return time.replace("CH", "PM");
+        } else {
+            return time;
+        }
     }
 
     public void setTime(String time) {
@@ -101,5 +108,12 @@ public class BodySenderFromUser implements Serializable {
         this.userId = userId;
     }
 
+
+    public class CustomComparator implements Comparator<BodySenderFromUser> {
+        @Override
+        public int compare(BodySenderFromUser o1, BodySenderFromUser o2) {
+            return o1.getReserveTableId().compareTo(o2.getReserveTableId());
+        }
+    }
 
 }

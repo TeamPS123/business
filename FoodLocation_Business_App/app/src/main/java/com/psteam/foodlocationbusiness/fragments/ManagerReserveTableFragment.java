@@ -42,6 +42,7 @@ public class ManagerReserveTableFragment extends Fragment {
 //    private String quantityOutDate  = "0";
 
     public Socket mSocket;
+
     {
         try {
             mSocket = IO.socket(setupSocket.uriLocal);
@@ -72,11 +73,26 @@ public class ManagerReserveTableFragment extends Fragment {
         socket();
     }
 
+    private static BadgeDrawable badgeDrawableTabPending;
+    private static BadgeDrawable badgeDrawableTabProcessing;
+    private static BadgeDrawable badgeDrawableTabConfirmed;
+    private static BadgeDrawable badgeDrawableTabLate;
+
+    public static void updateCountTabPending(int count) {
+        badgeDrawableTabPending.setNumber(count);
+    }
+
+    public static void updateCountTabProcessing(int count) {
+        badgeDrawableTabProcessing.setNumber(count);
+    }
+
+    public static void updateCountTabPendingAndProcessing(int countPending) {
+        badgeDrawableTabPending.setNumber(countPending);
+        int temp = (badgeDrawableTabProcessing.getNumber() + 1);
+        badgeDrawableTabProcessing.setNumber(temp);
+    }
+
     private void initTabReserveTable() {
-//        getQuantityCompleted();
-//        getQuantityConfirm();
-//        getQuantityNoConfirm();
-//        getQuantityOutDate();
 
         binding.viewPager.setAdapter(new BusinessReserveTableAdapter(getActivity()));
 
@@ -88,45 +104,45 @@ public class ManagerReserveTableFragment extends Fragment {
                     case Constants.TAB_POSITION_PENDING: {
                         tab.setText("Chưa duyệt");
                         tab.setIcon(R.drawable.ic_round_pending_actions);
-                        BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                        badgeDrawable.setBackgroundColor(
-                                ContextCompat.getColor(getActivity(), R.color.black)
+                        badgeDrawableTabPending = tab.getOrCreateBadge();
+                        badgeDrawableTabPending.setBackgroundColor(
+                                ContextCompat.getColor(getActivity(), R.color.ColorButtonReserve)
                         );
-                        badgeDrawable.setVisible(true);
+                        badgeDrawableTabPending.setMaxCharacterCount(3);
+                        badgeDrawableTabPending.setVisible(true);
                         break;
                     }
                     case Constants.TAB_POSITION_PROCESSING: {
                         tab.setText("Đã duyệt");
                         tab.setIcon(R.drawable.ic_baseline_assignment);
-                        BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                        badgeDrawable.setBackgroundColor(
+                        badgeDrawableTabProcessing = tab.getOrCreateBadge();
+                        badgeDrawableTabProcessing.setBackgroundColor(
                                 ContextCompat.getColor(getContext(), R.color.black)
                         );
-                        badgeDrawable.setVisible(true);
+                        badgeDrawableTabProcessing.setVisible(true);
                         break;
                     }
                     case Constants.TAB_POSITION_CONFIRMED: {
                         tab.setText("Hoàn tất");
                         tab.setIcon(R.drawable.ic_round_check_circle);
 
-                        BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                        badgeDrawable.setBackgroundColor(
+                        badgeDrawableTabConfirmed = tab.getOrCreateBadge();
+                        badgeDrawableTabConfirmed.setBackgroundColor(
                                 ContextCompat.getColor(getContext(), R.color.black)
                         );
-                        badgeDrawable.setVisible(true);
-                        badgeDrawable.setMaxCharacterCount(3);
+                        badgeDrawableTabConfirmed.setVisible(true);
+                        badgeDrawableTabConfirmed.setMaxCharacterCount(3);
                         break;
                     }
                     case Constants.TAB_POSITION_LATE: {
                         tab.setText("Quá hạn");
                         tab.setIcon(R.drawable.ic_round_assignment_late_24);
-
-                        BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                        badgeDrawable.setBackgroundColor(
+                        badgeDrawableTabLate = tab.getOrCreateBadge();
+                        badgeDrawableTabLate.setBackgroundColor(
                                 ContextCompat.getColor(getContext(), R.color.black)
                         );
-                        badgeDrawable.setVisible(true);
-                        badgeDrawable.setMaxCharacterCount(3);
+                        badgeDrawableTabLate.setVisible(true);
+                        badgeDrawableTabLate.setMaxCharacterCount(3);
                         break;
                     }
                 }
@@ -146,7 +162,7 @@ public class ManagerReserveTableFragment extends Fragment {
 
     }
 
-    private void socket(){
+    private void socket() {
         setupSocket.mSocket = mSocket;
         setupSocket.mSocket.connect();
 

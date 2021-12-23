@@ -1,5 +1,7 @@
 package com.psteam.foodlocationbusiness.adapters;
 
+import static com.psteam.foodlocationbusiness.ultilities.Constants.coverStringToDate;
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,6 +12,7 @@ import com.psteam.foodlocationbusiness.databinding.ReservedTableItemConfirmBindi
 import com.psteam.foodlocationbusiness.databinding.ReservedTableItemContainerBinding;
 import com.psteam.foodlocationbusiness.socket.models.BodySenderFromUser;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class ReserveTableConfirmAdapter extends RecyclerView.Adapter<ReserveTableConfirmAdapter.ReserveTableViewHolder>{
@@ -52,9 +55,11 @@ public class ReserveTableConfirmAdapter extends RecyclerView.Adapter<ReserveTabl
 
         public void setData(BodySenderFromUser reserveTable) {
             binding.textViewFullName.setText(reserveTable.getName());
-            binding.textViewNumberPeople.setText(reserveTable.getPhone());
-            binding.textViewDateReserve.setText(reserveTable.getTime());
-            binding.textViewNumberPeople.setText(String.format("Đặt chỗ cho %d người", reserveTable.getQuantity()));
+            binding.textViewPhoneNumber.setText(reserveTable.getPhone());
+            binding.textViewNumberPeople.setText(String.valueOf(reserveTable.getQuantity()));
+
+            binding.textViewTime.setText(new SimpleDateFormat("hh:mm a").format(coverStringToDate(reserveTable.getTime())));
+            binding.textViewDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(coverStringToDate(reserveTable.getTime())));
 
             binding.buttonConfirmed.setOnClickListener(v -> {
                 reserveTableListeners.onConfirmClicked(reserveTable, getAdapterPosition());

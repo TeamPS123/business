@@ -35,6 +35,8 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -56,7 +58,6 @@ public class PendingReservedTableFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -68,18 +69,18 @@ public class PendingReservedTableFragment extends Fragment {
         return view;
     }
 
-    private void init(){
+    private void init() {
         initReserveTable();
 
         socket();
     }
 
     private void initReserveTable() {
-        reserveTables=new ArrayList<>();
+        reserveTables = new ArrayList<>();
 
         getAllReserveTable();
 
-        reserveTableAdapter=new ReserveTableAdapter(reserveTables, new ReserveTableAdapter.ReserveTableListeners() {
+        reserveTableAdapter = new ReserveTableAdapter(reserveTables, new ReserveTableAdapter.ReserveTableListeners() {
             @Override
             public void onConfirmClicked(BodySenderFromUser reserveTable, int position) {
                 updateReserveTable(1, reserveTable, position);
@@ -96,18 +97,14 @@ public class PendingReservedTableFragment extends Fragment {
                 intent.putExtra("response", reserveTable);
                 intent.putExtra("position", position);
                 startActivityForResult(intent, 10);
-
-//                reserveTables.remove(position);
-//                reserveTableAdapter.notifyDataSetChanged();
             }
         });
 
         binding.recycleView.setAdapter(reserveTableAdapter);
-        RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getContext(), R.drawable.divider));
-        binding.recycleView.addItemDecoration(dividerItemDecoration);
+
     }
 
-    private void socket(){
+    private void socket() {
         setupSocket.mSocket.connect();
         // receiver notification when used app
         setupSocket.mSocket.on("send_notication", onNotification);
@@ -136,15 +133,15 @@ public class PendingReservedTableFragment extends Fragment {
                     reserveTable.setTime(body.optString("time"));
                     reserveTable.setUserId(data.optString("sender"));
 
-                    reserveTables.add(reserveTable);
-                    reserveTableAdapter.notifyDataSetChanged();
+                    reserveTables.add(0,reserveTable);
+                    reserveTableAdapter.notifyItemInserted(0);
+                    ManagerReserveTableFragment.updateCountTabPending(reserveTables.size());
                 }
             });
-
         }
     };
 
-    private void getAllReserveTable(){
+    private void getAllReserveTable() {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
 
         ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
@@ -152,8 +149,8 @@ public class PendingReservedTableFragment extends Fragment {
         call.enqueue(new Callback<messageAllReserveTable>() {
             @Override
             public void onResponse(Call<messageAllReserveTable> call, Response<messageAllReserveTable> response) {
-                if(response.body().getStatus() == 1){
-                    if(response.body().getReserveTables().size() > 0) {
+                if (response.body()!=null && response.body().getStatus() == 1) {
+                    if (response.body().getReserveTables().size() > 0) {
                         for (int i = 0; i < response.body().getReserveTables().size(); i++) {
                             BodySenderFromUser bodySenderFromUser = new BodySenderFromUser();
                             bodySenderFromUser.setUserId(response.body().getReserveTables().get(i).getUserId());
@@ -167,8 +164,16 @@ public class PendingReservedTableFragment extends Fragment {
                             bodySenderFromUser.setName(response.body().getReserveTables().get(i).getName());
 
                             reserveTables.add(bodySenderFromUser);
-                            reserveTableAdapter.notifyDataSetChanged();
                         }
+
+                        Collections.sort(reserveTables, new Comparator<BodySenderFromUser>() {
+                            @Override
+                            public int compare(BodySenderFromUser o1, BodySenderFromUser o2) {
+                                return o2.getReserveTableId().compareTo(o1.getReserveTableId());
+                            }
+                        });
+                        reserveTableAdapter.notifyDataSetChanged();
+                        ManagerReserveTableFragment.updateCountTabPending(reserveTables.size());
                     }
                 }
             }
@@ -180,7 +185,7 @@ public class PendingReservedTableFragment extends Fragment {
         });
     }
 
-    private void updateReserveTable(int code, BodySenderFromUser reserveTable, int position){
+    private void updateReserveTable(int code, BodySenderFromUser reserveTable, int position) {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
 
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
@@ -188,21 +193,22 @@ public class PendingReservedTableFragment extends Fragment {
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
+                if (response.body() != null && response.body().getStatus() == 1) {
                     //xác nhận phiếu
-                    if(code == 1){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng " + BusinessActivity.resName.getText()+"" + " đã xác nhận đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
+                    if (code == 1) {
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "Thông báo đặt bàn", new BodySenderFromRes(BusinessActivity.resName.getText() + "" + " đã xác nhận đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                         setupSocket.reserveTable(message);
-                    }else if(code == 2){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng "+ BusinessActivity.resName.getText()+"" +" đã từ chối đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
+                    } else if (code == 2) {
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "Thông báo đặt bàn", new BodySenderFromRes(BusinessActivity.resName.getText() + "" + " đã từ chối đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                         setupSocket.reserveTable(message);
                     }
 
                     reserveTables.remove(position);
                     reserveTableAdapter.notifyDataSetChanged();
+                    ManagerReserveTableFragment.updateCountTabPendingAndProcessing(reserveTables.size());
                 }
 
-                Toast.makeText(getContext(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -215,12 +221,11 @@ public class PendingReservedTableFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 10 && resultCode == 11){
+        if (requestCode == 10 && resultCode == 11) {
             int position = data.getIntExtra("positionResult", -1);
-
             reserveTables.remove(position);
-            reserveTableAdapter.notifyDataSetChanged();
+            reserveTableAdapter.notifyItemRemoved(position);
+            ManagerReserveTableFragment.updateCountTabPendingAndProcessing(reserveTables.size());
         }
     }
 }

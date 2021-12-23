@@ -179,18 +179,34 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonDeny"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:layout_marginBottom="@dimen/_4sdp"
+            android:text="Từ chối"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_9ssp"
+            app:cornerRadius="1dp"
+            android:textStyle="bold"
+            app:backgroundTint="#4CAF50" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonConfirmed"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:text="Khách đã\n đến"
+            android:text="Xác nhận"
             app:cornerRadius="1dp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:textAllCaps="false"
             android:textSize="@dimen/_9ssp"
             android:textStyle="bold"
-            app:backgroundTint="@color/duskYellow" />
+            app:backgroundTint="@color/ColorButtonReserve" />
 
     </LinearLayout>
 

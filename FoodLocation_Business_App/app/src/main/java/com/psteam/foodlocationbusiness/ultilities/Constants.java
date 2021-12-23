@@ -1,5 +1,14 @@
 package com.psteam.foodlocationbusiness.ultilities;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class Constants {
     public static final String KEY_PREFERENCE_NAME = "FoodLocationPreference";
     public static final String PACKAGE_NAME = "com.psteam.foodlocation";
@@ -24,4 +33,34 @@ public class Constants {
 
     public static final int FLAG_CHANGE_PASSWORD = 1;
     public static final int FLAG_UPDATE_USER_INFO = 2;
+
+    public static Date coverStringToDate(String strDate) {
+        try {
+            Date date = new SimpleDateFormat("hh:mm a,yyyy-MM-dd", Locale.US).parse(strDate);
+            return date;
+        } catch (ParseException e) {
+            return new Date();
+        }
+    }
+
+
+    public static String formatToYesterdayOrToday(Date dateTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateTime);
+        Calendar today = Calendar.getInstance();
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DATE, 1);
+        DateFormat timeFormatter = new SimpleDateFormat("dd MMMM yyyy", new Locale("vi", "VN"));
+        DateFormat time = new SimpleDateFormat("hh:mm a");
+
+        if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) && calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+            return time.format(dateTime) + ", Hôm nay " + timeFormatter.format(dateTime);
+        } else if (calendar.get(Calendar.YEAR) == yesterday.get(Calendar.YEAR) && calendar.get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR)) {
+            return time.format(dateTime) + ", Ngày mai " + timeFormatter.format(dateTime);
+        } else {
+            return new SimpleDateFormat("hh:mm a, EEEE dd MMMM yyyy", new Locale("vi", "VN")).format(dateTime);
+        }
+    }
+
+
 }

@@ -1,7 +1,12 @@
 package com.psteam.foodlocationbusiness.activites;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,12 +29,18 @@ import com.psteam.lib.Models.Insert.reserveTable;
 import com.psteam.lib.Models.message;
 import com.psteam.lib.Service.ServiceAPI_lib;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.psteam.foodlocationbusiness.ultilities.Constants.coverStringToDate;
+import static com.psteam.foodlocationbusiness.ultilities.Constants.formatToYesterdayOrToday;
 import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 
 public class ReserveTableDetailsActivity extends AppCompatActivity {
@@ -40,6 +51,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
     private ManagerFoodAdapter managerFoodAdapter;
     private ArrayList<getFood> foods;
     private int postion;
+    private String tabProcessing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +62,23 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
         init();
     }
 
-    private void init(){
+    private void init() {
+        setFullScreen();
         setupSocket.mSocket.connect();
-        if(getIntent().getExtras() != null){
+        if (getIntent().getExtras() != null) {
             getDataFromNoti();
             setBinding();
             setListeners();
             setAdapter(response.getReserveTableId());
+            tabProcessing = getIntent().getStringExtra("tabProcessing");
         }
+        if (tabProcessing != null && tabProcessing.equals("tabProcessing")) {
+            binding.buttonDeny.setVisibility(View.GONE);
+        }
+
     }
 
-    private void setAdapter(String reserveTableId){
+    private void setAdapter(String reserveTableId) {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
 
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
@@ -68,9 +86,8 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
         call.enqueue(new Callback<messageAllFood>() {
             @Override
             public void onResponse(Call<messageAllFood> call, Response<messageAllFood> response) {
-                if(response.body().getStatus() == 1){
+                if (response.body().getStatus() == 1) {
                     foods = response.body().getFoodList();
-
                     initFoodManagerAdapter();
                 }
             }
@@ -105,9 +122,9 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
         binding.recycleViewFoodReserve.addItemDecoration(itemDecoration);
     }
 
-    private void getDataFromNoti(){
+    private void getDataFromNoti() {
         response = new BodySenderFromUser();
-        if(getIntent().getExtras().getString("reserveTableId") != null){
+        if (getIntent().getExtras().getString("reserveTableId") != null) {
             response.setReserveTableId(getIntent().getExtras().getString("reserveTableId"));
             response.setName(getIntent().getExtras().getString("name"));
             response.setQuantity(Integer.parseInt(getIntent().getExtras().getString("quantity")));
@@ -117,29 +134,45 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
             response.setRestaurantId(getIntent().getExtras().getString("restaurantId"));
             response.setTime(getIntent().getExtras().getString("time"));
             response.setUserId(getIntent().getExtras().getString("userId"));
-        }else{
+        } else {
             response = (BodySenderFromUser) getIntent().getSerializableExtra("response");
             postion = getIntent().getIntExtra("position", -1);
         }
     }
 
-    private void setBinding(){
+    private void setBinding() {
         binding.textViewRestaurantAddress.setText(response.getName());
-        binding.textViewCountPeople.setText(response.getQuantity()+"");
-        binding.textViewTimeReserve.setText(response.getTime());
+        binding.textViewCountPeople.setText(String.valueOf(response.getQuantity()));
+        binding.textViewTimeReserve.setText(formatToYesterdayOrToday(coverStringToDate(response.getTime())));
         binding.textViewPhoneNumber.setText(response.getPhone());
     }
 
-    private void setListeners(){
+    private void setFullScreen() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
+            getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.white));// set status background white
+        }
+    }
+
+    private void setListeners() {
         binding.buttonConfirmed.setOnClickListener((v) -> {
-            updateReserveTable(1, response.getReserveTableId());
+
+            if (tabProcessing != null && tabProcessing.equals("tabProcessing")) {
+                updateReserveTable(4, response.getReserveTableId());
+            }else {
+                updateReserveTable(1, response.getReserveTableId());
+            }
+
         });
         binding.buttonDeny.setOnClickListener((v) -> {
             updateReserveTable(2, response.getReserveTableId());
         });
     }
 
-    private void updateReserveTable(int code, String reserveTableId){
+    private void updateReserveTable(int code, String reserveTableId) {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
 
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
@@ -147,13 +180,13 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response1) {
-                if(response1.body().getStatus() == 1){
+                if (response1.body() != null && response1.body().getStatus() == 1) {
                     //xác nhận phiếu
-                    if(code == 1){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", reserveTableId));
+                    if (code == 1) {
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), response.getUserId(), "Thông báo đặt bàn", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", reserveTableId));
                         setupSocket.reserveTable(message);
-                    }else if(code == 2){
-                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", reserveTableId));
+                    } else if (code == 2) {
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), response.getUserId(), "Thông báo đặt bàn", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", reserveTableId));
                         setupSocket.reserveTable(message);
                     }
 
@@ -163,7 +196,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
                     finish();
                 }
 
-                Toast.makeText(getApplication(), response1.body().getNotification(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplication(), response1.body().getNotification(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
