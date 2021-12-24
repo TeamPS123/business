@@ -133,7 +133,7 @@ public class PendingReservedTableFragment extends Fragment {
                     reserveTable.setTime(body.optString("time"));
                     reserveTable.setUserId(data.optString("sender"));
 
-                    reserveTables.add(0,reserveTable);
+                    reserveTables.add(0, reserveTable);
                     reserveTableAdapter.notifyItemInserted(0);
                     ManagerReserveTableFragment.updateCountTabPending(reserveTables.size());
                 }
@@ -149,8 +149,9 @@ public class PendingReservedTableFragment extends Fragment {
         call.enqueue(new Callback<messageAllReserveTable>() {
             @Override
             public void onResponse(Call<messageAllReserveTable> call, Response<messageAllReserveTable> response) {
-                if (response.body()!=null && response.body().getStatus() == 1) {
+                if (response.body() != null && response.body().getStatus() == 1) {
                     if (response.body().getReserveTables().size() > 0) {
+                        reserveTables.clear();
                         for (int i = 0; i < response.body().getReserveTables().size(); i++) {
                             BodySenderFromUser bodySenderFromUser = new BodySenderFromUser();
                             bodySenderFromUser.setUserId(response.body().getReserveTables().get(i).getUserId());
@@ -185,6 +186,14 @@ public class PendingReservedTableFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (reserveTables.size() != ManagerReserveTableFragment.getQuantityInTab(0)) {
+            getAllReserveTable();
+        }
+    }
+
     private void updateReserveTable(int code, BodySenderFromUser reserveTable, int position) {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
 
@@ -205,10 +214,11 @@ public class PendingReservedTableFragment extends Fragment {
 
                     reserveTables.remove(position);
                     reserveTableAdapter.notifyDataSetChanged();
-                    ManagerReserveTableFragment.updateCountTabPendingAndProcessing(reserveTables.size());
+                    if (code == 1)
+                        ManagerReserveTableFragment.updateCountTabPendingAndProcessing(reserveTables.size());
+                    else
+                        ManagerReserveTableFragment.updateCountTabPending(reserveTables.size());
                 }
-
-                //Toast.makeText(getContext(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -225,7 +235,10 @@ public class PendingReservedTableFragment extends Fragment {
             int position = data.getIntExtra("positionResult", -1);
             reserveTables.remove(position);
             reserveTableAdapter.notifyItemRemoved(position);
-            ManagerReserveTableFragment.updateCountTabPendingAndProcessing(reserveTables.size());
+            if (data.getIntExtra("code",-1) == 1)
+                ManagerReserveTableFragment.updateCountTabPendingAndProcessing(reserveTables.size());
+            else
+                ManagerReserveTableFragment.updateCountTabPending(reserveTables.size());
         }
     }
 }

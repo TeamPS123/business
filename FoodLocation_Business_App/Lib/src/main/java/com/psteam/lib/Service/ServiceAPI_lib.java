@@ -11,6 +11,7 @@ import com.psteam.lib.Models.Get.messagePromotion;
 import com.psteam.lib.Models.Get.messageResDetail;
 import com.psteam.lib.Models.Get.messageRestaurant;
 import com.psteam.lib.Models.Get.messageStatistic;
+import com.psteam.lib.Models.Input.InputChart;
 import com.psteam.lib.Models.Input.confirmTable;
 import com.psteam.lib.Models.Input.inputStatisticWithMonthAndYear;
 import com.psteam.lib.Models.Input.inputStatisticWithYear;
@@ -113,6 +114,9 @@ public interface ServiceAPI_lib {
 //  ------------------------------------------------------Restaurant----------------------------------------------------------------
     @POST("getStaticRes")
     Call<messageStatistic> getStaticResWithMonthAndYear(@Header("Authorization") String token, @Body inputStatisticWithMonthAndYear input);
+
+    @POST("GetStaisticWithDate")
+    Call<messageStatistic> getStaticResWithStartDateAndEndDate(@Header("Authorization") String token, @Body InputChart input);
 
     @POST("getStaticResWithYear")
     Call<messageStatistic> getStaticResWithYear(@Header("Authorization") String token, @Body inputStatisticWithYear input);

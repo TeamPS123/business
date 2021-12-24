@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.activites.ReserveTableDetailsActivity;
-import com.psteam.foodlocationbusiness.adapters.ReserveTableAdapter;
 import com.psteam.foodlocationbusiness.adapters.ReserveTableCompletedAdapter;
 import com.psteam.foodlocationbusiness.databinding.FragmentConfirmedReservedTableBinding;
-import com.psteam.foodlocationbusiness.databinding.FragmentProcessingReservedTableBinding;
 import com.psteam.foodlocationbusiness.socket.models.BodySenderFromRes;
 import com.psteam.foodlocationbusiness.socket.models.BodySenderFromUser;
 import com.psteam.foodlocationbusiness.socket.models.MessageSenderFromRes;
@@ -35,7 +33,6 @@ import retrofit2.Response;
 
 import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 
-//Hoàn tất
 public class ConfirmedReservedTableFragment extends Fragment {
 
     private FragmentConfirmedReservedTableBinding binding;
@@ -70,14 +67,25 @@ public class ConfirmedReservedTableFragment extends Fragment {
 
         reserveTableAdapter=new ReserveTableCompletedAdapter(reserveTables, new ReserveTableCompletedAdapter.ReserveTableListeners() {
             @Override
-            public void onClicked(BodySenderFromUser reserveTable, int position) {
-                updateReserveTable(1, reserveTable, position);
+            public void onConfirmClicked(BodySenderFromUser reserveTable, int position) {
+                Intent intent = new Intent(getContext(), ReserveTableDetailsActivity.class);
+                intent.putExtra("response", reserveTable);
+                intent.putExtra("position", position);
+                intent.putExtra("tabProcessing", "tabConfirmed");
+                startActivityForResult(intent, 10);
             }
-        });
+
+            @Override
+            public void onClicked(BodySenderFromUser reserveTable, int position) {
+                Intent intent = new Intent(getContext(), ReserveTableDetailsActivity.class);
+                intent.putExtra("response", reserveTable);
+                intent.putExtra("position", position);
+                intent.putExtra("tabProcessing", "tabConfirmed");
+                startActivityForResult(intent, 10);
+            }
+        }, getContext());
 
         binding.recycleView.setAdapter(reserveTableAdapter);
-        RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getContext(), R.drawable.divider));
-        binding.recycleView.addItemDecoration(dividerItemDecoration);
     }
 
     private void getAllReserveTable(){

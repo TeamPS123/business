@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_12sdp"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/txtDateStart"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:textSize="30sp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_20ssp"
         android:hint="Chọn ngày"
+        android:layout_marginBottom="@dimen/_12sdp"
         android:gravity="center"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Đến"
-        android:textSize="30sp"
+        android:textSize="@dimen/_16ssp"
         android:gravity="center"/>
 
     <TextView
         android:id="@+id/txtDateEnd"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:textSize="30sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:textSize="@dimen/_20ssp"
         android:hint="Chọn ngày"
         android:gravity="center"/>
 
     <Button
         android:id="@+id/btnStatistic"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:textSize="30sp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:minHeight="@dimen/_40sdp"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:textSize="@dimen/_16sdp"
+        android:textAllCaps="false"
         android:text="Thống kê"/>
 
 

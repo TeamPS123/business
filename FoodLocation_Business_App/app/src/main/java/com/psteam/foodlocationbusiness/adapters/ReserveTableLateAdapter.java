@@ -2,7 +2,6 @@ package com.psteam.foodlocationbusiness.adapters;
 
 import static com.psteam.foodlocationbusiness.ultilities.Constants.coverStringToDate;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -20,19 +19,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ReserveTableAdapter extends RecyclerView.Adapter<ReserveTableAdapter.ReserveTableViewHolder> {
+public class ReserveTableLateAdapter extends RecyclerView.Adapter<ReserveTableLateAdapter.ReserveTableLateViewHolder> {
     private final List<BodySenderFromUser> reserveTableList;
     private final ReserveTableListeners reserveTableListeners;
 
-    public ReserveTableAdapter(List<BodySenderFromUser> reserveTableList, ReserveTableListeners reserveTableListeners) {
+    public ReserveTableLateAdapter(List<BodySenderFromUser> reserveTableList, ReserveTableListeners reserveTableListeners) {
         this.reserveTableList = reserveTableList;
         this.reserveTableListeners = reserveTableListeners;
     }
 
     @NonNull
     @Override
-    public ReserveTableViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ReserveTableViewHolder(LayoutReservedTableItemContainerBinding.inflate(
+    public ReserveTableLateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ReserveTableLateViewHolder(LayoutReservedTableItemContainerBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false
@@ -40,7 +39,7 @@ public class ReserveTableAdapter extends RecyclerView.Adapter<ReserveTableAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReserveTableViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReserveTableLateViewHolder holder, int position) {
         holder.setData(reserveTableList.get(position));
     }
 
@@ -49,11 +48,11 @@ public class ReserveTableAdapter extends RecyclerView.Adapter<ReserveTableAdapte
         return reserveTableList != null ? reserveTableList.size() : 0;
     }
 
-    class ReserveTableViewHolder extends RecyclerView.ViewHolder {
+    class ReserveTableLateViewHolder extends RecyclerView.ViewHolder {
 
         private LayoutReservedTableItemContainerBinding binding;
 
-        public ReserveTableViewHolder(@NonNull LayoutReservedTableItemContainerBinding itemView) {
+        public ReserveTableLateViewHolder(@NonNull LayoutReservedTableItemContainerBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;
         }
@@ -78,6 +77,8 @@ public class ReserveTableAdapter extends RecyclerView.Adapter<ReserveTableAdapte
                 reserveTableListeners.onClicked(reserveTable, getAdapterPosition());
             });
 
+            binding.buttonDeny.setText("Huỷ");
+
         }
     }
 
@@ -88,7 +89,4 @@ public class ReserveTableAdapter extends RecyclerView.Adapter<ReserveTableAdapte
 
         void onClicked(BodySenderFromUser reserveTable, int position);
     }
-
-
-
 }

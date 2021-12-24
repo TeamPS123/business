@@ -1,9 +1,11 @@
 package com.psteam.foodlocationbusiness.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -35,12 +37,7 @@ import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 public class ManagerReserveTableFragment extends Fragment {
 
     private FragmentManagerReserveTableBinding binding;
-
-//    private String quantityNoConfirm = "0";
-//    private String quantityConfirm  = "0";
-//    private String quantityCompleted  = "0";
-//    private String quantityOutDate  = "0";
-
+    private static DataTokenAndUserId dataTokenAndUserId;
     public Socket mSocket;
 
     {
@@ -67,9 +64,12 @@ public class ManagerReserveTableFragment extends Fragment {
     }
 
     private void init() {
-
+        dataTokenAndUserId = new DataTokenAndUserId(getContext());
         initTabReserveTable();
-
+        getQuantityByCode(0);
+        getQuantityByCode(1);
+        getQuantityByCode(3);
+        getQuantityByCode(4);
         socket();
     }
 
@@ -86,10 +86,30 @@ public class ManagerReserveTableFragment extends Fragment {
         badgeDrawableTabProcessing.setNumber(count);
     }
 
+    public static void updateCountTabConfirmed(int count) {
+        badgeDrawableTabConfirmed.setNumber(count);
+    }
+
+    public static void updateCountTabLate(int count) {
+        badgeDrawableTabLate.setNumber(count);
+    }
+
     public static void updateCountTabPendingAndProcessing(int countPending) {
         badgeDrawableTabPending.setNumber(countPending);
         int temp = (badgeDrawableTabProcessing.getNumber() + 1);
         badgeDrawableTabProcessing.setNumber(temp);
+    }
+
+    public static void updateCountTabLateAndProcessing(int countPending) {
+        badgeDrawableTabLate.setNumber(countPending);
+        int temp = (badgeDrawableTabProcessing.getNumber() + 1);
+        badgeDrawableTabProcessing.setNumber(temp);
+    }
+
+    public static void updateCountTabProcessingAndConfirmed(int countPending) {
+        badgeDrawableTabProcessing.setNumber(countPending);
+        int temp = (badgeDrawableTabConfirmed.getNumber() + 1);
+        badgeDrawableTabConfirmed.setNumber(temp);
     }
 
     private void initTabReserveTable() {
@@ -100,13 +120,14 @@ public class ManagerReserveTableFragment extends Fragment {
                 binding.tabLayout, binding.viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+
                 switch (position) {
                     case Constants.TAB_POSITION_PENDING: {
                         tab.setText("Chưa duyệt");
                         tab.setIcon(R.drawable.ic_round_pending_actions);
                         badgeDrawableTabPending = tab.getOrCreateBadge();
                         badgeDrawableTabPending.setBackgroundColor(
-                                ContextCompat.getColor(getActivity(), R.color.ColorButtonReserve)
+                                ContextCompat.getColor(getActivity(), R.color.black)
                         );
                         badgeDrawableTabPending.setMaxCharacterCount(3);
                         badgeDrawableTabPending.setVisible(true);
@@ -119,6 +140,7 @@ public class ManagerReserveTableFragment extends Fragment {
                         badgeDrawableTabProcessing.setBackgroundColor(
                                 ContextCompat.getColor(getContext(), R.color.black)
                         );
+                        badgeDrawableTabPending.setMaxCharacterCount(3);
                         badgeDrawableTabProcessing.setVisible(true);
                         break;
                     }
@@ -171,87 +193,73 @@ public class ManagerReserveTableFragment extends Fragment {
         setupSocket.signIn(dataTokenAndUserId.getUserId());
     }
 
-//    private void getQuantityNoConfirm(){
-//        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
-//
-//        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-//        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 0);
-//        call.enqueue(new Callback<message>() {
-//            @Override
-//            public void onResponse(Call<message> call, Response<message> response) {
-//                if(response.body().getStatus() == 1){
-//                    quantityNoConfirm = response.body().getId();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<message> call, Throwable t) {
-//
-//            }
-//        });
-//
-//    }
-//
-//    private void getQuantityConfirm(){
-//        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
-//
-//        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-//        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 1);
-//        call.enqueue(new Callback<message>() {
-//            @Override
-//            public void onResponse(Call<message> call, Response<message> response) {
-//                if(response.body().getStatus() == 1){
-//                    quantityConfirm = response.body().getId();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<message> call, Throwable t) {
-//
-//            }
-//        });
-//
-//    }
-//
-//    private void getQuantityCompleted(){
-//        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
-//
-//        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-//        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 4);
-//        call.enqueue(new Callback<message>() {
-//            @Override
-//            public void onResponse(Call<message> call, Response<message> response) {
-//                if(response.body().getStatus() == 1){
-//                    quantityCompleted = response.body().getId();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<message> call, Throwable t) {
-//
-//            }
-//        });
-//
-//    }
-//
-//    private void getQuantityOutDate(){
-//        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
-//
-//        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-//        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 3);
-//        call.enqueue(new Callback<message>() {
-//            @Override
-//            public void onResponse(Call<message> call, Response<message> response) {
-//                if(response.body().getStatus() == 1){
-//                    quantityOutDate = response.body().getId();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<message> call, Throwable t) {
-//
-//            }
-//        });
-//
-//    }
+    private void getQuantityNoConfirm() {
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
+
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 0);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body().getStatus() == 1) {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public static int getQuantityInTab(int code) {
+        switch (code) {
+            case 0:
+                return badgeDrawableTabPending.getNumber();
+            case 1:
+                return badgeDrawableTabProcessing.getNumber();
+            case 4:
+                return badgeDrawableTabConfirmed.getNumber();
+            default:
+                return badgeDrawableTabLate.getNumber();
+
+        }
+    }
+
+
+    // 0: Chưa duyệt, 1: Đã duyệt, 2:Từ chối:, 3: Quá hạn, 4: Hoàn tất
+    public static void getQuantityByCode(int code) {
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.getQuantityReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), code);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body() != null && response.body().getStatus() == 1) {
+                    switch (code) {
+                        case 0:
+                            updateCountTabPending(Integer.parseInt(response.body().getId().trim()));
+                            break;
+                        case 1:
+                            updateCountTabProcessing(Integer.parseInt(response.body().getId().trim()));
+                            break;
+                        case 4:
+                            updateCountTabConfirmed(Integer.parseInt(response.body().getId().trim()));
+                            break;
+                        default:
+                            updateCountTabLate(Integer.parseInt(response.body().getId().trim()));
+                            break;
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
+            }
+        });
+    }
+
 }

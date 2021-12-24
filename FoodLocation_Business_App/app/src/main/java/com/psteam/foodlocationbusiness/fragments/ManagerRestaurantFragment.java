@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialog;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -56,6 +57,7 @@ import com.psteam.foodlocationbusiness.ultilities.Para;
 import com.psteam.lib.Models.Get.getStatistic;
 import com.psteam.lib.Models.Get.messageResDetail;
 import com.psteam.lib.Models.Get.messageStatistic;
+import com.psteam.lib.Models.Input.InputChart;
 import com.psteam.lib.Models.Input.inputStatisticWithMonthAndYear;
 import com.psteam.lib.Models.Input.inputStatisticWithYear;
 import com.psteam.lib.Models.Insert.insertMenu;
@@ -69,101 +71,66 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ManagerRestaurantFragment extends Fragment implements OnChartValueSelectedListener, AdapterView.OnItemSelectedListener {
+public class ManagerRestaurantFragment extends Fragment {
 
     private boolean isSelected = true;
     private AlertDialog dialog;
-    private List<getStatistic> statistics = new ArrayList<>();
+    private FragmentManagerRestaurantBinding binding;
+    private List<getStatistic> statistics;
+    private DataTokenAndUserId dataTokenAndUserId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
-
-    private FragmentManagerRestaurantBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentManagerRestaurantBinding.inflate(inflater, container, false);
-
+        dataTokenAndUserId = new DataTokenAndUserId(getContext());
         init();
-
+        setListener();
         return binding.getRoot();
-
-
     }
 
-    private void setBarChar(){
-        ArrayList NoOfEmp = new ArrayList();
-
-        float start = 0f;
-
-        for (int i = 0; i < statistics.size(); i++) {
-            NoOfEmp.add(new BarEntry(start, Integer.parseInt(statistics.get(i).getAmountComplete())));
-            NoOfEmp.add(new BarEntry(start+1f, Integer.parseInt(statistics.get(i).getAmountExpired())));
-
-            start = start + 3f ;
-        }
-
-        String[] labels = new String[statistics.size()];
-        for(int i = 0; i < statistics.size(); i ++){
-            labels[i] = statistics.get(i).getTime();
-        }
-
-        BarDataSet bardataset = new BarDataSet(NoOfEmp, "Hoàn tất/Quá hạn");
-        binding.piechart.animateY(1000);
-        XAxis xAxis = binding.piechart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f); // only intervals of 1 day
-        xAxis.setLabelCount(labels.length);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
-
-        //binding.piechart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(year));
-        BarData data = new BarData(bardataset);
-        int[] a = {Color.MAGENTA, Color.RED};
-        bardataset.setColors(ColorTemplate.createColors(a));
-        binding.piechart.setData(data);
+    private void init() {
+        statistics = new ArrayList<>();
+        getResDetail();
+        //getStatisticRes("12", "2020", "12", "2021");
+        getStaticResWithStartDateAndEndDate(new InputChart("27/12/2021",dataTokenAndUserId.getRestaurantId(),"20/12/2021",dataTokenAndUserId.getUserId()));
     }
 
-    private void setChart(){
+    private void initBarChart() {
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
 
-        binding.piechart.getDescription().setEnabled(false);
+        binding.barChart.getDescription().setEnabled(false);
+        binding.barChart.setMaxVisibleValueCount(40);
+        binding.barChart.setPinchZoom(false);
+        binding.barChart.setDrawGridBackground(false);
+        binding.barChart.setGridBackgroundColor(Color.WHITE);
+        binding.barChart.setDrawBarShadow(false);
+        binding.barChart.setDrawValueAboveBar(false);
+        binding.barChart.setScaleMinima(2f, 1f);
 
-        // if more than 60 entries are displayed in the chart, no values will be
-        // drawn
-        binding.piechart.setMaxVisibleValueCount(40);
-
-        // scaling can now only be done on x- and y-axis separately
-        binding.piechart.setPinchZoom(false);
-
-        binding.piechart.setDrawGridBackground(false);
-        binding.piechart.setDrawBarShadow(false);
-
-        binding.piechart.setDrawValueAboveBar(false);
-        binding.piechart.setHighlightFullBarEnabled(false);
-
-        // change the position of the y-labels
-        YAxis leftAxis = binding.piechart.getAxisLeft();
+        YAxis leftAxis = binding.barChart.getAxisLeft();
         leftAxis.setValueFormatter(new LargeValueFormatter());
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-        binding.piechart.getAxisRight().setEnabled(false);
+        leftAxis.setAxisMinimum(0f);
+        binding.barChart.getAxisRight().setEnabled(false);
 
         String[] labels = new String[statistics.size()];
-        for(int i = 0; i < statistics.size(); i ++){
+        for (int i = 0; i < statistics.size(); i++) {
             labels[i] = statistics.get(i).getTime();
         }
 
-        XAxis xAxis = binding.piechart.getXAxis();
+        XAxis xAxis = binding.barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(labels.length);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
 
-        Legend l = binding.piechart.getLegend();
+        Legend l = binding.barChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -172,86 +139,111 @@ public class ManagerRestaurantFragment extends Fragment implements OnChartValueS
         l.setFormToTextSpace(4f);
         l.setXEntrySpace(6f);
 
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-
         for (int i = 0; i < statistics.size(); i++) {
-            float val1 = Float.parseFloat(statistics.get(i).getAmountComplete());
-            float val2 = Float.parseFloat(statistics.get(i).getAmountExpired());
+            float val1 = Integer.parseInt(statistics.get(i).getAmountComplete());
+            float val2 = Integer.parseInt(statistics.get(i).getAmountExpired());
 
-            yVals1.add(new BarEntry(i,
-                    new float[]{val1, val2},
-                    getResources().getDrawable(R.drawable.ic_arrow_down)));
+            barEntries.add(new BarEntry(i, new float[]{val1, val2}));
         }
 
-        BarDataSet set1;
+        BarDataSet barDataSet = new BarDataSet(barEntries, "");
+        barDataSet.setValueTextColor(Color.WHITE);
+        barDataSet.setDrawIcons(false);
+        barDataSet.setColors(getColors());
+        barDataSet.setValueTextSize(6f);
+        barDataSet.setStackLabels(new String[]{"Hoàn tất", "Quá hạn"});
 
-        set1 = new BarDataSet(yVals1, "");
-        set1.setDrawIcons(false);
-        set1.setColors(getColors());
-        set1.setStackLabels(new String[]{"Hoàn tất", "Quá hạn"});
+        BarData barData = new BarData(barDataSet);
+        barData.setValueFormatter(new LargeValueFormatter());
+        barData.setValueTextColor(Color.WHITE);
+        binding.barChart.setDrawGridBackground(false);
+        binding.barChart.setFitBars(true);
+        binding.barChart.setData(barData);
+        binding.barChart.animateY(2000);
+        binding.barChart.setDrawValueAboveBar(false);
+        binding.barChart.setHighlightFullBarEnabled(false);
+        binding.barChart.setPinchZoom(false);
 
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        dataSets.add(set1);
-
-        BarData data = new BarData(dataSets);
-        data.setValueFormatter(new LargeValueFormatter());
-        data.setValueTextColor(Color.WHITE);
-
-        binding.piechart.setData(data);
-
-//        if (binding.piechart.getData() != null &&
-//                binding.piechart.getData().getDataSetCount() > 0) {
-//            set1 = (BarDataSet) binding.piechart.getData().getDataSetByIndex(0);
-//            set1.setValues(yVals1);
-//            binding.piechart.getData().notifyDataChanged();
-//            binding.piechart.notifyDataSetChanged();
-//        } else {
-//            set1 = new BarDataSet(yVals1, "");
-//            set1.setDrawIcons(false);
-//            set1.setColors(getColors());
-//            set1.setStackLabels(new String[]{"Hoàn tất", "Quá hạn"});
-//
-//            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-//            dataSets.add(set1);
-//
-//            BarData data = new BarData(dataSets);
-//            data.setValueFormatter(new LargeValueFormatter());
-//            data.setValueTextColor(Color.WHITE);
-//
-//            binding.piechart.setData(data);
-//        }
-//
-//        binding.piechart.setFitBars(true);
     }
 
     private int[] getColors() {
 
-        // have as many colors as stack-values per entry
         int[] colors = new int[2];
 
-        System.arraycopy(ColorTemplate.MATERIAL_COLORS, 0, colors, 0, 2);
+        System.arraycopy(ColorTemplate.COLORFUL_COLORS, 0, colors, 0, 2);
 
         return colors;
     }
 
-    private void init() {
-        getResDetail();
-//        binding.spinnerYear.setOnItemSelectedListener(this);
-//        binding.spinnerMonth.setOnItemSelectedListener(this);
-//        binding.spinnerDay.setOnItemSelectedListener(this);
-//        setSpinnerDate();
+    public void getResDetail() {
 
-        setListener();
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<messageResDetail> call = serviceAPI_lib.getResDetail(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId());
+        call.enqueue(new Callback<messageResDetail>() {
+            @Override
+            public void onResponse(Call<messageResDetail> call, Response<messageResDetail> response) {
+                if (response.body() != null && response.body().getStatus() == 1) {
+                    binding.amountDay.setText(response.body().getResDetail().getAmountDay() + "");
+                    binding.amountWeek.setText(response.body().getResDetail().getAmountWeek() + "");
 
-//        status=1;
-//        isSelected = status != 1 ? true : false;
-//        if(isSelected) {
-//            binding.buttonSwitch.setMinAndMaxProgress(0.5f, 1.0f);
-//            binding.textStatus.setText("Mở cửa");
-//        }else {
-//            binding.buttonSwitch.setMinAndMaxProgress(0.0f, 0.5f);
-//            binding.textStatus.setText("Đóng cửa");
-//        }
+                    if (!response.body().getResDetail().isStatus()) {
+                        binding.buttonSwitch.setMinAndMaxProgress(0.5f, 1.0f);
+                        binding.buttonSwitch.playAnimation();
+                        binding.buttonSwitch.addAnimatorListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                binding.textStatus.setText("Đóng cửa");
+                            }
+                        });
+                        isSelected = false;
+                    } else {
+                        binding.buttonSwitch.setMinAndMaxProgress(0.0f, 0.5f);
+                        binding.buttonSwitch.playAnimation();
+                        binding.buttonSwitch.addAnimatorListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                binding.textStatus.setText("Mở cửa");
+                            }
+                        });
+
+                        isSelected = true;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<messageResDetail> call, Throwable t) {
+                Toast.makeText(getActivity(), "Lấy dữ liệu thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void updateStatus(boolean status1) {
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.changeStatus(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), status1);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void setListener() {
+        binding.btnMonth.setOnClickListener((v) -> {
+            openDialog(1);
+        });
+
+        binding.btnYear.setOnClickListener((v) -> {
+            openDialog(2);
+        });
 
         binding.buttonSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,139 +278,7 @@ public class ManagerRestaurantFragment extends Fragment implements OnChartValueS
         });
     }
 
-    public void getResDetail(){
-        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
-
-        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<messageResDetail> call = serviceAPI_lib.getResDetail(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId());
-        call.enqueue(new Callback<messageResDetail>() {
-            @Override
-            public void onResponse(Call<messageResDetail> call, Response<messageResDetail> response) {
-                if(response.body().getStatus() == 1){
-                    binding.amountDay.setText(response.body().getResDetail().getAmountDay()+"");
-                    binding.amountWeek.setText(response.body().getResDetail().getAmountWeek()+"");
-
-                    if (!response.body().getResDetail().isStatus()) {
-                        binding.buttonSwitch.setMinAndMaxProgress(0.5f, 1.0f);
-                        binding.buttonSwitch.playAnimation();
-                        binding.buttonSwitch.addAnimatorListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                binding.textStatus.setText("Đóng cửa");
-                            }
-                        });
-                        isSelected = false;
-                    } else {
-                        binding.buttonSwitch.setMinAndMaxProgress(0.0f, 0.5f);
-                        binding.buttonSwitch.playAnimation();
-                        binding.buttonSwitch.addAnimatorListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                binding.textStatus.setText("Mở cửa");
-                            }
-                        });
-
-                        isSelected = true;
-                    }
-                }
-                Toast.makeText(getActivity(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<messageResDetail> call, Throwable t) {
-                Toast.makeText(getActivity(), "Lấy dữ liệu thất bại", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void updateStatus(boolean status1){
-        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
-
-        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<message> call = serviceAPI_lib.changeStatus(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), status1);
-        call.enqueue(new Callback<message>() {
-            @Override
-            public void onResponse(Call<message> call, Response<message> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<message> call, Throwable t) {
-
-            }
-        });
-    }
-
-    @Override
-    public void onValueSelected(Entry e, Highlight h) {
-        Toast.makeText(getActivity(), " phiếu", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onNothingSelected() {
-
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        if(parent.getId() == R.id.spinnerYear){
-//            int month = Integer.parseInt(binding.spinnerMonth.getSelectedItem().toString());
-//
-//            if(month == 2){
-//                int year = Integer.parseInt(binding.spinnerYear.getItemAtPosition(position).toString());
-//                int dayMax = 28;
-//
-//                if(year % 4 == 0){
-//                    dayMax = 29;
-//                }
-//
-//                options2.clear();
-//                for(int i = 0; i <= dayMax ; i ++){
-//                    options2.add(i+"");
-//                }
-//            }
-//        }else if(parent.getId() == R.id.spinnerMonth){
-//            int year = Integer.parseInt(binding.spinnerYear.getSelectedItem().toString());
-//            int month = Integer.parseInt(binding.spinnerMonth.getItemAtPosition(position).toString());
-//
-//            options2.clear();
-//
-//            int dayMax = 31;
-//            if(month == 4 || month == 6 || month == 9 || month == 11){
-//                dayMax = 3;
-//            }else if(month == 2){
-//                if(year % 4 == 0){
-//                    dayMax = 29;
-//                }else {
-//                    dayMax = 28;
-//                }
-//            }
-//            for(int i = 0; i <= dayMax ; i ++){
-//                options2.add(i+"");
-//            }
-//        }
-//
-//        getStatisticRes(binding.spinnerDay.getSelectedItem()+"", binding.spinnerMonth.getSelectedItem()+"", binding.spinnerYear.getSelectedItem()+"");
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-    private void setListener(){
-        binding.btnMonth.setOnClickListener((v) -> {
-            openDialog(1);
-        });
-
-        binding.btnYear.setOnClickListener((v) -> {
-            openDialog(2);
-        });
-    }
-
-    private void getStatisticRes(String month1, String year1, String month2, String year2){
+    private void getStatisticRes(String month1, String year1, String month2, String year2) {
         DataTokenAndUserId data = new DataTokenAndUserId(getContext());
 
         inputStatisticWithMonthAndYear input = new inputStatisticWithMonthAndYear();
@@ -429,15 +289,15 @@ public class ManagerRestaurantFragment extends Fragment implements OnChartValueS
         input.setMonth2(month2);
         input.setMonth1(month1);
 
-        ServiceAPI_lib  serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
         Call<messageStatistic> call = serviceAPI_lib.getStaticResWithMonthAndYear(data.getToken(), input);
         call.enqueue(new Callback<messageStatistic>() {
             @Override
             public void onResponse(Call<messageStatistic> call, Response<messageStatistic> response) {
-                if(response.body().getStatus() == 1){
-                    statistics = response.body().getGetStatic();
-
-                    setChart();
+                if (response.body().getStatus() == 1) {
+                    statistics.clear();
+                    statistics.addAll(response.body().getGetStatic());
+                    initBarChart();
                 }
             }
 
@@ -448,22 +308,18 @@ public class ManagerRestaurantFragment extends Fragment implements OnChartValueS
         });
     }
 
-    private void getStatisticResWithYear(String year1, String year2){
-        DataTokenAndUserId data = new DataTokenAndUserId(getContext());
+    private void getStaticResWithStartDateAndEndDate(InputChart input) {
 
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-
-        inputStatisticWithYear input = new inputStatisticWithYear();
-        input.setUserId(data.getUserId());
-        input.setRestaurantId(data.getRestaurantId());
-        input.setYear1(year1);
-        input.setYear2(year2);
-
-        Call<messageStatistic> call = serviceAPI_lib.getStaticResWithYear(data.getToken(), input);
+        Call<messageStatistic> call = serviceAPI_lib.getStaticResWithStartDateAndEndDate(dataTokenAndUserId.getToken(), input);
         call.enqueue(new Callback<messageStatistic>() {
             @Override
             public void onResponse(Call<messageStatistic> call, Response<messageStatistic> response) {
-
+                if (response.body().getStatus() == 1) {
+                    statistics.clear();
+                    statistics.addAll(response.body().getGetStatic());
+                    initBarChart();
+                }
             }
 
             @Override
@@ -482,7 +338,7 @@ public class ManagerRestaurantFragment extends Fragment implements OnChartValueS
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(layoutStatisticBinding.getRoot());
-        builder.setCancelable(false);
+        builder.setCancelable(true);
         dialog = builder.create();
 
         // Use the calendar for create ranges
@@ -497,20 +353,20 @@ public class ManagerRestaurantFragment extends Fragment implements OnChartValueS
         long maxDate = calendar.getTimeInMillis(); // Get milliseconds of the modified date
 
         layoutStatisticBinding.txtDateStart.setOnClickListener((v) -> {
-            if(code == 1) {
+            if (code == 1) {
                 // Create instance with date ranges values
                 MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
                         .getInstance(11, 2020, minDate, maxDate);
 
                 dialogFragment.show(getActivity().getSupportFragmentManager(), null);
 
+
                 dialogFragment.setOnDateSetListener(new MonthYearPickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(int year, int monthOfYear) {
-                        dateStart[0] = (monthOfYear + 1)+"";
-                        dateStart[1] = year+"";
-
-                        layoutStatisticBinding.txtDateStart.setText(dateStart[0]+"/"+dateStart[1]);
+                        dateStart[0] = (monthOfYear + 1) + "";
+                        dateStart[1] = year + "";
+                        layoutStatisticBinding.txtDateStart.setText(dateStart[0] + "/" + dateStart[1]);
                     }
                 });
             }
@@ -518,7 +374,7 @@ public class ManagerRestaurantFragment extends Fragment implements OnChartValueS
 
         layoutStatisticBinding.txtDateEnd.setOnClickListener((v) -> {
             // Create instance with date ranges values
-            MonthYearPickerDialogFragment dialogFragment =  MonthYearPickerDialogFragment
+            MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
                     .getInstance(11, 2020, minDate, maxDate);
 
             dialogFragment.show(getActivity().getSupportFragmentManager(), null);
@@ -526,22 +382,21 @@ public class ManagerRestaurantFragment extends Fragment implements OnChartValueS
             dialogFragment.setOnDateSetListener(new MonthYearPickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(int year, int monthOfYear) {
-                    dateEnd[0] = (monthOfYear+1)+"";
-                    dateEnd[1] = year+"";
+                    dateEnd[0] = (monthOfYear + 1) + "";
+                    dateEnd[1] = year + "";
 
-                    layoutStatisticBinding.txtDateEnd.setText(dateEnd[0]+"/"+dateEnd[1]);
+                    layoutStatisticBinding.txtDateEnd.setText(dateEnd[0] + "/" + dateEnd[1]);
                 }
             });
         });
 
         layoutStatisticBinding.btnStatistic.setOnClickListener((v) -> {
-            binding.txtStatistic.setText("Thống kê từ " + dateStart[0]+"/"+dateStart[1] +" đến "+dateEnd[0]+"/"+dateEnd[1]);
+            binding.txtStatistic.setText("Thống kê từ " + dateStart[0] + "/" + dateStart[1] + " đến " + dateEnd[0] + "/" + dateEnd[1]);
 
             getStatisticRes(dateStart[0], dateStart[1], dateEnd[0], dateEnd[1]);
 
             dialog.dismiss();
         });
-
 
         dialog.show();
     }

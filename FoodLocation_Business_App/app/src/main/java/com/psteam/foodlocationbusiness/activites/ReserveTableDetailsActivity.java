@@ -74,7 +74,20 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
         }
         if (tabProcessing != null && tabProcessing.equals("tabProcessing")) {
             binding.buttonDeny.setVisibility(View.GONE);
+            binding.buttonConfirmed.setText("Khách đã đến");
+        } else if (tabProcessing != null && tabProcessing.equals("tabConfirmed")) {
+            binding.buttonDeny.setVisibility(View.GONE);
+            binding.buttonConfirmed.setText("Đã hoàn thành");
+            binding.buttonConfirmed.setBackgroundColor(getColor(R.color.ColorButtonReserve));
+            binding.buttonConfirmed.setTextColor(getColor(R.color.white));
+            binding.buttonConfirmed.setEnabled(false);
+        } else if (tabProcessing != null && tabProcessing.equals("tabLate")) {
+            binding.buttonDeny.setText("Huỷ");
         }
+
+        binding.imageViewClose.setOnClickListener(v -> {
+            finish();
+        });
 
     }
 
@@ -86,7 +99,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
         call.enqueue(new Callback<messageAllFood>() {
             @Override
             public void onResponse(Call<messageAllFood> call, Response<messageAllFood> response) {
-                if (response.body().getStatus() == 1) {
+                if (response.body() != null && response.body().getStatus() == 1) {
                     foods = response.body().getFoodList();
                     initFoodManagerAdapter();
                 }
@@ -142,7 +155,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
 
     private void setBinding() {
         binding.textViewRestaurantAddress.setText(response.getName());
-        binding.textViewCountPeople.setText(String.valueOf(response.getQuantity()));
+        binding.textViewCountPeople.setText(String.format("%d người",response.getQuantity()));
         binding.textViewTimeReserve.setText(formatToYesterdayOrToday(coverStringToDate(response.getTime())));
         binding.textViewPhoneNumber.setText(response.getPhone());
     }
@@ -162,7 +175,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
 
             if (tabProcessing != null && tabProcessing.equals("tabProcessing")) {
                 updateReserveTable(4, response.getReserveTableId());
-            }else {
+            } else {
                 updateReserveTable(1, response.getReserveTableId());
             }
 
@@ -192,6 +205,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
 
                     Intent intent = new Intent();
                     intent.putExtra("positionResult", postion);
+                    intent.putExtra("code", code);
                     setResult(11, intent);
                     finish();
                 }

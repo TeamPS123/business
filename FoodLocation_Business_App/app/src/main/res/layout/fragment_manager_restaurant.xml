@@ -47,9 +47,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Hôm nay"
-                    android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/amountDay"
@@ -81,9 +81,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Tuần này"
-                    android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/amountWeek"
@@ -109,19 +109,19 @@
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:background="@drawable/layout_radius"
             android:backgroundTint="@color/TextPrimary"
-            android:paddingVertical="@dimen/_10sdp"
             android:gravity="center_vertical"
+            android:paddingVertical="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/layout1">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
-                android:text="Trạng thái"
-                android:textStyle="bold"
                 android:layout_weight="1"
+                android:text="Trạng thái"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_11ssp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textStatus"
@@ -129,9 +129,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4sdp"
                 android:text="Mở cửa"
-                android:textStyle="bold"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_11ssp"
+                android:textStyle="bold" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/buttonSwitch"
@@ -139,59 +139,56 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_2sdp"
-                app:lottie_rawRes="@raw/button_switch"/>
+                app:lottie_rawRes="@raw/button_switch" />
 
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/layout2"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/piechart">
+            app:layout_constraintTop_toBottomOf="@id/layout2">
 
             <Button
                 android:id="@+id/btnMonth"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnYear"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Tháng"/>
+                android:text="Tháng"
+                app:layout_constraintEnd_toStartOf="@id/btnYear"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/btnYear"
-                app:layout_constraintStart_toEndOf="@id/btnMonth"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Năm"/>
+                android:text="Năm"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnMonth"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtStatistic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/barChart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMonth" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barChart"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/txtStatistic"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/txtStatistic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/piechart"
-            app:layout_constraintTop_toBottomOf="@+id/layout3"/>
-
-        <com.github.mikephil.charting.charts.BarChart
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout3"
-            android:id="@+id/piechart"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="20dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

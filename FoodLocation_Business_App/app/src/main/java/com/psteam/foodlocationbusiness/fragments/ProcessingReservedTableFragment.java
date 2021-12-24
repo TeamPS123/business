@@ -2,9 +2,12 @@ package com.psteam.foodlocationbusiness.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -42,14 +45,13 @@ import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 public class ProcessingReservedTableFragment extends Fragment {
 
     private FragmentProcessingReservedTableBinding binding;
-
+    private DataTokenAndUserId dataTokenAndUserId;
     private ReserveTableConfirmAdapter reserveTableAdapter;
     private ArrayList<BodySenderFromUser> reserveTables;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -63,6 +65,7 @@ public class ProcessingReservedTableFragment extends Fragment {
     }
 
     private void init() {
+        dataTokenAndUserId = new DataTokenAndUserId(getContext());
         initReserveTable();
         getAllReserveTable();
     }
@@ -84,12 +87,12 @@ public class ProcessingReservedTableFragment extends Fragment {
                 startActivityForResult(intent, 10);
             }
         });
+        LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_left_tp_right);
+        binding.recycleView.setLayoutAnimation(layoutAnimationController);
         binding.recycleView.setAdapter(reserveTableAdapter);
     }
 
     private void getAllReserveTable() {
-        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
-
         ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
         Call<messageAllReserveTable> call = serviceAPI.getAllReserveTables(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 1);
         call.enqueue(new Callback<messageAllReserveTable>() {
@@ -97,6 +100,7 @@ public class ProcessingReservedTableFragment extends Fragment {
             public void onResponse(Call<messageAllReserveTable> call, Response<messageAllReserveTable> response) {
                 if (response.body().getStatus() == 1) {
                     if (response.body().getReserveTables().size() > 0) {
+                        reserveTables.clear();
                         for (int i = 0; i < response.body().getReserveTables().size(); i++) {
                             BodySenderFromUser bodySenderFromUser = new BodySenderFromUser();
                             bodySenderFromUser.setUserId(response.body().getReserveTables().get(i).getUserId());
@@ -129,6 +133,20 @@ public class ProcessingReservedTableFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(reserveTables.size()!=ManagerReserveTableFragment.getQuantityInTab(1)){
+            Toast.makeText(getContext(), "onResume", Toast.LENGTH_SHORT).show();
+            getAllReserveTable();
+        }
+    }
+
     private void updateReserveTable(int code, BodySenderFromUser reserveTable, int position) {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
@@ -139,7 +157,7 @@ public class ProcessingReservedTableFragment extends Fragment {
                 if (response.body() != null && response.body().getStatus() == 1) {
                     reserveTables.remove(position);
                     reserveTableAdapter.notifyItemRemoved(position);
-                    ManagerReserveTableFragment.updateCountTabProcessing(reserveTables.size());
+                    ManagerReserveTableFragment.updateCountTabProcessingAndConfirmed(reserveTables.size());
                 }
             }
 
@@ -157,7 +175,7 @@ public class ProcessingReservedTableFragment extends Fragment {
             int position = data.getIntExtra("positionResult", -1);
             reserveTables.remove(position);
             reserveTableAdapter.notifyItemRemoved(position);
-            ManagerReserveTableFragment.updateCountTabProcessing(reserveTables.size());
+            ManagerReserveTableFragment.updateCountTabProcessingAndConfirmed(reserveTables.size());
         }
     }
 }

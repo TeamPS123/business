@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +16,8 @@ import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.activites.ReserveTableDetailsActivity;
 import com.psteam.foodlocationbusiness.adapters.ReserveTableAdapter;
 import com.psteam.foodlocationbusiness.adapters.ReserveTableCompletedAdapter;
-import com.psteam.foodlocationbusiness.databinding.FragmentConfirmedReservedTableBinding;
+import com.psteam.foodlocationbusiness.adapters.ReserveTableLateAdapter;
 import com.psteam.foodlocationbusiness.databinding.FragmentLateReservedTableBinding;
-import com.psteam.foodlocationbusiness.databinding.ReservedTableItemCompletedBinding;
 import com.psteam.foodlocationbusiness.socket.models.BodySenderFromRes;
 import com.psteam.foodlocationbusiness.socket.models.BodySenderFromUser;
 import com.psteam.foodlocationbusiness.socket.models.MessageSenderFromRes;
@@ -29,6 +29,8 @@ import com.psteam.lib.Models.message;
 import com.psteam.lib.Service.ServiceAPI_lib;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,14 +41,14 @@ import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 public class LateReservedTableFragment extends Fragment {
 
     private FragmentLateReservedTableBinding binding;
+    private DataTokenAndUserId dataTokenAndUserId;
+    private ReserveTableLateAdapter reserveTableAdapter;
 
-    private ReserveTableCompletedAdapter reserveTableAdapter;
     private ArrayList<BodySenderFromUser> reserveTables;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -60,42 +62,50 @@ public class LateReservedTableFragment extends Fragment {
     }
 
     private void init() {
+        dataTokenAndUserId = new DataTokenAndUserId(getActivity());
         initReserveTable();
     }
 
     private void initReserveTable() {
-        reserveTables=new ArrayList<>();
+        reserveTables = new ArrayList<>();
 
         getAllReserveTable();
 
-        reserveTableAdapter=new ReserveTableCompletedAdapter(reserveTables, new ReserveTableCompletedAdapter.ReserveTableListeners() {
+        reserveTableAdapter = new ReserveTableLateAdapter(reserveTables, new ReserveTableLateAdapter.ReserveTableListeners() {
+            @Override
+            public void onConfirmClicked(BodySenderFromUser reserveTable, int position) {
+                updateReserveTable(1, reserveTable, position);
+            }
+
+            @Override
+            public void onDenyClicked(BodySenderFromUser reserveTable, int position) {
+                updateReserveTable(2, reserveTable, position);
+            }
 
             @Override
             public void onClicked(BodySenderFromUser reserveTable, int position) {
                 Intent intent = new Intent(getContext(), ReserveTableDetailsActivity.class);
                 intent.putExtra("response", reserveTable);
-                startActivity(intent);
-
-//                reserveTables.remove(position);
-//                reserveTableAdapter.notifyDataSetChanged();
+                intent.putExtra("position", position);
+                intent.putExtra("tabProcessing", "tabLate");
+                startActivityForResult(intent, 10);
             }
         });
 
         binding.recycleView.setAdapter(reserveTableAdapter);
-        RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getContext(), R.drawable.divider));
-        binding.recycleView.addItemDecoration(dividerItemDecoration);
+
     }
 
-    private void getAllReserveTable(){
-        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
+    private void getAllReserveTable() {
 
         ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
         Call<messageAllReserveTable> call = serviceAPI.getAllReserveTables(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 3);
         call.enqueue(new Callback<messageAllReserveTable>() {
             @Override
             public void onResponse(Call<messageAllReserveTable> call, Response<messageAllReserveTable> response) {
-                if(response.body().getStatus() == 1){
-                    if(response.body().getReserveTables().size() > 0) {
+                if (response.body().getStatus() == 1) {
+                    if (response.body() != null && response.body().getReserveTables().size() > 0) {
+                        reserveTables.clear();
                         for (int i = 0; i < response.body().getReserveTables().size(); i++) {
                             BodySenderFromUser bodySenderFromUser = new BodySenderFromUser();
                             bodySenderFromUser.setUserId(response.body().getReserveTables().get(i).getUserId());
@@ -107,10 +117,16 @@ public class LateReservedTableFragment extends Fragment {
                             bodySenderFromUser.setReserveTableId(response.body().getReserveTables().get(i).getReserveTableId());
                             bodySenderFromUser.setQuantity(response.body().getReserveTables().get(i).getQuantity());
                             bodySenderFromUser.setName(response.body().getReserveTables().get(i).getName());
-
                             reserveTables.add(bodySenderFromUser);
-                            reserveTableAdapter.notifyDataSetChanged();
                         }
+                        Collections.sort(reserveTables, new Comparator<BodySenderFromUser>() {
+                            @Override
+                            public int compare(BodySenderFromUser o1, BodySenderFromUser o2) {
+                                return o2.getReserveTableId().compareTo(o1.getReserveTableId());
+                            }
+                        });
+                        reserveTableAdapter.notifyDataSetChanged();
+                        ManagerReserveTableFragment.updateCountTabLate(reserveTables.size());
                     }
                 }
             }
@@ -122,7 +138,7 @@ public class LateReservedTableFragment extends Fragment {
         });
     }
 
-    private void updateReserveTable(int code, BodySenderFromUser reserveTable, int position){
+    private void updateReserveTable(int code, BodySenderFromUser reserveTable, int position) {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
 
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
@@ -130,21 +146,23 @@ public class LateReservedTableFragment extends Fragment {
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
+                if (response.body().getStatus() == 1) {
                     //xác nhận phiếu
-                    if(code == 1){
+                    if (code == 1) {
                         MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                         setupSocket.reserveTable(message);
-                    }else if(code == 2){
+                    } else if (code == 2) {
                         MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                         setupSocket.reserveTable(message);
                     }
-
                     reserveTables.remove(position);
                     reserveTableAdapter.notifyDataSetChanged();
-                }
 
-                Toast.makeText(getContext(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
+                    if (code == 1)
+                        ManagerReserveTableFragment.updateCountTabLateAndProcessing(reserveTables.size());
+                    else
+                        ManagerReserveTableFragment.updateCountTabLate(reserveTables.size());
+                }
             }
 
             @Override
@@ -152,5 +170,19 @@ public class LateReservedTableFragment extends Fragment {
                 Toast.makeText(getContext(), "Câp nhật phiếu đặt bàn thất bại", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10 && resultCode == 11) {
+            int position = data.getIntExtra("positionResult", -1);
+            reserveTables.remove(position);
+            reserveTableAdapter.notifyItemRemoved(position);
+            if (data.getIntExtra("code", -1) == 1)
+                ManagerReserveTableFragment.updateCountTabLateAndProcessing(reserveTables.size());
+            else
+                ManagerReserveTableFragment.updateCountTabLate(reserveTables.size());
+        }
     }
 }
