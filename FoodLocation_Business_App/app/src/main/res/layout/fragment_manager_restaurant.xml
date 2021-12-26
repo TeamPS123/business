@@ -143,32 +143,93 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:background="@drawable/layout_radius"
+            android:backgroundTint="@color/TextPrimary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@id/layout2">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkboxStatusCO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8ssp"
+                android:layout_weight="1"
+                android:drawableTint="@color/white"
+                android:minHeight="0dp"
+                android:paddingStart="@dimen/_4sdp"
+                android:text="Ngày đóng cửa"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/textViewStatusCO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:drawableEnd="@drawable/ic_time"
+                android:drawablePadding="@dimen/_4sdp"
+                android:drawableTint="@color/white"
+                android:text="N/A"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:background="@drawable/layout_radius"
+            android:backgroundTint="@color/TextPrimary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@id/layout4">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:drawableTint="@color/white"
+                android:text="Thống kê đặt bàn"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinnerStatistic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:gravity="end"
+                android:textSize="@dimen/_11ssp"
+                android:textStyle="bold"
+                app:ms_background_color="@color/TextPrimary"
+                app:ms_background_selector="@drawable/selector_spinner_statistic"
+                app:ms_dropdown_height="wrap_content"
+                app:ms_dropdown_max_height="@dimen/_200sdp"
+                app:ms_text_color="@color/white" />
+
+        </LinearLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout2">
-
-            <Button
-                android:id="@+id/btnMonth"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="Tháng"
-                app:layout_constraintEnd_toStartOf="@id/btnYear"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btnYear"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="Năm"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btnMonth"
-                app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/layout6">
 
             <TextView
                 android:id="@+id/txtStatistic"
@@ -177,19 +238,97 @@
                 app:layout_constraintBottom_toTopOf="@+id/barChart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnMonth" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barChart"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/txtStatistic"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtStatistic" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:visibility="gone"
+            android:background="@drawable/layout_radius"
+            android:backgroundTint="@color/TextPrimary"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@id/layout5">
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thống kê theo ngày"
+                android:textSize="@dimen/_9ssp"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/textViewOnOrOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ON"
+                android:textSize="@dimen/_9ssp"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/inputFromDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="dd/MM/yyyy"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                android:backgroundTint="@color/white"
+                android:textColorHint="@color/white"
+                android:focusable="false"
+                android:textColor="@color/white"
+                android:focusableInTouchMode="false"
+                app:layout_constraintTop_toBottomOf="@id/text2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/text3"/>
+
+            <TextView
+                android:id="@+id/text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đến"
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@id/inputFromDay"
+                app:layout_constraintTop_toTopOf="@id/inputFromDay"
+                app:layout_constraintEnd_toStartOf="@id/inputToDay"
+                app:layout_constraintBottom_toBottomOf="@id/inputFromDay"/>
+
+            <EditText
+                android:id="@+id/inputToDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="dd/MM/yyyy"
+                android:focusable="false"
+                android:textColor="@color/white"
+                android:focusableInTouchMode="false"
+                android:backgroundTint="@color/white"
+                android:textColorHint="@color/white"
+                app:layout_constraintTop_toTopOf="@id/inputFromDay"
+                app:layout_constraintBottom_toBottomOf="@id/inputFromDay"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/text3"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

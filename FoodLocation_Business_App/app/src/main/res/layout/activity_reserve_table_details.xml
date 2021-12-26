@@ -55,344 +55,352 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:background="@drawable/layout_radius"
-            android:paddingBottom="@dimen/_16sdp"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/image1"
-                android:layout_width="@dimen/_16sdp"
-                android:layout_height="@dimen/_16sdp"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:src="@drawable/ic_person"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/colorSubtext" />
-
-            <TextView
-                android:id="@+id/text2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_4sdp"
-                android:text="Khách hàng"
-                android:textColor="@color/TextColorSub"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintBottom_toBottomOf="@id/image1"
-                app:layout_constraintStart_toEndOf="@id/image1"
-                app:layout_constraintTop_toTopOf="@id/image1" />
-
-            <TextView
-                android:id="@+id/textViewRestaurantAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_36sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:text="Lê Tiểu Phàm"
-                android:textColor="@color/TextPrimary"
-                android:textSize="@dimen/_11ssp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image1" />
-
-            <View
-                android:id="@+id/line1"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:background="#ECECEC"
-                app:layout_constraintTop_toBottomOf="@id/textViewRestaurantAddress" />
-
-            <ImageView
-                android:id="@+id/image2"
-                android:layout_width="@dimen/_16sdp"
-                android:layout_height="@dimen/_16sdp"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:src="@drawable/ic_baseline_groups_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line1"
-                app:tint="@color/colorSubtext" />
-
-            <TextView
-                android:id="@+id/text3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_4sdp"
-                android:text="Đặt chỗ cho"
-                android:textColor="@color/TextColorSub"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintBottom_toBottomOf="@id/image2"
-                app:layout_constraintStart_toEndOf="@id/image2"
-                app:layout_constraintTop_toTopOf="@id/image2" />
-
-            <TextView
-                android:id="@+id/textViewCountPeople"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_36sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:text="4 người"
-                android:textColor="@color/TextPrimary"
-                android:textSize="@dimen/_11ssp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image2" />
-
-            <View
-                android:id="@+id/line2"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:background="#ECECEC"
-                app:layout_constraintTop_toBottomOf="@id/textViewCountPeople" />
-
-            <ImageView
-                android:id="@+id/image3"
-                android:layout_width="@dimen/_16sdp"
-                android:layout_height="@dimen/_14sdp"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:src="@drawable/ic_time"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line2" />
-
-            <TextView
-                android:id="@+id/text4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_4sdp"
-                android:text="Thời gian đặt bàn"
-                android:textColor="@color/TextColorSub"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintBottom_toBottomOf="@id/image3"
-                app:layout_constraintStart_toEndOf="@id/image3"
-                app:layout_constraintTop_toTopOf="@id/image3" />
-
-            <TextView
-                android:id="@+id/textViewTimeReserve"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_36sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:text="10:00 SA, Hôm nay, 17/11/2021"
-                android:textColor="@color/TextPrimary"
-                android:textSize="@dimen/_11ssp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image3" />
-
-            <View
-                android:id="@+id/line3"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:background="#ECECEC"
-                app:layout_constraintTop_toBottomOf="@id/textViewTimeReserve" />
-
-            <ImageView
-                android:id="@+id/image4"
-                android:layout_width="@dimen/_16sdp"
-                android:layout_height="@dimen/_14sdp"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:src="@drawable/ic_round_phone_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line3" />
-
-            <TextView
-                android:id="@+id/text5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_4sdp"
-                android:text="Số điện thoại"
-                android:textColor="@color/TextColorSub"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintBottom_toBottomOf="@id/image4"
-                app:layout_constraintStart_toEndOf="@id/image4"
-                app:layout_constraintTop_toTopOf="@id/image4" />
-
-            <TextView
-                android:id="@+id/textViewPhoneNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_36sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:text="0587875443"
-                android:textColor="#E73948"
-                android:textSize="@dimen/_11ssp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image4" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonCallPhone"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:drawableLeft="@drawable/ic_round_phone_24"
-                android:drawableTint="@color/white"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingHorizontal="@dimen/_8sdp"
-                android:paddingVertical="2dp"
-                android:text=""
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                app:backgroundTint="@color/ColorButtonReserve"
-                app:layout_constraintBottom_toBottomOf="@id/textViewPhoneNumber"
-                app:layout_constraintEnd_toStartOf="@id/buttonSendMessage" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonSendMessage"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_16sdp"
-                android:drawableLeft="@drawable/ic_baseline_message_24"
-                android:drawableTint="@color/white"
-                android:gravity="center"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingHorizontal="@dimen/_8sdp"
-                android:paddingVertical="2dp"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                app:backgroundTint="@color/duskYellow"
-                app:layout_constraintBottom_toBottomOf="@id/buttonCallPhone"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout1">
-
-            <TextView
-                android:id="@+id/text11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:text="món ăn đặt trước"
-                android:textAllCaps="true"
-                android:textColor="@color/TextPrimary"
-                android:textSize="@dimen/_11ssp"
-                android:textStyle="bold"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycleViewFoodReserve"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@drawable/layout_radius"
-                android:clipToPadding="false"
-                android:orientation="vertical"
-                android:overScrollMode="never"
-                android:scrollbars="none"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text11" />
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout4"
+                android:id="@+id/layout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:background="@drawable/layout_radius"
-                android:paddingVertical="@dimen/_8sdp"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recycleViewFoodReserve">
+                android:paddingBottom="@dimen/_16sdp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/image1"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_marginStart="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:src="@drawable/ic_person"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/colorSubtext" />
 
                 <TextView
-                    android:id="@+id/text12"
+                    android:id="@+id/text2"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Số Lượng:"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:text="Khách hàng"
                     android:textColor="@color/TextColorSub"
                     android:textSize="@dimen/_11ssp"
-                    app:layout_constraintEnd_toStartOf="@id/textViewTotalCount"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="@id/image1"
+                    app:layout_constraintStart_toEndOf="@id/image1"
+                    app:layout_constraintTop_toTopOf="@id/image1" />
 
                 <TextView
-                    android:id="@+id/textViewTotalCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/_3sdp"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/TextPrimary"
-                    android:textSize="@dimen/_11ssp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/text12" />
-
-                <TextView
-                    android:id="@+id/text13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:text="Tổng tiền ước tính:"
-                    android:textColor="@color/colorSubtext"
-                    android:textSize="@dimen/_11ssp"
-                    app:layout_constraintStart_toEndOf="@id/textViewTotalCount"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textViewTotalPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/_3sdp"
-                    android:layout_marginEnd="@dimen/_16sdp"
-                    android:text="0"
+                    android:id="@+id/textViewRestaurantAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_36sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:text="Lê Tiểu Phàm"
                     android:textColor="@color/TextPrimary"
                     android:textSize="@dimen/_11ssp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/text13"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image1" />
+
+                <View
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="#ECECEC"
+                    app:layout_constraintTop_toBottomOf="@id/textViewRestaurantAddress" />
+
+                <ImageView
+                    android:id="@+id/image2"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_marginStart="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:src="@drawable/ic_baseline_groups_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line1"
+                    app:tint="@color/colorSubtext" />
+
+                <TextView
+                    android:id="@+id/text3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:text="Đặt chỗ cho"
+                    android:textColor="@color/TextColorSub"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintBottom_toBottomOf="@id/image2"
+                    app:layout_constraintStart_toEndOf="@id/image2"
+                    app:layout_constraintTop_toTopOf="@id/image2" />
+
+                <TextView
+                    android:id="@+id/textViewCountPeople"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_36sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:text="4 người"
+                    android:textColor="@color/TextPrimary"
+                    android:textSize="@dimen/_11ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image2" />
+
+                <View
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="#ECECEC"
+                    app:layout_constraintTop_toBottomOf="@id/textViewCountPeople" />
+
+                <ImageView
+                    android:id="@+id/image3"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginStart="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:src="@drawable/ic_time"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line2" />
+
+                <TextView
+                    android:id="@+id/text4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:text="Thời gian đặt bàn"
+                    android:textColor="@color/TextColorSub"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintBottom_toBottomOf="@id/image3"
+                    app:layout_constraintStart_toEndOf="@id/image3"
+                    app:layout_constraintTop_toTopOf="@id/image3" />
+
+                <TextView
+                    android:id="@+id/textViewTimeReserve"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_36sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:text="10:00 SA, Hôm nay, 17/11/2021"
+                    android:textColor="@color/TextPrimary"
+                    android:textSize="@dimen/_11ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image3" />
+
+                <View
+                    android:id="@+id/line3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="#ECECEC"
+                    app:layout_constraintTop_toBottomOf="@id/textViewTimeReserve" />
+
+                <ImageView
+                    android:id="@+id/image4"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginStart="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:src="@drawable/ic_round_phone_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line3" />
+
+                <TextView
+                    android:id="@+id/text5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:text="Số điện thoại"
+                    android:textColor="@color/TextColorSub"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintBottom_toBottomOf="@id/image4"
+                    app:layout_constraintStart_toEndOf="@id/image4"
+                    app:layout_constraintTop_toTopOf="@id/image4" />
+
+                <TextView
+                    android:id="@+id/textViewPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_36sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:text="0587875443"
+                    android:textColor="#E73948"
+                    android:textSize="@dimen/_11ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image4" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonCallPhone"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:drawableLeft="@drawable/ic_round_phone_24"
+                    android:drawableTint="@color/white"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:paddingVertical="2dp"
+                    android:text=""
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/ColorButtonReserve"
+                    app:layout_constraintBottom_toBottomOf="@id/textViewPhoneNumber"
+                    app:layout_constraintEnd_toStartOf="@id/buttonSendMessage" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSendMessage"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_16sdp"
+                    android:drawableLeft="@drawable/ic_baseline_message_24"
+                    android:drawableTint="@color/white"
+                    android:gravity="center"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:paddingVertical="2dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/duskYellow"
+                    app:layout_constraintBottom_toBottomOf="@id/buttonCallPhone"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout1">
+
+                <TextView
+                    android:id="@+id/text11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:text="món ăn đặt trước"
+                    android:textAllCaps="true"
+                    android:textColor="@color/TextPrimary"
+                    android:textSize="@dimen/_11ssp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleViewFoodReserve"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/layout_radius"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text11"
+                    />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:background="@drawable/layout_radius"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recycleViewFoodReserve">
+
+                    <TextView
+                        android:id="@+id/text12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Số Lượng:"
+                        android:textColor="@color/TextColorSub"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintEnd_toStartOf="@id/textViewTotalCount"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textViewTotalCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/TextPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@id/text12" />
+
+                    <TextView
+                        android:id="@+id/text13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:text="Tổng tiền ước tính:"
+                        android:textColor="@color/colorSubtext"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toEndOf="@id/textViewTotalCount"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textViewTotalPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:layout_marginEnd="@dimen/_16sdp"
+                        android:text="0"
+                        android:textColor="@color/TextPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/text13"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/layout2"

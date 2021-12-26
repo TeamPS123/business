@@ -16,7 +16,6 @@
             android:id="@+id/layoutMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:paddingTop="@dimen/_8sdp"
             android:paddingBottom="@dimen/_8sdp">
 
@@ -43,9 +42,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/textViewSearch"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:src="@drawable/ic_search"
+                android:tint="@color/primary_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import com.psteam.lib.Models.Get.messageResDetail;
 import com.psteam.lib.Models.Get.messageRestaurant;
 import com.psteam.lib.Models.Get.messageStatistic;
 import com.psteam.lib.Models.Input.InputChart;
+import com.psteam.lib.Models.Input.SearchInput;
 import com.psteam.lib.Models.Input.confirmTable;
 import com.psteam.lib.Models.Input.inputStatisticWithMonthAndYear;
 import com.psteam.lib.Models.Input.inputStatisticWithYear;
@@ -101,10 +102,15 @@ public interface ServiceAPI_lib {
     @GET("getAllReserveTableByRestaurantId")
     Call<messageAllReserveTable> getAllReserveTables(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("code") int code);
 
+    @POST("searchReserve")
+    Call<messageAllReserveTable> getReserveTable(@Header("Authorization") String token, @Body SearchInput searchInput);
+
     @GET("updateReserveTable")
     Call<message> updateReserveTable(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId, @Query("code") int code);
 
-//  ------------------------------------------------------Login----------------------------------------------------------------
+
+
+    //  ------------------------------------------------------Login----------------------------------------------------------------
     @GET("checkPhone")
     Call<message> checkPhone(@Query("phone") String phone);
 
@@ -126,6 +132,9 @@ public interface ServiceAPI_lib {
 
     @GET("changeStatus")
     Call<message> changeStatus(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("status") boolean status);
+
+    @GET("changeStatusCo")
+    Call<message> changeStatusCO(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("statusCo") String statusCO);
 
 //  ------------------------------------------------------Food----------------------------------------------------------------
     @GET("getFoodsByResId")

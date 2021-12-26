@@ -11,8 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -26,8 +24,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -40,7 +36,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.adapters.ImageRestaurantAdapter;
-import com.psteam.foodlocationbusiness.adapters.ManagerCategoryAdapter;
 import com.psteam.foodlocationbusiness.adapters.ManagerFoodAdapter;
 import com.psteam.foodlocationbusiness.databinding.FragmentMenuBinding;
 import com.psteam.foodlocationbusiness.databinding.LayoutInsertCategoryDialogBinding;
@@ -59,7 +54,6 @@ import com.psteam.lib.Service.ServiceAPI_lib;
 
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,7 +141,12 @@ public class MenuFragment extends Fragment {
             dialog.dismiss();
         });
         spinnerCategory();
-        imageRestaurantAdapter = new ImageRestaurantAdapter(uris);
+        imageRestaurantAdapter = new ImageRestaurantAdapter(uris, new ImageRestaurantAdapter.ImageResListeners() {
+            @Override
+            public void onRemoveClick(int position, Uri uri) {
+
+            }
+        });
         layoutInsertFoodDialogBinding.recycleView.setAdapter(imageRestaurantAdapter);
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(layoutInsertFoodDialogBinding.recycleView);

@@ -179,18 +179,79 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:id="@+id/buttonConfirmed"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:maxLines="3"
+            android:minWidth="@dimen/_80sdp"
+            android:visibility="visible"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:textColor="@color/TextPrimary"
+            android:text="Đã hoàn tất"
+            android:paddingHorizontal="0dp"
+            android:maxWidth="@dimen/_80sdp"
+            app:cornerRadius="1dp"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="@dimen/_9ssp"
+            app:backgroundTint="@color/white" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:visibility="gone"
+            android:insetBottom="0dp"
+            android:textColor="@color/white"
             android:text="Hoàn thành"
+            android:minWidth="@dimen/_80sdp"
             app:cornerRadius="1dp"
             android:textAllCaps="false"
             android:textSize="@dimen/_9ssp"
             android:textStyle="bold"
             app:backgroundTint="@color/duskYellow" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonDeny"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="@dimen/_80sdp"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/_4sdp"
+            android:text="Từ chối"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_9ssp"
+            app:cornerRadius="1dp"
+            android:textStyle="bold"
+            app:backgroundTint="#4CAF50" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonAgree"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:visibility="gone"
+            android:minWidth="@dimen/_80sdp"
+            android:insetBottom="0dp"
+            android:textColor="@color/white"
+            android:text="Xác nhận"
+            app:cornerRadius="1dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_9ssp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/ColorButtonReserve" />
+
 
     </LinearLayout>
 

@@ -71,7 +71,6 @@ public class PendingReservedTableFragment extends Fragment {
 
     private void init() {
         initReserveTable();
-
         socket();
     }
 

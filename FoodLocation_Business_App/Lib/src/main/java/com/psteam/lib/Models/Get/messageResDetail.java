@@ -29,6 +29,7 @@ public class messageResDetail {
     private String notification;
     private getResDetail resDetail;
 
+
     public messageResDetail(int status, String notification, getResDetail resDetail) {
         this.status = status;
         this.notification = notification;

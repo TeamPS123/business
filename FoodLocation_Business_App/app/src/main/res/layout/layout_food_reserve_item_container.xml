@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_8sdp"
+    android:layout_marginHorizontal="@dimen/_8sdp"
+    android:layout_marginTop="@dimen/_8sdp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageViewFood"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/suatuoi"
+        app:layout_constraintEnd_toStartOf="@id/textViewFoodName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewRemove"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/colorSubtext" />
+
+
+    <TextView
+        android:id="@+id/textViewFoodName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_30sdp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Tên món ăn"
+        android:textColor="@color/TextPrimary"
+        android:textSize="@dimen/_13ssp"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageViewFood"
+        app:layout_constraintTop_toTopOf="@id/imageViewFood"
+        app:layout_constraintBottom_toTopOf="@id/textViewCategory"/>
+
+    <TextView
+        android:id="@+id/textViewCategory"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Loại sản phẩm"
+        android:textColor="@color/TextColorSub"
+        android:textSize="@dimen/_11ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/textViewFoodName"
+        app:layout_constraintTop_toBottomOf="@id/textViewFoodName"
+        app:layout_constraintBottom_toTopOf="@id/textViewUnit"/>
+
+    <TextView
+        android:id="@+id/textViewUnit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Phần"
+        android:textColor="@color/TextColorSub"
+        android:textSize="@dimen/_11ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/textViewCategory"
+        app:layout_constraintTop_toBottomOf="@id/textViewCategory"
+        app:layout_constraintBottom_toTopOf="@id/textViewPrice"/>
+
+    <TextView
+        android:id="@+id/textViewPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:text="39,000đ"
+        android:textColor="#AF1C1C"
+        android:textSize="@dimen/_13ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/textViewUnit"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewFood"
+        app:layout_constraintStart_toEndOf="@id/imageViewFood" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="@dimen/_2sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/textViewAdd"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_round_add"
+            android:background="@android:color/transparent"
+            android:tint="@color/TextPrimary"/>
+
+        <TextView
+            android:id="@+id/textViewCount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:text="1"
+            android:background="@drawable/layout_radius"
+            android:gravity="center"
+            android:textColor="@color/TextPrimary"
+            android:backgroundTint="@color/ColorLine"
+            android:paddingHorizontal="@dimen/_16sdp"
+            android:textStyle="bold"
+            android:textSize="@dimen/_13ssp"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/textViewMinus"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:src="@drawable/ic_round_remove"
+            android:background="@android:color/transparent"
+            android:tint="@color/TextPrimary"/>
+
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

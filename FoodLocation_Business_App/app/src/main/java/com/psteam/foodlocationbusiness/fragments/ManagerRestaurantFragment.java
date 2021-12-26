@@ -17,7 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -46,11 +48,14 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.slider.LabelFormatter;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.databinding.FragmentManagerRestaurantBinding;
 import com.psteam.foodlocationbusiness.databinding.LayoutAddMenuNameDialogBinding;
 import com.psteam.foodlocationbusiness.databinding.LayoutStatisticBinding;
+import com.psteam.foodlocationbusiness.ultilities.Constants;
 import com.psteam.foodlocationbusiness.ultilities.CustomToast;
 import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
 import com.psteam.foodlocationbusiness.ultilities.Para;
@@ -64,8 +69,18 @@ import com.psteam.lib.Models.Insert.insertMenu;
 import com.psteam.lib.Models.message;
 import com.psteam.lib.Service.ServiceAPI_lib;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.IsoFields;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,6 +93,8 @@ public class ManagerRestaurantFragment extends Fragment {
     private FragmentManagerRestaurantBinding binding;
     private List<getStatistic> statistics;
     private DataTokenAndUserId dataTokenAndUserId;
+    private StatisticModel statisticModel;
+    private List<getStatistic> temp, tempRemoved;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,22 +113,111 @@ public class ManagerRestaurantFragment extends Fragment {
 
     private void init() {
         statistics = new ArrayList<>();
+        statisticModel = new StatisticModel("Tuần này", 7);
         getResDetail();
-        //getStatisticRes("12", "2020", "12", "2021");
-        getStaticResWithStartDateAndEndDate(new InputChart("27/12/2021",dataTokenAndUserId.getRestaurantId(),"20/12/2021",dataTokenAndUserId.getUserId()));
+        initData();
+        temp = new ArrayList<>();
+        tempRemoved = new ArrayList<>();
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        Date firstDayOfWeek = cal.getTime();
+
+        cal.add(Calendar.WEEK_OF_YEAR, 1);
+        cal.add(java.util.Calendar.DATE, -1);
+        Date firstDayOfNextWeek = cal.getTime();
+
+        getStaticResWithStartDateAndEndDate(new InputChart(new SimpleDateFormat("dd/MM/yyyy").format(firstDayOfNextWeek), dataTokenAndUserId.getRestaurantId(),
+                new SimpleDateFormat("dd/MM/yyyy").format(firstDayOfWeek), dataTokenAndUserId.getUserId()));
+    }
+
+
+    private void initData() {
+
+        ArrayList<StatisticModel> strings = new ArrayList<>();
+        strings.add(new StatisticModel("Tuần này", 7));
+        strings.add(new StatisticModel("Tuần trước", -7));
+        strings.add(new StatisticModel("Tháng này", 30));
+        strings.add(new StatisticModel("Tháng trước", -30));
+        strings.add(new StatisticModel("Khác", -1));
+
+        ArrayAdapter<StatisticModel> arrayAdapter = new ArrayAdapter<StatisticModel>(getContext(), android.R.layout.simple_list_item_1, strings);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerStatistic.setAdapter(arrayAdapter);
+        binding.spinnerStatistic.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                statisticModel = (StatisticModel) item;
+
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.clear(Calendar.MINUTE);
+                cal.clear(Calendar.SECOND);
+                cal.clear(Calendar.MILLISECOND);
+                Date startDay;
+                Date endDay;
+
+                if (statisticModel.getValue() != -1) {
+                    binding.layout6.setVisibility(View.GONE);
+                }
+
+                switch (statisticModel.getValue()) {
+                    case 7:
+                        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+                        startDay = cal.getTime();
+
+                        cal.add(Calendar.WEEK_OF_YEAR, 1);
+                        cal.add(java.util.Calendar.DATE, -1);
+                        endDay = cal.getTime();
+                        getStaticResWithStartDateAndEndDate(new InputChart(new SimpleDateFormat("dd/MM/yyyy").format(endDay), dataTokenAndUserId.getRestaurantId(),
+                                new SimpleDateFormat("dd/MM/yyyy").format(startDay), dataTokenAndUserId.getUserId()));
+                        break;
+                    case -7:
+                        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+                        cal.add(Calendar.WEEK_OF_YEAR, -1);
+                        startDay = cal.getTime();
+
+                        cal = Calendar.getInstance();
+                        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+                        cal.add(java.util.Calendar.DATE, -1);
+                        endDay = cal.getTime();
+                        getStaticResWithStartDateAndEndDate(new InputChart(new SimpleDateFormat("dd/MM/yyyy").format(endDay), dataTokenAndUserId.getRestaurantId(),
+                                new SimpleDateFormat("dd/MM/yyyy").format(startDay), dataTokenAndUserId.getUserId()));
+                        break;
+                    case 30:
+                        cal.set(Calendar.DAY_OF_MONTH, 1);
+                        startDay = cal.getTime();
+
+                        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+                        endDay = cal.getTime();
+                        getStaticResWithStartDateAndEndDate(new InputChart(new SimpleDateFormat("dd/MM/yyyy").format(endDay), dataTokenAndUserId.getRestaurantId(),
+                                new SimpleDateFormat("dd/MM/yyyy").format(startDay), dataTokenAndUserId.getUserId()));
+                        break;
+                    case -30:
+                        cal.set(Calendar.DAY_OF_MONTH, 1);
+                        cal.add(Calendar.MONTH, -1);
+                        startDay = cal.getTime();
+
+                        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+                        endDay = cal.getTime();
+                        getStaticResWithStartDateAndEndDate(new InputChart(new SimpleDateFormat("dd/MM/yyyy").format(endDay), dataTokenAndUserId.getRestaurantId(),
+                                new SimpleDateFormat("dd/MM/yyyy").format(startDay), dataTokenAndUserId.getUserId()));
+                        break;
+                    default:
+                        binding.layout6.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
     }
 
     private void initBarChart() {
         ArrayList<BarEntry> barEntries = new ArrayList<>();
-
-        binding.barChart.getDescription().setEnabled(false);
-        binding.barChart.setMaxVisibleValueCount(40);
-        binding.barChart.setPinchZoom(false);
-        binding.barChart.setDrawGridBackground(false);
-        binding.barChart.setGridBackgroundColor(Color.WHITE);
-        binding.barChart.setDrawBarShadow(false);
-        binding.barChart.setDrawValueAboveBar(false);
-        binding.barChart.setScaleMinima(2f, 1f);
 
         YAxis leftAxis = binding.barChart.getAxisLeft();
         leftAxis.setValueFormatter(new LargeValueFormatter());
@@ -120,7 +226,11 @@ public class ManagerRestaurantFragment extends Fragment {
 
         String[] labels = new String[statistics.size()];
         for (int i = 0; i < statistics.size(); i++) {
-            labels[i] = statistics.get(i).getTime();
+            if (statisticModel.getValue() == 7 || statisticModel.getValue() == -7) {
+                labels[i] = new SimpleDateFormat("EEEE").format(coverStringToDate(statistics.get(i).getTime()));
+            } else {
+                labels[i] = statistics.get(i).getTime();
+            }
         }
 
         XAxis xAxis = binding.barChart.getXAxis();
@@ -146,24 +256,55 @@ public class ManagerRestaurantFragment extends Fragment {
             barEntries.add(new BarEntry(i, new float[]{val1, val2}));
         }
 
+        if (labels.length <= 10) {
+            binding.barChart.setScaleMinima(1.5f, 1f);
+        } else {
+            binding.barChart.setScaleMinima(5f, 1f);
+        }
+
         BarDataSet barDataSet = new BarDataSet(barEntries, "");
         barDataSet.setValueTextColor(Color.WHITE);
         barDataSet.setDrawIcons(false);
         barDataSet.setColors(getColors());
         barDataSet.setValueTextSize(6f);
-        barDataSet.setStackLabels(new String[]{"Hoàn tất", "Quá hạn"});
+        barDataSet.setStackLabels(new String[]{"Hoàn tất", "Bị huỷ"});
 
         BarData barData = new BarData(barDataSet);
         barData.setValueFormatter(new LargeValueFormatter());
         barData.setValueTextColor(Color.WHITE);
         binding.barChart.setDrawGridBackground(false);
         binding.barChart.setFitBars(true);
-        binding.barChart.setData(barData);
-        binding.barChart.animateY(2000);
+
+        binding.barChart.animateY(1200);
         binding.barChart.setDrawValueAboveBar(false);
         binding.barChart.setHighlightFullBarEnabled(false);
         binding.barChart.setPinchZoom(false);
 
+        binding.barChart.getDescription().setEnabled(false);
+        binding.barChart.setMaxVisibleValueCount(40);
+        binding.barChart.setDrawBarShadow(false);
+
+        binding.barChart.setData(barData);
+    }
+
+
+    public List<getStatistic> removeNullItem(List<getStatistic> statistics) {
+        List<getStatistic> temp = new ArrayList<>();
+        for (getStatistic getStatistic : statistics) {
+            if (!getStatistic.getAmountComplete().equals("0") || !getStatistic.getAmountExpired().equals("0")) {
+                temp.add(getStatistic);
+            }
+        }
+        return temp;
+    }
+
+    public static Date coverStringToDate(String strDate) {
+        try {
+            Date date = new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(strDate);
+            return date;
+        } catch (ParseException e) {
+            return new Date();
+        }
     }
 
     private int[] getColors() {
@@ -186,6 +327,15 @@ public class ManagerRestaurantFragment extends Fragment {
                     binding.amountDay.setText(response.body().getResDetail().getAmountDay() + "");
                     binding.amountWeek.setText(response.body().getResDetail().getAmountWeek() + "");
 
+                    if (response.body().getResDetail().getStatusCo() !=null) {
+                        binding.checkboxStatusCO.setChecked(true);
+                        binding.textViewStatusCO.setText(response.body().getResDetail().getStatusCo());
+                    } else {
+                        binding.checkboxStatusCO.setChecked(false);
+                        binding.textViewStatusCO.setText("N/A");
+                    }
+
+
                     if (!response.body().getResDetail().isStatus()) {
                         binding.buttonSwitch.setMinAndMaxProgress(0.5f, 1.0f);
                         binding.buttonSwitch.playAnimation();
@@ -194,6 +344,7 @@ public class ManagerRestaurantFragment extends Fragment {
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
                                 binding.textStatus.setText("Đóng cửa");
+                                binding.checkboxStatusCO.setText("Ngày mở cửa trở lại");
                             }
                         });
                         isSelected = false;
@@ -205,6 +356,7 @@ public class ManagerRestaurantFragment extends Fragment {
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
                                 binding.textStatus.setText("Mở cửa");
+                                binding.checkboxStatusCO.setText("Hẹn ngày đóng cửa");
                             }
                         });
 
@@ -220,9 +372,29 @@ public class ManagerRestaurantFragment extends Fragment {
         });
     }
 
+    private int flag = 0;
+
     public void updateStatus(boolean status1) {
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
         Call<message> call = serviceAPI_lib.changeStatus(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), status1);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body() != null && response.body().getStatus() == 1) {
+                    binding.checkboxStatusCO.setChecked(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
+            }
+        });
+    }
+
+    public void updateStatusCo(String statusCo) {
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.changeStatusCO(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), statusCo);
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
@@ -231,18 +403,74 @@ public class ManagerRestaurantFragment extends Fragment {
 
             @Override
             public void onFailure(Call<message> call, Throwable t) {
-
+                Log.d("Log:", t.getMessage());
             }
         });
     }
 
     private void setListener() {
-        binding.btnMonth.setOnClickListener((v) -> {
-            openDialog(1);
+        binding.inputFromDay.clearFocus();
+        binding.inputFromDay.setOnClickListener((v) -> {
+            LocalDate date;
+            if (v != null && !((EditText) v).getText().toString().isEmpty()) {
+                date = LocalDate.parse(((EditText) v).getText().toString(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            } else {
+                date = LocalDate.now();
+            }
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    getContext(), android.R.style.Theme_DeviceDefault_Dialog, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    String result = String.format("%s/%s/%d", dayOfMonth < 10 ? String.format("0%d", dayOfMonth) : String.valueOf(dayOfMonth),
+                            (month + 1) < 10 ? String.format("0%d", (month + 1)) : (month + 1), year);
+                    binding.inputFromDay.setText(result);
+                    if (binding.inputToDay != null && !binding.inputToDay.getText().toString().isEmpty()) {
+                        getStaticResWithStartDateAndEndDate(new InputChart(binding.inputToDay.getText().toString(), dataTokenAndUserId.getRestaurantId(),
+                                result, dataTokenAndUserId.getUserId()));
+                    }
+                }
+            }, date.getYear(), date.getMonthValue() - 1,
+                    date.getDayOfMonth());
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+            datePickerDialog.setCancelable(false);
+            datePickerDialog.show();
         });
 
-        binding.btnYear.setOnClickListener((v) -> {
-            openDialog(2);
+        binding.inputToDay.clearFocus();
+        binding.inputToDay.setOnClickListener((v) -> {
+            LocalDate date;
+            if (v != null && !((EditText) v).getText().toString().isEmpty()) {
+                date = LocalDate.parse(((EditText) v).getText().toString(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            } else {
+                date = LocalDate.now();
+            }
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    getContext(), android.R.style.Theme_DeviceDefault_Dialog, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    String result = String.format("%s/%s/%d", dayOfMonth < 10 ? String.format("0%d", dayOfMonth) : String.valueOf(dayOfMonth),
+                            (month + 1) < 10 ? String.format("0%d", (month + 1)) : (month + 1), year);
+                    binding.inputToDay.setText(result);
+                    if (binding.inputToDay != null && !binding.inputToDay.getText().toString().isEmpty()) {
+                        getStaticResWithStartDateAndEndDate(new InputChart(result, dataTokenAndUserId.getRestaurantId(),
+                                binding.inputFromDay.getText().toString(), dataTokenAndUserId.getUserId()));
+                    }
+                }
+            }, date.getYear(), date.getMonthValue() - 1,
+                    date.getDayOfMonth());
+            if (binding.inputFromDay != null && !binding.inputFromDay.getText().toString().isEmpty()) {
+                try {
+                    Date dt = new SimpleDateFormat("dd/MM/yyyy").parse(binding.inputFromDay.getText().toString());
+                    datePickerDialog.getDatePicker().setMinDate(dt.getTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            datePickerDialog.setCancelable(false);
+            datePickerDialog.show();
         });
 
         binding.buttonSwitch.setOnClickListener(new View.OnClickListener() {
@@ -255,7 +483,15 @@ public class ManagerRestaurantFragment extends Fragment {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            binding.textStatus.setText("Đóng cửa");
+
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    binding.textStatus.setText("Đóng cửa");
+                                    binding.checkboxStatusCO.setText("Hẹn ngày mở cửa");
+
+                                }
+                            });
                         }
                     });
                     isSelected = false;
@@ -266,7 +502,16 @@ public class ManagerRestaurantFragment extends Fragment {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            binding.textStatus.setText("Mở cửa");
+
+
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    binding.textStatus.setText("Mở cửa");
+                                    binding.checkboxStatusCO.setText("Hẹn ngày đóng cửa");
+
+                                }
+                            });
                         }
                     });
 
@@ -276,36 +521,82 @@ public class ManagerRestaurantFragment extends Fragment {
                 updateStatus(isSelected);
             }
         });
-    }
 
-    private void getStatisticRes(String month1, String year1, String month2, String year2) {
-        DataTokenAndUserId data = new DataTokenAndUserId(getContext());
-
-        inputStatisticWithMonthAndYear input = new inputStatisticWithMonthAndYear();
-        input.setUserId(data.getUserId());
-        input.setRestaurantId(data.getRestaurantId());
-        input.setYear1(year1);
-        input.setYear2(year2);
-        input.setMonth2(month2);
-        input.setMonth1(month1);
-
-        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<messageStatistic> call = serviceAPI_lib.getStaticResWithMonthAndYear(data.getToken(), input);
-        call.enqueue(new Callback<messageStatistic>() {
-            @Override
-            public void onResponse(Call<messageStatistic> call, Response<messageStatistic> response) {
-                if (response.body().getStatus() == 1) {
-                    statistics.clear();
-                    statistics.addAll(response.body().getGetStatic());
-                    initBarChart();
+        binding.checkboxStatusCO.setOnClickListener(v -> {
+            if (binding.checkboxStatusCO.isChecked()) {
+                LocalDate date;
+                if (binding.textViewStatusCO != null && !binding.textViewStatusCO.getText().toString().isEmpty() && !binding.textViewStatusCO.getText().toString().equals("N/A")) {
+                    date = LocalDate.parse(binding.textViewStatusCO.getText().toString(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                } else {
+                    date = LocalDate.now();
                 }
-            }
-
-            @Override
-            public void onFailure(Call<messageStatistic> call, Throwable t) {
-
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        getContext(), android.R.style.Theme_DeviceDefault_Dialog, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String result = String.format("%s/%s/%d", dayOfMonth < 10 ? String.format("0%d", dayOfMonth) : String.valueOf(dayOfMonth),
+                                (month + 1) < 10 ? String.format("0%d", (month + 1)) : (month + 1), year);
+                        binding.textViewStatusCO.setText(result);
+                        updateStatusCo(result);
+                    }
+                }, date.getYear(), date.getMonthValue() - 1,
+                        date.getDayOfMonth());
+                datePickerDialog.getDatePicker().setMinDate(new Date(new Date().getTime() + 86000000).getTime());
+                datePickerDialog.setCancelable(false);
+                datePickerDialog.show();
             }
         });
+
+        binding.checkboxStatusCO.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked){
+                    binding.textViewStatusCO.setText("N/A");
+                    updateStatusCo(null);
+                }
+            }
+        });
+
+        binding.textViewStatusCO.setOnClickListener(v -> {
+
+            if (binding.checkboxStatusCO.isChecked()) {
+                LocalDate date;
+                if (binding.textViewStatusCO != null && binding.textViewStatusCO.getText().toString().isEmpty()  && !binding.textViewStatusCO.getText().toString().equals("N/A")) {
+                    date = LocalDate.parse(binding.textViewStatusCO.getText().toString(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                } else {
+                    date = LocalDate.now();
+                }
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        getContext(), android.R.style.Theme_DeviceDefault_Dialog, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String result = String.format("%s/%s/%d", dayOfMonth < 10 ? String.format("0%d", dayOfMonth) : String.valueOf(dayOfMonth),
+                                (month + 1) < 10 ? String.format("0%d", (month + 1)) : (month + 1), year);
+                        binding.textViewStatusCO.setText(result);
+
+                    }
+                }, date.getYear(), date.getMonthValue() - 1,
+                        date.getDayOfMonth());
+                datePickerDialog.getDatePicker().setMinDate(new Date(new Date().getTime() + 86000000).getTime());
+                datePickerDialog.show();
+            }
+        });
+
+
+        binding.textViewOnOrOff.setOnClickListener(v -> {
+            if (binding.textViewOnOrOff.getText().equals("ON")) {
+                statistics.clear();
+                statistics.addAll(tempRemoved);
+                binding.textViewOnOrOff.setText("OFF");
+            } else {
+                statistics.clear();
+                statistics.addAll(temp);
+                binding.textViewOnOrOff.setText("ON");
+            }
+            initBarChart();
+        });
+
     }
 
     private void getStaticResWithStartDateAndEndDate(InputChart input) {
@@ -315,9 +606,11 @@ public class ManagerRestaurantFragment extends Fragment {
         call.enqueue(new Callback<messageStatistic>() {
             @Override
             public void onResponse(Call<messageStatistic> call, Response<messageStatistic> response) {
-                if (response.body().getStatus() == 1) {
+                if (response.body()!=null && response.body().getStatus() == 1) {
                     statistics.clear();
                     statistics.addAll(response.body().getGetStatic());
+                    tempRemoved = removeNullItem(statistics);
+                    temp.addAll(statistics);
                     initBarChart();
                 }
             }
@@ -329,75 +622,34 @@ public class ManagerRestaurantFragment extends Fragment {
         });
     }
 
-    private void openDialog(int code) {
-        final String[] dateStart = new String[2];
-        final String[] dateEnd = new String[2];
+    public class StatisticModel {
+        private String name;
+        private int value;
 
-        final LayoutStatisticBinding layoutStatisticBinding
-                = LayoutStatisticBinding.inflate(LayoutInflater.from(getContext()));
+        public StatisticModel(String name, int value) {
+            this.name = name;
+            this.value = value;
+        }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(layoutStatisticBinding.getRoot());
-        builder.setCancelable(true);
-        dialog = builder.create();
+        public String getName() {
+            return name;
+        }
 
-        // Use the calendar for create ranges
-        Calendar calendar = Calendar.getInstance();
+        public void setName(String name) {
+            this.name = name;
+        }
 
-        calendar.clear();
-        calendar.set(2010, 0, 1); // Set minimum date to show in dialog
-        long minDate = calendar.getTimeInMillis(); // Get milliseconds of the modified date
+        public int getValue() {
+            return value;
+        }
 
-        calendar.clear();
-        calendar.set(2021, 12, 31); // Set maximum date to show in dialog
-        long maxDate = calendar.getTimeInMillis(); // Get milliseconds of the modified date
+        public void setValue(int value) {
+            this.value = value;
+        }
 
-        layoutStatisticBinding.txtDateStart.setOnClickListener((v) -> {
-            if (code == 1) {
-                // Create instance with date ranges values
-                MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
-                        .getInstance(11, 2020, minDate, maxDate);
-
-                dialogFragment.show(getActivity().getSupportFragmentManager(), null);
-
-
-                dialogFragment.setOnDateSetListener(new MonthYearPickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(int year, int monthOfYear) {
-                        dateStart[0] = (monthOfYear + 1) + "";
-                        dateStart[1] = year + "";
-                        layoutStatisticBinding.txtDateStart.setText(dateStart[0] + "/" + dateStart[1]);
-                    }
-                });
-            }
-        });
-
-        layoutStatisticBinding.txtDateEnd.setOnClickListener((v) -> {
-            // Create instance with date ranges values
-            MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
-                    .getInstance(11, 2020, minDate, maxDate);
-
-            dialogFragment.show(getActivity().getSupportFragmentManager(), null);
-
-            dialogFragment.setOnDateSetListener(new MonthYearPickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(int year, int monthOfYear) {
-                    dateEnd[0] = (monthOfYear + 1) + "";
-                    dateEnd[1] = year + "";
-
-                    layoutStatisticBinding.txtDateEnd.setText(dateEnd[0] + "/" + dateEnd[1]);
-                }
-            });
-        });
-
-        layoutStatisticBinding.btnStatistic.setOnClickListener((v) -> {
-            binding.txtStatistic.setText("Thống kê từ " + dateStart[0] + "/" + dateStart[1] + " đến " + dateEnd[0] + "/" + dateEnd[1]);
-
-            getStatisticRes(dateStart[0], dateStart[1], dateEnd[0], dateEnd[1]);
-
-            dialog.dismiss();
-        });
-
-        dialog.show();
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }

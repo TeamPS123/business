@@ -17,10 +17,10 @@
         android:id="@+id/menuManagerPromotion"
         android:icon="@drawable/ic_baseline_loyalty_24"
         android:title="Quản lý khuyến mãi" />
-    <item
+    <!--<item
         android:id="@+id/menuStatistic"
         android:icon="@drawable/ic_baseline_assessment"
-        android:title="Thống kê đặt bàn" />
+        android:title="Thống kê đặt bàn" />-->
     <item
         android:id="@+id/menuLogOut"
         android:icon="@drawable/ic_round_logout_24"

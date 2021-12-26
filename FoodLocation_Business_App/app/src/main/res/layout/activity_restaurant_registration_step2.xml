@@ -1,62 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
     android:overScrollMode="never"
     android:scrollbars="none"
-    android:clipToPadding="false"
     tools:context=".activites.RestaurantRegistrationStep2Activity">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:text="Hình ảnh nhà hàng"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textviewAddImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:background="@drawable/background_add_image_text_view"
+        android:text="Thêm hình ảnh"
+        android:gravity="center"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/_11ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleViewImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/_8sdp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/buttonNextStep"
+        app:layout_constraintTop_toBottomOf="@id/textviewAddImage" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonNextStep"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:minHeight="@dimen/_40sdp"
+        android:text="Hoàn tất"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:backgroundTintMode="screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:text="Hình ảnh nhà hàng"
-            android:textStyle="bold"
-            android:textSize="@dimen/_18ssp"
-            android:textColor="@color/primary"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleViewImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/textviewAddImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:text="Thêm hình ảnh"
-            android:background="@drawable/background_add_image_text_view"
-            android:textSize="@dimen/_11ssp"
-            android:textStyle="bold"
-            android:textColor="@color/secondary_text"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonNextStep"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:text="Bước tiêp theo"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            android:textSize="@dimen/_11ssp"
-            app:cornerRadius="@dimen/_8sdp"
-            android:visibility="gone"/>
-
-    </LinearLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

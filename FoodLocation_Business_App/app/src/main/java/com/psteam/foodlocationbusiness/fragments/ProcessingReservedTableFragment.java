@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocationbusiness.R;
+import com.psteam.foodlocationbusiness.activites.BusinessActivity;
 import com.psteam.foodlocationbusiness.activites.ReserveTableDetailsActivity;
 import com.psteam.foodlocationbusiness.adapters.ReserveTableAdapter;
 import com.psteam.foodlocationbusiness.adapters.ReserveTableConfirmAdapter;
@@ -68,6 +69,12 @@ public class ProcessingReservedTableFragment extends Fragment {
         dataTokenAndUserId = new DataTokenAndUserId(getContext());
         initReserveTable();
         getAllReserveTable();
+        socket();
+    }
+
+    private void socket() {
+        setupSocket.mSocket.connect();
+
     }
 
     private void initReserveTable() {
@@ -98,7 +105,7 @@ public class ProcessingReservedTableFragment extends Fragment {
         call.enqueue(new Callback<messageAllReserveTable>() {
             @Override
             public void onResponse(Call<messageAllReserveTable> call, Response<messageAllReserveTable> response) {
-                if (response.body().getStatus() == 1) {
+                if (response.body()!=null && response.body().getStatus() == 1) {
                     if (response.body().getReserveTables().size() > 0) {
                         reserveTables.clear();
                         for (int i = 0; i < response.body().getReserveTables().size(); i++) {
@@ -142,7 +149,6 @@ public class ProcessingReservedTableFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(reserveTables.size()!=ManagerReserveTableFragment.getQuantityInTab(1)){
-            Toast.makeText(getContext(), "onResume", Toast.LENGTH_SHORT).show();
             getAllReserveTable();
         }
     }
@@ -155,6 +161,8 @@ public class ProcessingReservedTableFragment extends Fragment {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus() == 1) {
+                    MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "Thông báo đặt bàn", new BodySenderFromRes("Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.", reserveTable.getReserveTableId()));
+                    setupSocket.reserveTable(message);
                     reserveTables.remove(position);
                     reserveTableAdapter.notifyItemRemoved(position);
                     ManagerReserveTableFragment.updateCountTabProcessingAndConfirmed(reserveTables.size());

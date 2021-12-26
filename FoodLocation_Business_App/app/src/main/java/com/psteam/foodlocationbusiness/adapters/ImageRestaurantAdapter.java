@@ -1,6 +1,5 @@
 package com.psteam.foodlocationbusiness.adapters;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -14,12 +13,14 @@ import com.psteam.foodlocationbusiness.databinding.ContainerItemImageRestaurantB
 
 import java.util.ArrayList;
 
-public class ImageRestaurantAdapter extends RecyclerView.Adapter<ImageRestaurantAdapter.ImageRestaurantViewHolder>{
+public class ImageRestaurantAdapter extends RecyclerView.Adapter<ImageRestaurantAdapter.ImageRestaurantViewHolder> {
     private final ArrayList<Uri> bitmaps;
+    private final ImageResListeners imageResListeners;
 
-    public ImageRestaurantAdapter(ArrayList<Uri> bitmaps ) {
+    public ImageRestaurantAdapter(ArrayList<Uri> bitmaps, ImageResListeners imageResListeners) {
         this.bitmaps = bitmaps;
 
+        this.imageResListeners = imageResListeners;
     }
 
     @NonNull
@@ -49,18 +50,13 @@ public class ImageRestaurantAdapter extends RecyclerView.Adapter<ImageRestaurant
 
         public ImageRestaurantViewHolder(@NonNull ContainerItemImageRestaurantBinding itemView) {
             super(itemView.getRoot());
-            binding=itemView;
+            binding = itemView;
         }
 
-        public void setData(Uri bitmap){
+        public void setData(Uri bitmap) {
             binding.imageViewRestaurant.setImageURI(bitmap);
-            binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    bitmaps.remove(getAdapterPosition());
-                    notifyItemRemoved(getAdapterPosition());
-                    return false;
-                }
+            binding.imageRemove.setOnClickListener(v -> {
+                imageResListeners.onRemoveClick(getAdapterPosition(),bitmap);
             });
 
         }
@@ -71,8 +67,12 @@ public class ImageRestaurantAdapter extends RecyclerView.Adapter<ImageRestaurant
         }
     }
 
-    public void removeImage(int position){
+    public void removeImage(int position) {
         bitmaps.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public interface ImageResListeners {
+        void onRemoveClick(int position, Uri uri);
     }
 }

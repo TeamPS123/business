@@ -21,11 +21,6 @@
         android:label="Quản lý khuyến mãi"
         tools:layout="@layout/fragment_manager_promotion" />
     <fragment
-        android:id="@+id/menuStatistic"
-        android:name="com.psteam.foodlocationbusiness.fragments.ManagerStatisticFragment"
-        android:label="Thống kê đặt bàn"
-        tools:layout="@layout/fragment_manager_statistic" />
-    <fragment
         android:id="@+id/menuManagerReserve"
         android:name="com.psteam.foodlocationbusiness.fragments.ManagerReserveTableFragment"
         android:label="Quản lý đặt bàn"

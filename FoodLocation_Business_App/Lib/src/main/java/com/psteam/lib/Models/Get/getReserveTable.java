@@ -1,6 +1,8 @@
 package com.psteam.lib.Models.Get;
 
-public class getReserveTable {
+import java.io.Serializable;
+
+public class getReserveTable implements Serializable {
     public getReserveTable() {
     }
 
@@ -90,6 +92,15 @@ public class getReserveTable {
     private String note;
     //userId is user sender
     private String userId;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getUserId() {
         return userId;

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.adapters.ManagerFoodAdapter;
+import com.psteam.foodlocationbusiness.adapters.ReserveFoodAdapter;
 import com.psteam.foodlocationbusiness.databinding.ActivityBusinessBinding;
 import com.psteam.foodlocationbusiness.databinding.ActivityReserveTableDetailsBinding;
 import com.psteam.foodlocationbusiness.socket.models.BodySenderFromRes;
@@ -24,6 +25,7 @@ import com.psteam.foodlocationbusiness.socket.setupSocket;
 import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
 import com.psteam.foodlocationbusiness.ultilities.DividerItemDecorator;
 import com.psteam.lib.Models.Get.getFood;
+import com.psteam.lib.Models.Get.getReserveTable;
 import com.psteam.lib.Models.Get.messageAllFood;
 import com.psteam.lib.Models.Insert.reserveTable;
 import com.psteam.lib.Models.message;
@@ -48,7 +50,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
     private ActivityReserveTableDetailsBinding binding;
     private BodySenderFromUser response;
 
-    private ManagerFoodAdapter managerFoodAdapter;
+    private ReserveFoodAdapter managerFoodAdapter;
     private ArrayList<getFood> foods;
     private int postion;
     private String tabProcessing;
@@ -58,7 +60,6 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityReserveTableDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         init();
     }
 
@@ -74,7 +75,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
         }
         if (tabProcessing != null && tabProcessing.equals("tabProcessing")) {
             binding.buttonDeny.setVisibility(View.GONE);
-            binding.buttonConfirmed.setText("Khách đã đến");
+            binding.buttonConfirmed.setText("Hoàn thành");
         } else if (tabProcessing != null && tabProcessing.equals("tabConfirmed")) {
             binding.buttonDeny.setVisibility(View.GONE);
             binding.buttonConfirmed.setText("Đã hoàn thành");
@@ -83,6 +84,10 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
             binding.buttonConfirmed.setEnabled(false);
         } else if (tabProcessing != null && tabProcessing.equals("tabLate")) {
             binding.buttonDeny.setText("Huỷ");
+        } else if (tabProcessing != null && tabProcessing.equals("tabCancel")) {
+            binding.buttonConfirmed.setText("Đã bị huỷ");
+            binding.buttonDeny.setVisibility(View.GONE);
+            binding.buttonConfirmed.setEnabled(false);
         }
 
         binding.imageViewClose.setOnClickListener(v -> {
@@ -113,19 +118,19 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
     }
 
     private void initFoodManagerAdapter() {
-        managerFoodAdapter = new ManagerFoodAdapter(foods, getApplication(), new ManagerFoodAdapter.FoodListeners() {
+        managerFoodAdapter = new ReserveFoodAdapter(foods, getApplication(), new ReserveFoodAdapter.ReserveFoodViewListeners() {
             @Override
-            public void onEditClick(getFood food, int position) {
+            public void onAddFoodReserveClick(getFood food) {
 
             }
 
             @Override
-            public void onDeleteClick(getFood food, int position) {
+            public void onMinusFoodReserveClick(getFood food) {
 
             }
 
             @Override
-            public void onChangeStatus(getFood food, int position) {
+            public void onRemoveFoodReserveClick(getFood food, int count, double price) {
 
             }
         });
@@ -147,6 +152,17 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
             response.setRestaurantId(getIntent().getExtras().getString("restaurantId"));
             response.setTime(getIntent().getExtras().getString("time"));
             response.setUserId(getIntent().getExtras().getString("userId"));
+        } else if (getIntent().getStringExtra("search") != null && getIntent().getStringExtra("search").equals("search")) {
+            getReserveTable reserveTable = (getReserveTable) getIntent().getSerializableExtra("response");
+            response.setReserveTableId(reserveTable.getReserveTableId());
+            response.setName(reserveTable.getName());
+            response.setQuantity(reserveTable.getQuantity());
+            response.setNote(reserveTable.getNote());
+            response.setPhone(reserveTable.getPhone());
+            response.setPromotionId(reserveTable.getPromotionId());
+            response.setRestaurantId(reserveTable.getRestaurantId());
+            response.setTime(reserveTable.getTime());
+            response.setUserId(reserveTable.getUserId());
         } else {
             response = (BodySenderFromUser) getIntent().getSerializableExtra("response");
             postion = getIntent().getIntExtra("position", -1);
@@ -155,7 +171,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
 
     private void setBinding() {
         binding.textViewRestaurantAddress.setText(response.getName());
-        binding.textViewCountPeople.setText(String.format("%d người",response.getQuantity()));
+        binding.textViewCountPeople.setText(String.format("%d người", response.getQuantity()));
         binding.textViewTimeReserve.setText(formatToYesterdayOrToday(coverStringToDate(response.getTime())));
         binding.textViewPhoneNumber.setText(response.getPhone());
     }

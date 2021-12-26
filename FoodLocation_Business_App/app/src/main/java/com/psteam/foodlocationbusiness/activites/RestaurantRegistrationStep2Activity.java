@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -19,8 +17,6 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -31,12 +27,12 @@ import com.psteam.foodlocationbusiness.R;
 
 import com.psteam.foodlocationbusiness.adapters.ImageRestaurantAdapter;
 import com.psteam.foodlocationbusiness.databinding.ActivityRestaurantRegistrationStep2Binding;
+import com.psteam.foodlocationbusiness.ultilities.CustomToast;
 import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
 import com.psteam.lib.Models.message;
 import com.psteam.lib.Service.ServiceAPI_lib;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,17 +81,26 @@ public class RestaurantRegistrationStep2Activity extends AppCompatActivity {
 
     private void init() {
         uris = new ArrayList<>();
-        imageRestaurantAdapter = new ImageRestaurantAdapter(uris);
+        imageRestaurantAdapter = new ImageRestaurantAdapter(uris, new ImageRestaurantAdapter.ImageResListeners() {
+            @Override
+            public void onRemoveClick(int position, Uri uri) {
+                uris.remove(position);
+                pathList.remove(getRealPathFromURI(uri));
+                imageRestaurantAdapter.notifyItemRemoved(position);
+                if (imageRestaurantAdapter.getItemCount() >= 5) {
+                    binding.textviewAddImage.setVisibility(View.GONE);
+                } else if (imageRestaurantAdapter.getItemCount() <= 0) {
+                    binding.buttonNextStep.setVisibility(View.GONE);
+                } else {
+                    binding.textviewAddImage.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         binding.recycleViewImage.setAdapter(imageRestaurantAdapter);
     }
 
     private void setListeners() {
         binding.textviewAddImage.setOnClickListener(v -> {
-//            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            pickImage.launch(intent);
-
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_PICK);
@@ -105,7 +110,11 @@ public class RestaurantRegistrationStep2Activity extends AppCompatActivity {
         });
 
         binding.buttonNextStep.setOnClickListener(v -> {
-            addImg();
+            if (pathList != null && pathList.size() != 0) {
+                addImg();
+            } else {
+                CustomToast.makeText(getApplicationContext(), "Vui lòng chọn ít nhất 1 hình nhà hàng của bạn", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
+            }
         });
     }
 
@@ -113,7 +122,8 @@ public class RestaurantRegistrationStep2Activity extends AppCompatActivity {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case 1:
-                imageRestaurantAdapter.removeImage(item.getGroupId());
+                uris.remove(item.getGroupId());
+                imageRestaurantAdapter.notifyItemRemoved(item.getGroupId());
                 if (imageRestaurantAdapter.getItemCount() >= 5) {
                     binding.textviewAddImage.setVisibility(View.GONE);
                 } else {
@@ -131,21 +141,35 @@ public class RestaurantRegistrationStep2Activity extends AppCompatActivity {
 
         pathList = new ArrayList<>();
 
-        if(requestCode == 10){
+        if (requestCode == 10) {
             ActivityResult result = new ActivityResult(resultCode, data);
 
-            if(result.getResultCode() == RESULT_OK){
-                int count = (result.getData().getClipData().getItemCount() + imageRestaurantAdapter.getItemCount());
-                if (count > 5) {
-                    Toast.makeText(getApplicationContext(), "Chỉ được chọn tối đa 5 hình ảnh", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+            if (uris.size() >= 2 && uris.get(uris.size() - 1) == null) {
+                uris.remove(uris.size() - 1);
+            }
 
-                for(int i = 0; i < result.getData().getClipData().getItemCount(); i ++){
-                    Uri imageUri = result.getData().getClipData().getItemAt(i).getUri();
+            if (result.getResultCode() == RESULT_OK) {
+                if (result.getData().getClipData() == null) {
+                    Uri imageUri = result.getData().getData();
                     pathList.add(getRealPathFromURI(imageUri));
-
                     uris.add(imageUri);
+                } else {
+                    int count = (result.getData().getClipData().getItemCount() + imageRestaurantAdapter.getItemCount());
+                    if (count > 5) {
+                        int c = (5 - imageRestaurantAdapter.getItemCount()) >= result.getData().getClipData().getItemCount() ? result.getData().getClipData().getItemCount() : (5 - imageRestaurantAdapter.getItemCount());
+                        for (int i = 0; i < c; i++) {
+                            Uri imageUri = result.getData().getClipData().getItemAt(i).getUri();
+                            pathList.add(getRealPathFromURI(imageUri));
+                            uris.add(imageUri);
+                        }
+                        CustomToast.makeText(getApplicationContext(), "Chỉ được chọn tối đa 5 hình ảnh", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
+                    } else {
+                        for (int i = 0; i < result.getData().getClipData().getItemCount(); i++) {
+                            Uri imageUri = result.getData().getClipData().getItemAt(i).getUri();
+                            pathList.add(getRealPathFromURI(imageUri));
+                            uris.add(imageUri);
+                        }
+                    }
                 }
 
                 imageRestaurantAdapter.notifyDataSetChanged();
@@ -161,15 +185,11 @@ public class RestaurantRegistrationStep2Activity extends AppCompatActivity {
                     binding.recycleViewImage.setVisibility(View.GONE);
                     binding.buttonNextStep.setVisibility(View.GONE);
                 }
-
-//                Uri uri = data.getData();
-//                imagePath = getRealPathFromURI(uri);
-//                img.setImageURI(uri);
             }
         }
     }
 
-    private String getRealPathFromURI(Uri contentUri){
+    private String getRealPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         CursorLoader loader = new CursorLoader(getApplicationContext(), contentUri, proj, null, null, null);
         Cursor cursor = loader.loadInBackground();
@@ -180,10 +200,10 @@ public class RestaurantRegistrationStep2Activity extends AppCompatActivity {
         return result;
     }
 
-    private static void verifyStorePermission(Activity activity){
+    private static void verifyStorePermission(Activity activity) {
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-        if(permission != PackageManager.PERMISSION_GRANTED){
+        if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                     activity,
                     PERMISSION_STORAGE,
@@ -192,11 +212,11 @@ public class RestaurantRegistrationStep2Activity extends AppCompatActivity {
         }
     }
 
-    private void addImg(){
+    private void addImg() {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
         List<MultipartBody.Part> photo = new ArrayList<>();
 
-        for (int i = 0 ; i < pathList.size() ; i++){
+        for (int i = 0; i < pathList.size(); i++) {
             File f = new File(pathList.get(i));
             RequestBody photoContext = RequestBody.create(MediaType.parse("multipart/form-data"), f);
             photo.add(MultipartBody.Part.createFormData("photo", f.getName(), photoContext));
@@ -207,8 +227,8 @@ public class RestaurantRegistrationStep2Activity extends AppCompatActivity {
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
-                    startActivity(new Intent(getApplicationContext(),BusinessActivity.class));
+                if (response.body()!=null && response.body().getStatus() == 1) {
+                    startActivity(new Intent(getApplicationContext(), BusinessActivity.class));
                 }
                 Toast.makeText(RestaurantRegistrationStep2Activity.this, response.body().getNotification(), Toast.LENGTH_SHORT).show();
             }

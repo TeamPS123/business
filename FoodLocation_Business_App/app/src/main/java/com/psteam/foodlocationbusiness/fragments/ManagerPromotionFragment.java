@@ -143,7 +143,7 @@ public class ManagerPromotionFragment extends Fragment {
                 call.enqueue(new Callback<message>() {
                     @Override
                     public void onResponse(Call<message> call, Response<message> response) {
-                        if(response.body().getStatus() == 1){
+                        if(response.body()!=null && response.body().getStatus() == 1){
                             promotions.add(new getPromotion(response.body().getId(), promotion1.getName(), promotion1.getInfo(), promotion1.getValue(), true));
 
                             promotionAdapter.notifyDataSetChanged();
@@ -168,7 +168,7 @@ public class ManagerPromotionFragment extends Fragment {
                 call.enqueue(new Callback<message>() {
                     @Override
                     public void onResponse(Call<message> call, Response<message> response) {
-                        if(response.body().getStatus() == 1) {
+                        if(response.body()!=null && response.body().getStatus() == 1) {
                             getPromotion newPromotion = new getPromotion();
                             newPromotion.setPromotionId(promotion.getPromotionId());
                             newPromotion.setInfo(updatePromotion.getInfo());
@@ -204,15 +204,13 @@ public class ManagerPromotionFragment extends Fragment {
         call.enqueue(new Callback<messagePromotion>() {
             @Override
             public void onResponse(Call<messagePromotion> call, Response<messagePromotion> response) {
-                if(response.body().getStatus() == 1){
+                if(response.body()!=null && response.body().getStatus() == 1){
                     promotions = response.body().getProList();
 
                     initPromotionAdapter();
                 }else {
                     promotions = new ArrayList<>();
                 }
-
-                Toast.makeText(getActivity(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -228,7 +226,7 @@ public class ManagerPromotionFragment extends Fragment {
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
+                if(response.body()!=null && response.body().getStatus() == 1){
                     promotions.remove(index);
                     promotionAdapter.notifyDataSetChanged();
                 }
