@@ -120,18 +120,21 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
     private void initFoodManagerAdapter() {
         managerFoodAdapter = new ReserveFoodAdapter(foods, getApplication(), new ReserveFoodAdapter.ReserveFoodViewListeners() {
             @Override
-            public void onAddFoodReserveClick(getFood food) {
-
+            public void onAddFoodReserveClick(getFood food, int position, int quantity) {
+                updateQuantity(response.getReserveTableId(), food.getFoodId(), quantity);
             }
 
             @Override
-            public void onMinusFoodReserveClick(getFood food) {
-
+            public void onMinusFoodReserveClick(getFood food, int position, int quantity) {
+                updateQuantity(response.getReserveTableId(), food.getFoodId(), quantity);
             }
 
             @Override
-            public void onRemoveFoodReserveClick(getFood food, int count, double price) {
+            public void onRemoveFoodReserveClick(getFood food, int position) {
+                foods.remove(position);
+                managerFoodAdapter.notifyItemRemoved(position);
 
+                delReserveFood(response.getReserveTableId(), food.getFoodId());
             }
         });
         binding.recycleViewFoodReserve.setAdapter(managerFoodAdapter);
@@ -236,4 +239,43 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
         });
     }
 
+    private void delReserveFood(String reserveTableId, String foodId){
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.delFoodOfRes(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), reserveTableId, foodId);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response1) {
+
+
+                //Toast.makeText(getApplication(), response1.body().getNotification(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Toast.makeText(getApplication(), "Câp nhật phiếu đặt bàn thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateQuantity(String reserveTableId, String foodId, int quantity){
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.updateQuantity(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), reserveTableId, foodId, quantity);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response1) {
+
+
+                //Toast.makeText(getApplication(), response1.body().getNotification(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Toast.makeText(getApplication(), "Câp nhật phiếu đặt bàn thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

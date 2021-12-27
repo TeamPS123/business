@@ -67,38 +67,37 @@ public class ReserveFoodAdapter extends RecyclerView.Adapter<ReserveFoodAdapter.
             binding.textViewUnit.setText(food.getUnit());
             binding.textViewCategory.setText(food.getCategoryName());
             binding.textViewCount.setText(food.getQuantity()+"");
-            /*binding.textViewAdd.setOnClickListener(v -> {
-                food.setCount(food.getCount() + 1);
-                binding.textViewCount.setText(String.valueOf(food.getCount()));
-                foodReserveListeners.onAddFoodReserveClick(food);
+            binding.textViewAdd.setOnClickListener(v -> {
+                int current = Integer.parseInt(binding.textViewCount.getText()+"");
+
+                binding.textViewCount.setText((current+1)+"");
+
+                foodReserveListeners.onAddFoodReserveClick(food, getAdapterPosition(), current+1);
             });
 
             binding.textViewMinus.setOnClickListener(v -> {
-                int count = food.getCount() - 1;
-                food.setCount(count);
-                if (count <= 0) {
-                    double price = Double.parseDouble(food.getPrice());
-                    foodReserveListeners.onRemoveFoodReserveClick(food, 1, price);
-                    return;
-                } else {
-                    binding.textViewCount.setText(String.valueOf(count));
+                int current = Integer.parseInt(binding.textViewCount.getText()+"");
+
+                if(current-1 > 0) {
+                    binding.textViewCount.setText((current-1)+"");
+
+                    foodReserveListeners.onMinusFoodReserveClick(food, getAdapterPosition(), current-1);
+                }else{
+                    foodReserveListeners.onRemoveFoodReserveClick(food, getAdapterPosition());
                 }
-                foodReserveListeners.onMinusFoodReserveClick(food);
             });
 
             binding.imageViewRemove.setOnClickListener(v -> {
-                int count = food.getCount();
-                food.setCount(0);
-                foodReserveListeners.onRemoveFoodReserveClick(food, count, food.getPrice());
-            });*/
+                foodReserveListeners.onRemoveFoodReserveClick(food, getAdapterPosition());
+            });
         }
     }
 
     public interface ReserveFoodViewListeners {
-        void onAddFoodReserveClick(getFood food);
+        void onAddFoodReserveClick(getFood food, int position, int quantity);
 
-        void onMinusFoodReserveClick(getFood food);
+        void onMinusFoodReserveClick(getFood food, int position, int quantity);
 
-        void onRemoveFoodReserveClick(getFood food, int count, double price);
+        void onRemoveFoodReserveClick(getFood food, int position);
     }
 }
