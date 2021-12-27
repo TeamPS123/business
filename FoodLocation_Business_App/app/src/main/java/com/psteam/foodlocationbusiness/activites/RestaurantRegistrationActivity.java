@@ -209,7 +209,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 myCalendar.set(Calendar.MINUTE, minute);
-                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm", new Locale("vi", "VN"));
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", new Locale("vi", "VN"));
                 binding.inputTimeOpen.setText(sdf.format(myCalendar.getTime()));
             }
         };
@@ -219,7 +219,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 myCalendar.set(Calendar.MINUTE, minute);
-                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm", new Locale("vi", "VN"));
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", new Locale("vi", "VN"));
                 binding.inputTimeClose.setText(sdf.format(myCalendar.getTime()));
             }
         };

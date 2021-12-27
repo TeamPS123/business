@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -35,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.psteam.foodlocationbusiness.R;
+import com.psteam.foodlocationbusiness.activites.ManagerCategoryActivity;
 import com.psteam.foodlocationbusiness.adapters.ImageRestaurantAdapter;
 import com.psteam.foodlocationbusiness.adapters.ManagerFoodAdapter;
 import com.psteam.foodlocationbusiness.databinding.FragmentMenuBinding;
@@ -47,6 +49,7 @@ import com.psteam.lib.Models.Get.getCategory;
 import com.psteam.lib.Models.Get.getFood;
 import com.psteam.lib.Models.Get.getMenu;
 import com.psteam.lib.Models.Get.messageAllCategory;
+import com.psteam.lib.Models.Insert.insertCategory;
 import com.psteam.lib.Models.Insert.insertFood;
 import com.psteam.lib.Models.Update.updateFood;
 import com.psteam.lib.Models.message;
@@ -385,7 +388,6 @@ public class MenuFragment extends Fragment {
 
             }
         });
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -403,10 +405,25 @@ public class MenuFragment extends Fragment {
             dialog.dismiss();
         });
         insertCategoryDialogBinding.buttonAddCategory.setOnClickListener(v -> {
-
             if (isValidateInsertCategory(insertCategoryDialogBinding.inputNameCategory.getText().toString())) {
-                categories.add(new getCategory(insertCategoryDialogBinding.inputNameCategory.getText().toString(), "1", true));
-                categoryArrayAdapter.notifyDataSetChanged();
+                DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
+                insertCategory category = new insertCategory(insertCategoryDialogBinding.inputNameCategory.getText() + "", dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId());
+                ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
+                Call<message> call = serviceAPI.addCategory(dataTokenAndUserId.getToken(), category);
+                call.enqueue(new Callback<message>() {
+                    @Override
+                    public void onResponse(Call<message> call, Response<message> response) {
+                        if (response.body().getStatus() == 1) {
+                            categories.add(new getCategory(insertCategoryDialogBinding.inputNameCategory.getText().toString(), response.body().getId(), true));
+                            categoryArrayAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<message> call, Throwable t) {
+                        Log.d("Tag", t.getMessage());
+                    }
+                });
                 dialog.dismiss();
             }
         });

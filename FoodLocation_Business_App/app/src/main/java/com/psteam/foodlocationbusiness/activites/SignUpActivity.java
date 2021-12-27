@@ -228,8 +228,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if(response.body().getStatus() == 1){
-                    //sendVerificationCode("+84" + binding.inputPhone.getText().toString());
-                    signUp(new signUp(binding.inputFullName.getText()+"", binding.inputPhone.getText()+"", binding.inputPassword.getText()+"", true, true));
+                    sendVerificationCode("+84" + binding.inputPhone.getText().toString());
                 }else{
                     Toast.makeText(getApplication(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
                     loading(false);

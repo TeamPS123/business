@@ -26,6 +26,8 @@ import com.psteam.lib.Models.message;
 import com.psteam.lib.Service.ServiceAPI_lib;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +56,14 @@ public class ConfirmedReservedTableFragment extends Fragment {
         View view = binding.getRoot();
         init();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(reserveTables.size()!=ManagerReserveTableFragment.getQuantityInTab(4)){
+            getAllReserveTable();
+        }
     }
 
     private void init() {
@@ -109,10 +119,16 @@ public class ConfirmedReservedTableFragment extends Fragment {
                             bodySenderFromUser.setReserveTableId(response.body().getReserveTables().get(i).getReserveTableId());
                             bodySenderFromUser.setQuantity(response.body().getReserveTables().get(i).getQuantity());
                             bodySenderFromUser.setName(response.body().getReserveTables().get(i).getName());
-
                             reserveTables.add(bodySenderFromUser);
-                            reserveTableAdapter.notifyDataSetChanged();
                         }
+                        Collections.sort(reserveTables, new Comparator<BodySenderFromUser>() {
+                            @Override
+                            public int compare(BodySenderFromUser o1, BodySenderFromUser o2) {
+                                return o2.getReserveTableId().compareTo(o1.getReserveTableId());
+                            }
+                        });
+                        reserveTableAdapter.notifyDataSetChanged();
+                        ManagerReserveTableFragment.updateCountTabConfirmed(reserveTables.size());
                     }
                 }
             }

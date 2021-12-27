@@ -96,6 +96,14 @@ public class LateReservedTableFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(reserveTables.size()!=ManagerReserveTableFragment.getQuantityInTab(3)){
+            getAllReserveTable();
+        }
+    }
+
     private void getAllReserveTable() {
 
         ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
