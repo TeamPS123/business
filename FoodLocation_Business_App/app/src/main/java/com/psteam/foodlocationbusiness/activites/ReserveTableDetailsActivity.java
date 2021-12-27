@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.adapters.ManagerFoodAdapter;
 import com.psteam.foodlocationbusiness.adapters.ReserveFoodAdapter;
@@ -27,6 +28,7 @@ import com.psteam.foodlocationbusiness.ultilities.DividerItemDecorator;
 import com.psteam.lib.Models.Get.getFood;
 import com.psteam.lib.Models.Get.getReserveTable;
 import com.psteam.lib.Models.Get.messageAllFood;
+import com.psteam.lib.Models.Get.messageInfoRes;
 import com.psteam.lib.Models.Insert.reserveTable;
 import com.psteam.lib.Models.message;
 import com.psteam.lib.Service.ServiceAPI_lib;
@@ -94,6 +96,7 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
             finish();
         });
 
+        getInfoRes();
     }
 
     private void setAdapter(String reserveTableId) {
@@ -278,4 +281,25 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void getInfoRes() {
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<messageInfoRes> call = serviceAPI_lib.getInfoRestaurant(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId());
+        call.enqueue(new Callback<messageInfoRes>() {
+            @Override
+            public void onResponse(Call<messageInfoRes> call, Response<messageInfoRes> response) {
+                if (response.body() != null && response.body().getStatus() == 1) {
+                   binding.textViewRestaurantName.setText(response.body().getRes().getName());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<messageInfoRes> call, Throwable t) {
+
+            }
+        });
+    }
+
 }

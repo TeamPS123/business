@@ -1,9 +1,11 @@
 package com.psteam.foodlocationbusiness.services;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
@@ -39,6 +41,9 @@ public class ServiceFCM extends FirebaseMessagingService {
 
     public void notify(String title, String message, BodySenderFromUser response) {
         String GROUP_KEY_WORK_EMAIL = "com.psteam.foodlocationbusiness.NOTIFICATION";
+        String channelId = "location_notification_channel";
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // create the intent and set the action
         Intent intent = new Intent(getApplicationContext(), ReserveTableDetailsActivity.class);
@@ -48,16 +53,29 @@ public class ServiceFCM extends FirebaseMessagingService {
         // create a pending intent
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notification_channel")
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.icon_tasty)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setContentIntent(pendingIntent)
                 .setGroup(GROUP_KEY_WORK_EMAIL);
+
+
+        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (notificationManager != null && notificationManager.getNotificationChannel(channelId) == null) {
+                NotificationChannel notificationChannel = new NotificationChannel(
+                        channelId,
+                        "Location Service",
+                        NotificationManager.IMPORTANCE_HIGH
+                );
+                notificationChannel.setDescription("This channel is used by location service");
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+        }
+
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(123, builder.build());
-
-        //Notification dismiss after click notification
-        //mNotificationManager.cancel(123);
     }
 }

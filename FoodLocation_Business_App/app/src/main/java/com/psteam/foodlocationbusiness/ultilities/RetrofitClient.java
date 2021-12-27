@@ -8,6 +8,7 @@ public class RetrofitClient {
     private static Retrofit retrofitGoogleMap;
     private final static String BASE_URL="https://provinces.open-api.vn";
     private final static String GOOGLE_MAP_URL = "https://maps.googleapis.com";
+    private final static String GOOGLE_MAP_URL_ADDRESS = "https://maps.google.com/maps/";
     public static Retrofit getRetrofit(){
         if(retrofit==null){
             retrofit=new Retrofit.Builder().baseUrl(BASE_URL)
@@ -20,6 +21,15 @@ public class RetrofitClient {
     public static Retrofit getRetrofitGoogleMapAPI() {
         if (retrofitGoogleMap == null) {
             retrofitGoogleMap = new Retrofit.Builder().baseUrl(GOOGLE_MAP_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofitGoogleMap;
+    }
+
+    public static Retrofit getRetrofitGoogleMapAPIADDRESS() {
+        if (retrofitGoogleMap == null) {
+            retrofitGoogleMap = new Retrofit.Builder().baseUrl(GOOGLE_MAP_URL_ADDRESS)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

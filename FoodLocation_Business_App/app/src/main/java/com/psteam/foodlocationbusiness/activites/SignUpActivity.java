@@ -228,7 +228,8 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if(response.body().getStatus() == 1){
-                    sendVerificationCode("+84" + binding.inputPhone.getText().toString());
+                    //sendVerificationCode("+84" + binding.inputPhone.getText().toString());
+                    signUp(new signUp(binding.inputFullName.getText()+"", binding.inputPhone.getText()+"", binding.inputPassword.getText()+"", true, true));
                 }else{
                     Toast.makeText(getApplication(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
                     loading(false);
@@ -238,6 +239,30 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<message> call, Throwable t) {
                 Toast.makeText(getApplication(), "Lỗi", Toast.LENGTH_SHORT).show();
+                loading(false);
+            }
+        });
+    }
+
+    private void signUp(signUp account){
+        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI.signup(account);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+
+                if(response.body().getStatus() == 1){
+                    DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+                    dataTokenAndUserId.saveToken(response.body().getNotification());
+                    dataTokenAndUserId.saveUserId(response.body().getId());
+                    startActivity(new Intent(getApplicationContext(), RestaurantRegistrationActivity.class));
+                    loading(false);
+                }
+                loading(false);
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
                 loading(false);
             }
         });

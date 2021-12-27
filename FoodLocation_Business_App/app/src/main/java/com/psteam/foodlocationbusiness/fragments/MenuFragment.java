@@ -106,7 +106,7 @@ public class MenuFragment extends Fragment {
         binding = FragmentMenuBinding.inflate(inflater, container, false);
 
         menuId = getArguments().getString("menuId");
-        menu = (getMenu)getArguments().getSerializable("menu");
+        menu = (getMenu) getArguments().getSerializable("menu");
 
         dataTokenAndUserId = new DataTokenAndUserId(getContext());
 
@@ -165,9 +165,9 @@ public class MenuFragment extends Fragment {
                 DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
 
                 insertFood food = new insertFood();
-                food.setName(layoutInsertFoodDialogBinding.inputFoodName.getText()+"");
-                food.setPrice(Double.parseDouble(layoutInsertFoodDialogBinding.inputPreice.getText()+""));
-                food.setUnit(layoutInsertFoodDialogBinding.inputUnit.getText()+"");
+                food.setName(layoutInsertFoodDialogBinding.inputFoodName.getText() + "");
+                food.setPrice(Double.parseDouble(layoutInsertFoodDialogBinding.inputPreice.getText() + ""));
+                food.setUnit(layoutInsertFoodDialogBinding.inputUnit.getText() + "");
                 food.setUserId(dataTokenAndUserId.getUserId());
                 food.setMenuId(menuId);
                 food.setCategoryId(categoryId);
@@ -181,7 +181,7 @@ public class MenuFragment extends Fragment {
 
                         List<MultipartBody.Part> photo = new ArrayList<>();
 
-                        for (int i = 0 ; i < pathList.size() ; i++){
+                        for (int i = 0; i < pathList.size(); i++) {
                             File f = new File(pathList.get(i));
                             RequestBody photoContext = RequestBody.create(MediaType.parse("multipart/form-data"), f);
                             photo.add(MultipartBody.Part.createFormData("photo", f.getName(), photoContext));
@@ -195,9 +195,9 @@ public class MenuFragment extends Fragment {
                                 food1.setCategoryName(categoryName);
                                 food1.setFoodId(response.body().getId());
                                 food1.setMenuId(menuId);
-                                food1.setPrice(Double.parseDouble(layoutInsertFoodDialogBinding.inputPreice.getText()+""));
-                                food1.setUnit(layoutInsertFoodDialogBinding.inputUnit.getText()+"");
-                                food1.setName(layoutInsertFoodDialogBinding.inputFoodName.getText()+"");
+                                food1.setPrice(Double.parseDouble(layoutInsertFoodDialogBinding.inputPreice.getText() + ""));
+                                food1.setUnit(layoutInsertFoodDialogBinding.inputUnit.getText() + "");
+                                food1.setName(layoutInsertFoodDialogBinding.inputFoodName.getText() + "");
                                 food1.setStatus(true);
                                 List<String> pic = new ArrayList<>();
                                 pic.add(response1.body().getId());
@@ -248,21 +248,35 @@ public class MenuFragment extends Fragment {
 
         pathList = new ArrayList<>();
 
-        if(requestCode == 10){
+        if (requestCode == 10) {
             ActivityResult result = new ActivityResult(resultCode, data);
 
-            if(result.getResultCode() == RESULT_OK){
-                int count = (result.getData().getClipData().getItemCount() + imageRestaurantAdapter.getItemCount());
-                if (count > 5) {
-                    Toast.makeText(getActivity(), "Chỉ được chọn tối đa 5 hình ảnh", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+            if (uris.size() >= 2 && uris.get(uris.size() - 1) == null) {
+                uris.remove(uris.size() - 1);
+            }
+            if (result.getResultCode() == RESULT_OK) {
 
-                for(int i = 0; i < result.getData().getClipData().getItemCount(); i ++){
-                    Uri imageUri = result.getData().getClipData().getItemAt(i).getUri();
+                if (result.getData().getClipData() == null) {
+                    Uri imageUri = result.getData().getData();
                     pathList.add(getRealPathFromURI(imageUri));
-
                     uris.add(imageUri);
+                } else {
+                    int count = (result.getData().getClipData().getItemCount() + imageRestaurantAdapter.getItemCount());
+                    if (count > 5) {
+                        int c = (5 - imageRestaurantAdapter.getItemCount()) >= result.getData().getClipData().getItemCount() ? result.getData().getClipData().getItemCount() : (5 - imageRestaurantAdapter.getItemCount());
+                        for (int i = 0; i < c; i++) {
+                            Uri imageUri = result.getData().getClipData().getItemAt(i).getUri();
+                            pathList.add(getRealPathFromURI(imageUri));
+                            uris.add(imageUri);
+                        }
+                        CustomToast.makeText(getContext(), "Chỉ được chọn tối đa 5 hình ảnh", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
+                    } else {
+                        for (int i = 0; i < result.getData().getClipData().getItemCount(); i++) {
+                            Uri imageUri = result.getData().getClipData().getItemAt(i).getUri();
+                            pathList.add(getRealPathFromURI(imageUri));
+                            uris.add(imageUri);
+                        }
+                    }
                 }
 
                 imageRestaurantAdapter.notifyDataSetChanged();
@@ -270,7 +284,7 @@ public class MenuFragment extends Fragment {
         }
     }
 
-    private String getRealPathFromURI(Uri contentUri){
+    private String getRealPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         CursorLoader loader = new CursorLoader(getActivity(), contentUri, proj, null, null, null);
         Cursor cursor = loader.loadInBackground();
@@ -281,10 +295,10 @@ public class MenuFragment extends Fragment {
         return result;
     }
 
-    private static void verifyStorePermission(Activity activity){
+    private static void verifyStorePermission(Activity activity) {
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-        if(permission != PackageManager.PERMISSION_GRANTED){
+        if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                     activity,
                     PERMISSION_STORAGE,
@@ -296,9 +310,9 @@ public class MenuFragment extends Fragment {
     private ImageRestaurantAdapter imageRestaurantAdapter;
 
     private void init() {
-        if(menu == null){
+        if (menu == null) {
             foods = new ArrayList<>();
-        }else{
+        } else {
             foods = menu.getFoodList();
         }
         uris = new ArrayList<>();
@@ -348,7 +362,7 @@ public class MenuFragment extends Fragment {
                 layoutInsertFoodDialogBinding.spinnerCategory.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                        getCategory category= (getCategory) item;
+                        getCategory category = (getCategory) item;
 
                         categoryId = category.getId();
                         categoryName = category.getName();
@@ -359,7 +373,7 @@ public class MenuFragment extends Fragment {
 
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        InputMethodManager imm=(InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(layoutInsertFoodDialogBinding.inputFoodName.getWindowToken(), 0);
                         return false;
                     }
@@ -435,13 +449,13 @@ public class MenuFragment extends Fragment {
         }
     }
 
-    private void delFood(getFood food, int position){
+    private void delFood(getFood food, int position) {
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
         Call<message> call = serviceAPI_lib.delFood(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), food.getFoodId());
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
+                if (response.body().getStatus() == 1) {
                     foods.remove(position);
                     managerFoodAdapter.notifyItemRemoved(position);
                 }
@@ -454,7 +468,7 @@ public class MenuFragment extends Fragment {
         });
     }
 
-    private void updateFood(getFood food, int position){
+    private void updateFood(getFood food, int position) {
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
         updateFood food1 = new updateFood();
         food1.setFoodId(food.getFoodId());
@@ -469,7 +483,7 @@ public class MenuFragment extends Fragment {
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
+                if (response.body().getStatus() == 1) {
                     foods.set(position, new getFood(menuId, food.getFoodId(), food1.getName(), food1.getPrice(), food1.getUnit(), food.getQuantity(), food.getCategoryId(), food.getCategoryId(), food.getPic(), food1.getStatus()));
                     managerFoodAdapter.notifyItemChanged(position);
                 }

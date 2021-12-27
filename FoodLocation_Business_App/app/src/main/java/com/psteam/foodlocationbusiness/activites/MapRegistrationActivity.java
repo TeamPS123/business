@@ -1,5 +1,7 @@
 package com.psteam.foodlocationbusiness.activites;
 
+import static com.psteam.foodlocationbusiness.ultilities.RetrofitClient.getRetrofitGoogleMapAPIADDRESS;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,6 +13,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -24,6 +28,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,10 +36,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.databinding.ActivityMapRegistrationBinding;
+import com.psteam.foodlocationbusiness.models.GeyLngLat;
 import com.psteam.foodlocationbusiness.services.FetchAddressIntentServices;
+import com.psteam.foodlocationbusiness.services.ServiceAPI;
 import com.psteam.foodlocationbusiness.ultilities.Constants;
 import com.psteam.foodlocationbusiness.ultilities.CustomToast;
 import com.psteam.foodlocationbusiness.ultilities.Para;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapRegistrationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -49,7 +62,10 @@ public class MapRegistrationActivity extends AppCompatActivity implements OnMapR
         binding = ActivityMapRegistrationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         init();
+
     }
+
+    String address;
 
     private void init() {
         setFullScreen();
@@ -57,19 +73,60 @@ public class MapRegistrationActivity extends AppCompatActivity implements OnMapR
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
-        checkSelfPermission();
 
+
+        address = getIntent().getStringExtra("address");
+        checkSelfPermission();
         binding.buttonOK.setOnClickListener(v -> {
             final Intent data = new Intent();
             data.putExtra("latitude", binding.textViewLatitude.getText().toString());
             data.putExtra("longitude", binding.textViewLongitude.getText().toString());
-
             setResult(2, data);
             finish();
         });
+
+        binding.inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                runThread(s.toString().trim(), 3000);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                AfterTextChange = s.toString().trim();
+            }
+        });
     }
 
-    private void setFullScreen(){
+    private static String AfterTextChange = "";
+
+    private void runThread(String textChange, long millis) {
+        new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(millis);
+                    if (textChange.equals(AfterTextChange)) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                getlnglatFromAddress(textChange);
+                            }
+                        });
+                    }
+                } catch (
+                        InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    private void setFullScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -99,8 +156,8 @@ public class MapRegistrationActivity extends AppCompatActivity implements OnMapR
                 fetchAddressFromLatLong(location);
             }
         });
-
     }
+
 
     private final static int REQUEST_CODE_LOCATION_PERMISSION = 1;
 
@@ -115,7 +172,7 @@ public class MapRegistrationActivity extends AppCompatActivity implements OnMapR
                     REQUEST_CODE_LOCATION_PERMISSION
             );
         } else {
-            getCurrentLocation();
+            getlnglatFromAddress(address);
         }
     }
 
@@ -189,5 +246,33 @@ public class MapRegistrationActivity extends AppCompatActivity implements OnMapR
                 //Toast.makeText(getApplicationContext(), resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void getlnglatFromAddress(String address) {
+        ServiceAPI serviceAPI = getRetrofitGoogleMapAPIADDRESS().create(ServiceAPI.class);
+        Call<GeyLngLat> call = serviceAPI.getLngLat(address, getString(R.string.google_map_api_key));
+        call.enqueue(new Callback<GeyLngLat>() {
+            @Override
+            public void onResponse(Call<GeyLngLat> call, Response<GeyLngLat> response) {
+                String lng = response.body().getResults().get(0).getGeometry().getLocation().getLat();
+                String lat = response.body().getResults().get(0).getGeometry().getLocation().getLng();
+                binding.textViewLatitude.setText(lat);
+                binding.textViewLongitude.setText(lng);
+                getMyLocation(Double.parseDouble(lat), Double.parseDouble(lng));
+
+            }
+
+            @Override
+            public void onFailure(Call<GeyLngLat> call, Throwable t) {
+                String s;
+            }
+        });
+    }
+
+    private void getMyLocation(Double lng, Double lat) {
+        LatLng latLng = new LatLng(lat, lng);
+        //viewPagerRestaurantMap.setCurrentItem(0,true);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+        mMap.animateCamera(cameraUpdate,500,null);
     }
 }

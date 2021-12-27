@@ -2,6 +2,7 @@ package com.psteam.foodlocationbusiness.services;
 
 
 import com.psteam.foodlocationbusiness.models.DistrictModel;
+import com.psteam.foodlocationbusiness.models.GeyLngLat;
 import com.psteam.foodlocationbusiness.models.GoogleMapApiModels.DirectionResponses;
 import com.psteam.foodlocationbusiness.models.ProvinceModel;
 
@@ -30,4 +31,8 @@ public interface ServiceAPI {
     @GET("maps/api/directions/json")
     Call<DirectionResponses> getLatLng(@Query("address") String origin,
                                           @Query("key") String apiKey);
+
+    @GET("api/geocode/json")
+    Call<GeyLngLat> getLngLat(@Query("address") String address,
+                              @Query("key") String apiKey);
 }

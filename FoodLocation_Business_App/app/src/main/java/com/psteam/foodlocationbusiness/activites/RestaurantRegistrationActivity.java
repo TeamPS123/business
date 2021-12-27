@@ -84,7 +84,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         GetCategoryRes();
     }
 
-    private void setFullScreen(){
+    private void setFullScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -239,6 +239,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         binding.inputGetLocation.setOnClickListener(v -> {
             setFullScreen();
             Intent intent = new Intent(getApplicationContext(), MapRegistrationActivity.class);
+            intent.putExtra("address", String.format("%s %s %s %s", binding.inputLine.getText().toString(), binding.spinnerWard.getText().toString(), binding.spinnerDistrict.getText().toString(), binding.spinnerCity.getText().toString()));
             startActivityForResult(intent, 1);
         });
     }
@@ -250,7 +251,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
             if (resultCode == 2) {
                 String latitude = data.getStringExtra("latitude");
                 String longitude = data.getStringExtra("longitude");
-                LatLng = latitude+","+longitude;
+                LatLng = latitude + "," + longitude;
                 binding.inputGetLocation.setText("Lấy vị trí thành công");
             }
         }
@@ -283,18 +284,18 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         }
     }
 
-    private void addRes(){
+    private void addRes() {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
 
         insertRestaurant restaurant = new insertRestaurant();
-        restaurant.setName(binding.inputNameRestaurant.getText()+"");
-        restaurant.setPhone(binding.inputPhoneNumber.getText()+"");
-        restaurant.setCity(binding.spinnerCity.getText() +"");
-        restaurant.setDistrict(binding.spinnerDistrict.getText()+"");
+        restaurant.setName(binding.inputNameRestaurant.getText() + "");
+        restaurant.setPhone(binding.inputPhoneNumber.getText() + "");
+        restaurant.setCity(binding.spinnerCity.getText() + "");
+        restaurant.setDistrict(binding.spinnerDistrict.getText() + "");
         restaurant.setCategoryResId(categoryResId);
-        restaurant.setLine(binding.inputLine.getText()+", "+ binding.spinnerWard.getText());
-        restaurant.setOpenTime(binding.inputTimeOpen.getText()+"");
-        restaurant.setCloseTime(binding.inputTimeClose.getText()+"");
+        restaurant.setLine(binding.inputLine.getText() + ", " + binding.spinnerWard.getText());
+        restaurant.setOpenTime(binding.inputTimeOpen.getText() + "");
+        restaurant.setCloseTime(binding.inputTimeClose.getText() + "");
         restaurant.setUserId(dataTokenAndUserId.getUserId());
         restaurant.setLongLat(LatLng);
 
@@ -303,7 +304,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
+                if (response.body().getStatus() == 1) {
                     dataTokenAndUserId.saveRestaurantId(response.body().getId());
 
                     Intent intent = new Intent(RestaurantRegistrationActivity.this, RestaurantRegistrationStep2Activity.class);
@@ -333,14 +334,14 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         }
     }
 
-    private  void GetCategoryRes(){
+    private void GetCategoryRes() {
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
         Call<messageCategoryRes> call = serviceAPI_lib.getCategoryRes();
         call.enqueue(new Callback<messageCategoryRes>() {
             @Override
             public void onResponse(Call<messageCategoryRes> call, Response<messageCategoryRes> response) {
-                if(response.body().getStatus() == 1){
-                    if(response.body().getCategoryResList().size() > 0){
+                if (response.body().getStatus() == 1) {
+                    if (response.body().getCategoryResList().size() > 0) {
                         getCategoryResArrayList = response.body().getCategoryResList();
                     }
 
