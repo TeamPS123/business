@@ -136,6 +136,13 @@ public interface ServiceAPI_lib {
     @GET("changeStatusCo")
     Call<message> changeStatusCO(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("statusCo") String statusCO);
 
+//  ------------------------------------------------------ReserveFood----------------------------------------------------------------
+    @GET("delFoodOfRes")
+    Call<message> delFoodOfRes(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId, @Query("foodId") String foodId);
+
+    @GET("updateQuantity")
+    Call<message> updateQuantity(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId, @Query("foodId") String foodId, @Query("quantity") int quantity);
+
 //  ------------------------------------------------------Food----------------------------------------------------------------
     @GET("getFoodsByResId")
     Call<messageAllFood> getAllFoodByReserveTableId(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId);

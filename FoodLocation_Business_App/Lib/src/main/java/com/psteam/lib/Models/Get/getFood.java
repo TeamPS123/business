@@ -78,8 +78,30 @@ public class getFood implements Serializable {
     private String name ;
     private double price ;
     private String unit ;
+    private int quantity;
     private String categoryName ;
     private String categoryId;
+
+    public getFood(String menuId, String foodId, String name, double price, String unit, int quantity, String categoryName, String categoryId, List<String> pic, Boolean status) {
+        this.menuId = menuId;
+        this.foodId = foodId;
+        this.name = name;
+        this.price = price;
+        this.unit = unit;
+        this.quantity = quantity;
+        this.categoryName = categoryName;
+        this.categoryId = categoryId;
+        this.pic = pic;
+        this.status = status;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public String getCategoryId() {
         return categoryId;
@@ -91,16 +113,16 @@ public class getFood implements Serializable {
 
     private List<String> pic ;
     private Boolean status;
-
-    public getFood(String menuId, String foodId, String name, double price, String unit, String categoryName, String categoryId, List<String> pic, Boolean status) {
-        this.menuId = menuId;
-        this.foodId = foodId;
-        this.name = name;
-        this.price = price;
-        this.unit = unit;
-        this.categoryName = categoryName;
-        this.categoryId = categoryId;
-        this.pic = pic;
-        this.status = status;
-    }
+//
+//    public getFood(String menuId, String foodId, String name, double price, String unit, String categoryName, String categoryId, List<String> pic, Boolean status) {
+//        this.menuId = menuId;
+//        this.foodId = foodId;
+//        this.name = name;
+//        this.price = price;
+//        this.unit = unit;
+//        this.categoryName = categoryName;
+//        this.categoryId = categoryId;
+//        this.pic = pic;
+//        this.status = status;
+//    }
 }

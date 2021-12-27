@@ -470,7 +470,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if(response.body().getStatus() == 1){
-                    foods.set(position, new getFood(menuId, food.getFoodId(), food1.getName(), food1.getPrice(), food1.getUnit(), food.getCategoryId(), food.getCategoryId(), food.getPic(), food1.getStatus()));
+                    foods.set(position, new getFood(menuId, food.getFoodId(), food1.getName(), food1.getPrice(), food1.getUnit(), food.getQuantity(), food.getCategoryId(), food.getCategoryId(), food.getPic(), food1.getStatus()));
                     managerFoodAdapter.notifyItemChanged(position);
                 }
             }

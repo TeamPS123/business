@@ -66,7 +66,7 @@ public class ReserveFoodAdapter extends RecyclerView.Adapter<ReserveFoodAdapter.
             binding.textViewPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi", "VN")).format(food.getPrice()));
             binding.textViewUnit.setText(food.getUnit());
             binding.textViewCategory.setText(food.getCategoryName());
-            binding.textViewCount.setText("5");
+            binding.textViewCount.setText(food.getQuantity()+"");
             /*binding.textViewAdd.setOnClickListener(v -> {
                 food.setCount(food.getCount() + 1);
                 binding.textViewCount.setText(String.valueOf(food.getCount()));
