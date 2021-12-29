@@ -227,10 +227,12 @@ public class RestaurantRegistrationStep2Activity extends AppCompatActivity {
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
-                if (response.body()!=null && response.body().getStatus() == 1) {
-                    startActivity(new Intent(getApplicationContext(), BusinessActivity.class));
+                if (response.body() != null && response.body().getStatus() == 1) {
+                    Intent intent = new Intent(getApplicationContext(), BusinessActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
                 }
-                Toast.makeText(RestaurantRegistrationStep2Activity.this, response.body().getNotification(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -239,5 +241,4 @@ public class RestaurantRegistrationStep2Activity extends AppCompatActivity {
             }
         });
     }
-
 }

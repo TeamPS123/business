@@ -249,7 +249,6 @@ public class SignUpActivity extends AppCompatActivity {
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
-
                 if(response.body().getStatus() == 1){
                     DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
                     dataTokenAndUserId.saveToken(response.body().getNotification());

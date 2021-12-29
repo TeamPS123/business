@@ -42,11 +42,7 @@
         <activity android:name=".activites.ManagerCategoryActivity" />
         <activity
             android:name=".activites.BusinessActivity"
-            android:exported="true">
-
-
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".activites.ReserveTableDetailsActivity"
             android:exported="true">
@@ -68,7 +64,7 @@
         <activity
             android:name=".activites.RestaurantRegistrationStep2Activity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activites.VerifyOTPActivity"
             android:exported="true"
@@ -76,16 +72,11 @@
         <activity
             android:name=".activites.RestaurantRegistrationActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
-
-
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activites.MapRegistrationActivity"
-            android:exported="true">
-
-
-        </activity>
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"/>
 
         <service
             android:name=".services.LocationService"

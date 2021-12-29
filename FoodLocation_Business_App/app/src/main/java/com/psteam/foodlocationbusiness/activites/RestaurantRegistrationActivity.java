@@ -73,6 +73,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
     }
 
     private void init() {
+        setFullScreen();
         provinceModel = new ProvinceModel();
         districtModel = new DistrictModel();
         wardModel = new WardModel();
@@ -237,7 +238,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         });
 
         binding.inputGetLocation.setOnClickListener(v -> {
-            setFullScreen();
+
             Intent intent = new Intent(getApplicationContext(), MapRegistrationActivity.class);
             intent.putExtra("address", String.format("%s %s %s %s", binding.inputLine.getText().toString(), binding.spinnerWard.getText().toString(), binding.spinnerDistrict.getText().toString(), binding.spinnerCity.getText().toString()));
             startActivityForResult(intent, 1);
